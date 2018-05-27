@@ -1,0 +1,11 @@
+.vs/CefCoreNet/v15/ipch/aafac27abffd5b42.ipch
+.vs/CefCoreNet/v15/Server/sqlite3/storage.ide-wal
+CefAdapter.Native/build/
+CefAdapter.NetStandard/bin/
+CefAdapter.NetStandard/obj/
+CefCoreNet/bin/
+CefCoreNet/obj/
+packages/
+third_party/
+Debug/
+GPUCache/

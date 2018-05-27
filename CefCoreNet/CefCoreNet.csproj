@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <StartupObject>CefCoreNet.Program</StartupObject>
+    <ApplicationIcon />
+	<RuntimeIdentifiers>win10-x64;ubuntu.16.10-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="GPUCache\**" />
+    <EmbeddedResource Remove="GPUCache\**" />
+    <None Remove="GPUCache\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="debug.log" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CefAdapter.NetStandard\CefAdapter.NetStandard.csproj" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="XCOPY $(SolutionDir)x64\$(ConfigurationName) $(ProjectDir)$(OutDir) /Y /E" />
+  </Target>
+
+</Project>

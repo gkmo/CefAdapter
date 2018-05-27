@@ -1,0 +1,458 @@
+[0512/104124.268:ERROR:icc_profile.cc(82)] Failed to parse ICC profile to SkICC.
+[0512/104125.286:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/104125.286:ERROR:browser_gpu_channel_host_factory.cc(120)] Failed to launch GPU process.
+[0512/104125.286:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/104125.286:ERROR:gpu_process_transport_factory.cc(1029)] Lost UI shared context.
+[0512/104126.484:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/104223.471:ERROR:icc_profile.cc(82)] Failed to parse ICC profile to SkICC.
+[0512/104224.240:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/104224.240:ERROR:browser_gpu_channel_host_factory.cc(120)] Failed to launch GPU process.
+[0512/104224.240:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/104224.240:ERROR:gpu_process_transport_factory.cc(1029)] Lost UI shared context.
+[0512/104225.045:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/105543.338:ERROR:icc_profile.cc(82)] Failed to parse ICC profile to SkICC.
+[0512/105544.210:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/105544.210:ERROR:browser_gpu_channel_host_factory.cc(120)] Failed to launch GPU process.
+[0512/105544.210:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/105544.210:ERROR:gpu_process_transport_factory.cc(1029)] Lost UI shared context.
+[0512/105545.032:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/105625.766:ERROR:icc_profile.cc(82)] Failed to parse ICC profile to SkICC.
+[0512/105626.421:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/105626.421:ERROR:browser_gpu_channel_host_factory.cc(120)] Failed to launch GPU process.
+[0512/105626.421:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/105626.421:ERROR:gpu_process_transport_factory.cc(1029)] Lost UI shared context.
+[0512/105627.275:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/110459.934:ERROR:icc_profile.cc(82)] Failed to parse ICC profile to SkICC.
+[0512/110500.725:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/110500.725:ERROR:browser_gpu_channel_host_factory.cc(120)] Failed to launch GPU process.
+[0512/110500.725:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/110500.725:ERROR:gpu_process_transport_factory.cc(1029)] Lost UI shared context.
+[0512/110502.258:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/153700.964:ERROR:icc_profile.cc(82)] Failed to parse ICC profile to SkICC.
+[0512/153701.529:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/153701.530:ERROR:browser_gpu_channel_host_factory.cc(120)] Failed to launch GPU process.
+[0512/153701.530:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/153701.530:ERROR:gpu_process_transport_factory.cc(1029)] Lost UI shared context.
+[0512/153703.123:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/153811.382:ERROR:icc_profile.cc(82)] Failed to parse ICC profile to SkICC.
+[0512/153811.930:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/153811.930:ERROR:browser_gpu_channel_host_factory.cc(120)] Failed to launch GPU process.
+[0512/153811.930:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/153811.930:ERROR:gpu_process_transport_factory.cc(1029)] Lost UI shared context.
+[0512/153813.541:ERROR:gpu_process_host.cc(370)] !GpuDataManagerImpl::GpuAccessAllowed()
+[0512/163517.161:ERROR:url_request_context_getter_impl.cc(128)] Cannot use V8 Proxy resolver in single process mode.
+[0512/163517.161:ERROR:icc_profile.cc(82)] Failed to parse ICC profile to SkICC.
+[0512/163517.166:INFO:dxva_video_decode_accelerator_win.cc(1316)] mf.dll is required for hardware video decoding
+[0512/163517.167:INFO:media_foundation_video_encode_accelerator_win.cc(376)] mf.dll is required for encoding
+[0512/163517.202:WARNING:histograms.cc(40)] Started multiple compositor clients (Browser, Renderer) in one process. Some metrics will be disabled.
+[0512/163518.658:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163518.660:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163518.755:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163518.821:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163518.821:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163518.822:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163518.823:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163518.824:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163518.824:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163518.826:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163518.826:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163519.238:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163519.507:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163519.507:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163519.507:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163519.509:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163519.509:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163519.584:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163520.149:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163520.149:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163520.149:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163520.554:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163522.674:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163523.262:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163523.734:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163527.559:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163527.645:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163527.730:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163527.746:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/163548.052:WARNING:discardable_shared_memory_manager.cc(436)] Some MojoDiscardableSharedMemoryManagerImpls are still alive. They will be leaked.
+[0512/163548.056:FATAL:timer.cc(102)] Check failed: origin_sequence_checker_.CalledOnValidSequence(). 
+[0512/164028.961:ERROR:icc_profile.cc(82)] Failed to parse ICC profile to SkICC.
+[0512/164031.646:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164031.668:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164031.668:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164031.669:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164031.670:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164032.432:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164032.456:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164032.531:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164032.532:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164032.996:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164032.997:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164032.997:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164039.177:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164039.314:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164039.429:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164039.657:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164039.673:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164040.809:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164040.809:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164040.831:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164040.831:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164040.831:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164040.851:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164040.851:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164040.928:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164040.928:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164041.376:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164041.713:WARNING:angle_platform_impl.cc(59)] compileToBinary(228): 
+C:\fakepath(65,10-42): warning X3571: pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+C:\fakepath(87,10-42): warning X3571: pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+
+[0512/164041.719:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164042.027:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164042.679:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164042.679:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164042.679:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164042.679:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164042.679:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164042.754:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164042.754:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164042.758:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164042.758:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164042.805:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164042.805:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164042.858:WARNING:spdy_session.cc(2921)] Received HEADERS for invalid stream 11
+[0512/164042.903:WARNING:spdy_session.cc(2921)] Received HEADERS for invalid stream 13
+[0512/164044.712:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164044.713:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164044.713:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164044.713:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164044.713:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164044.713:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.001:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.001:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.001:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.001:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.001:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.001:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.001:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.001:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.001:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.001:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.040:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.044:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.044:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.046:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.049:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.049:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.049:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.049:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.049:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.049:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.049:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.049:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.379:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.397:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.397:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.397:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.413:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.430:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.430:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.431:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.447:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.447:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.464:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.464:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.483:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.483:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.499:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.499:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.518:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.518:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.518:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.534:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.534:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.534:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.534:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.549:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.549:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.549:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.549:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.567:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.567:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.567:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.581:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.581:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.581:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.581:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.600:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.618:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.847:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.847:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.847:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.847:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.862:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.862:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.862:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.862:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.878:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.878:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.878:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.898:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.899:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.899:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.899:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.899:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.899:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.899:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.916:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.916:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.916:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.916:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.916:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.916:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.916:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.932:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.932:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.932:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.932:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.932:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.932:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.932:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.947:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.947:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.947:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.947:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.948:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.948:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.948:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.965:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.965:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.965:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.965:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.965:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.965:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.965:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.982:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.982:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.982:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.982:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.982:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.982:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.982:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.997:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.997:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.997:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164045.997:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.013:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.013:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.013:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.013:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.013:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.013:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.013:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.031:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.032:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.032:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.032:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.032:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.032:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.047:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.047:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.047:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.047:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.047:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.047:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.047:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.064:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.064:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.064:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.064:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.064:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.064:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.064:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.084:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.084:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.084:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.084:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.084:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.084:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.084:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.084:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.098:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.098:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.098:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.098:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.098:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.098:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.117:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.117:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.117:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.117:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.117:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.117:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.117:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.132:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.132:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.132:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.132:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.132:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.132:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.132:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.731:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.731:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.731:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.746:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.762:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.783:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.783:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.783:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.783:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.799:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.799:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.799:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.799:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.820:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.820:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.831:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.831:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.831:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.850:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.850:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.850:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.850:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.850:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.850:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.866:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.866:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.866:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.866:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.866:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.866:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.866:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.884:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.884:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.884:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.884:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.884:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.884:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.884:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.899:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.899:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.899:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.899:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.899:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.899:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.899:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.936:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.936:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.936:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.936:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.936:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.936:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.949:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.949:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.949:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.949:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.949:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.949:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.972:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.972:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.972:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.972:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.972:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.972:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.972:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.973:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.973:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.983:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.983:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.983:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.983:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.983:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.983:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.983:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164046.999:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.000:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.000:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.000:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.015:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.015:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.015:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.189:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.189:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.189:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.189:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.189:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.412:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.412:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.412:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.412:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.412:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.412:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.412:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.412:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.412:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.412:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.412:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.412:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.412:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.431:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.431:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.431:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.431:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.431:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.431:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.431:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.431:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.431:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.431:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.431:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.454:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.470:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.470:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.470:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.470:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.470:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.487:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.487:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.487:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.487:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.487:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.504:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.504:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.504:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.504:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.504:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.519:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.519:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.519:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.519:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.584:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.722:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.722:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.722:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.722:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.722:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.722:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.722:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164047.722:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164048.404:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164048.404:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164048.406:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164048.449:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164048.449:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164048.449:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164048.450:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164048.450:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164048.450:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164048.818:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164048.868:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164048.868:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164048.868:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164048.868:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164048.869:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164050.957:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164050.957:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164050.968:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0512/164052.299:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
