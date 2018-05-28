@@ -46,7 +46,7 @@ void CefAdapterEventHandler::OnTitleChange(CefRefPtr<CefBrowser> browser, const 
 void CefAdapterEventHandler::PlatformTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title) 
 {
 	CefWindowHandle hwnd = browser->GetHost()->GetWindowHandle();
-	//SetWindowText(hwnd, std::wstring(title).c_str());
+	SetWindowText(hwnd, std::wstring(title).c_str());
 }
 
 void CefAdapterEventHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser) 

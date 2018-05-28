@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="XCOPY $(SolutionDir)x64\$(ConfigurationName) $(ProjectDir)$(OutDir) /Y /E" />
+    <Exec Command="XCOPY ..\CefAdapter.Browser\build\$(ConfigurationName) $(ProjectDir)$(OutDir) /Y /E" />
   </Target>
 
 </Project>

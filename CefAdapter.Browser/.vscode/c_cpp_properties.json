@@ -11,7 +11,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/shared",
-                "${workspaceFolder}/../third_party/cef/cef_binary_3.3325.1756.g6d8faa4_windows64"
+                "${workspaceFolder}/../Dependencies/cef/cef_binary_windows64"
             ],
             "defines": [
                 "_DEBUG",
