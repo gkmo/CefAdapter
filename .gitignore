@@ -5,8 +5,10 @@ CefAdapter.Renderer/build/
 CefAdapter.NetStandard/bin/
 CefAdapter.NetStandard/obj/
 CefCoreNet/bin/
+CefCoreNet/blob_storage/
 CefCoreNet/debug.log
 CefCoreNet/obj/
+CefCoreNet/webrtc_event_logs/
 packages/
 Dependencies/
 Debug/
@@ -44,3 +46,6 @@ build/
 *.exe
 *.out
 *.app
+
+# Logs
+*.log0
