@@ -1,5 +1,4 @@
-.vs/CefCoreNet/v15/ipch/aafac27abffd5b42.ipch
-.vs/CefCoreNet/v15/Server/sqlite3/storage.ide-wal
+.vs/CefCoreNet/
 CefAdapter.Browser/build/
 CefAdapter.Renderer/build/
 CefAdapter.NetStandard/bin/
