@@ -11,19 +11,19 @@ namespace CefAdapter.NetStandard
 
     public static class NativeMethods
     {
-        [DllImport("CefAdapter.Native.dll")]
+        [DllImport("CefAdapter.Browser.dll")]
         public static extern bool CreateApplication(IntPtr hInstance, string url, string subprocessPath, OnBrowserCreatedCallback onBrowserCreatedCallback);            
 
-        [DllImport("CefAdapter.Native.dll")]
+        [DllImport("CefAdapter.Browser.dll")]
         public static extern void RunMessageLoop();
 
-        [DllImport("CefAdapter.Native.dll")]
+        [DllImport("CefAdapter.Browser.dll")]
         public static extern void Shutdown();
 
-        [DllImport("CefAdapter.Native.dll")]
+        [DllImport("CefAdapter.Browser.dll")]
         public static extern bool ExecuteJavaScript(int browserId, string code);
 
-        [DllImport("CefAdapter.Native.dll")]
+        [DllImport("CefAdapter.Browser.dll")]
         public static extern bool ShowDeveloperTools(int browserId);
     }
 }

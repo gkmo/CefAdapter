@@ -5,6 +5,7 @@ CefAdapter.Renderer/build/
 CefAdapter.NetStandard/bin/
 CefAdapter.NetStandard/obj/
 CefCoreNet/bin/
+CefCoreNet/debug.log
 CefCoreNet/obj/
 packages/
 Dependencies/

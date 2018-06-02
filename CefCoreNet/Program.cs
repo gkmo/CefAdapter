@@ -11,7 +11,8 @@ namespace CefCoreNet
         static void Main(string[] args)
         {
             var hInstance = Process.GetCurrentProcess().Handle;
-            string subprocessPath = null;//"C:\\Users\\goliveira\\Downloads\\cef-project\\cef-project\\build\\third_party\\cef\\cef_binary_3.3325.1756.g6d8faa4_windows64\\tests\\cefclient\\Debug\\cefclient.exe";
+            //string subprocessPath = @"C:\Users\goliveira\Downloads\cef_binary_3.3359.1774.gd49d25f_windows64\build\tests\cefsimple\Debug\cefsimple.exe";
+            string subprocessPath = @"C:\Users\goliveira\Source\Workspaces\CefDotNet\CefCoreNet\bin\Debug\netcoreapp2.1\CefAdapter.Renderer.exe";
 
             var result = NativeMethods.CreateApplication(hInstance, "http://www.goolge.com", subprocessPath, OnBrowserCreated);
 

@@ -1,0 +1,35 @@
+[0601/151900.427:ERROR:icc_profile.cc(82)] Failed to parse ICC profile to SkICC.
+[0601/151900.720:FATAL:dwrite_font_proxy_init_impl_win.cc(88)] Check failed: fallback_available == base::win::GetVersion() > base::win::VERSION_WIN8 (1 vs. 0)
+[0601/151910.507:INFO:url_request_manager.cc(277)] CefURLRequestManager hit for chrome-devtools://devtools/inspector.html
+[0601/151910.630:FATAL:dwrite_font_proxy_init_impl_win.cc(88)] Check failed: fallback_available == base::win::GetVersion() > base::win::VERSION_WIN8 (1 vs. 0)
+[0601/152001.474:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152001.474:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152001.549:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152001.589:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152001.589:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152001.589:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152002.054:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152002.242:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152002.243:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152002.245:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152002.440:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152002.570:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152006.404:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152006.422:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152006.483:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152018.273:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152018.278:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152018.280:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152018.338:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152018.344:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152018.352:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152018.626:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152019.332:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152019.332:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152019.376:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152019.392:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152019.410:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152019.424:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152019.441:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152020.391:ERROR:sync_point_manager.cc(136)] Client did not release sync token as expected
+[0601/152021.036:WARNING:discardable_shared_memory_manager.cc(436)] Some MojoDiscardableSharedMemoryManagerImpls are still alive. They will be leaked.

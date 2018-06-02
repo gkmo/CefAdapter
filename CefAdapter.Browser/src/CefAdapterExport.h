@@ -1,7 +1,7 @@
 #pragma once
 
 #include "stdafx.h"
-#include "CefAdapterApplication.h"
+#include "CefAdapterBrowserApplication.h"
 
 extern "C"
 {

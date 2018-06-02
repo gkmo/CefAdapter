@@ -10,6 +10,16 @@
                 "${workspaceFolder}/CefCoreNet/CefCoreNet.csproj"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "-r win10-x64"
+            ],
+            "problemMatcher": "$msCompile"
         }
     ]
 }

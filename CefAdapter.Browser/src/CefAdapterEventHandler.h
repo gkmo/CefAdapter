@@ -2,7 +2,7 @@
 
 #include "include/cef_client.h"
 #include <list>
-#include "CefAdapterApplication.h"
+#include "CefAdapterBrowserApplication.h"
 
 class CefAdapterEventHandler : public CefClient, public CefDisplayHandler, public CefLifeSpanHandler, public CefLoadHandler
 {
