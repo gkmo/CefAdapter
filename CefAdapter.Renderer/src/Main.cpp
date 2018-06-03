@@ -8,48 +8,37 @@
 #include <iostream>
 
 #include "CefAdapterRendererApplication.h"
-
+#include "Logger.h"
+#include <fstream>
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR lpCmdLine, int nCmdShow)
 {
-    UNREFERENCED_PARAMETER(hPrevInstance);
-    UNREFERENCED_PARAMETER(lpCmdLine);
+  UNREFERENCED_PARAMETER(hPrevInstance);
+  UNREFERENCED_PARAMETER(lpCmdLine);
 
-    //std::cout << "Initializing the renderer..." << std::endl;
-    
-    // Enable High-DPI support on Windows 7 or newer.
-    CefEnableHighDPISupport();
+  Logger* logger = new Logger("c:/temp/log.txt");
+  logger->Debug("Initialization", "Initializing the renderer...");
 
-    void* sandbox_info = NULL;
+  CefEnableHighDPISupport();
 
-    CefMainArgs main_args(hInstance);	
+  void* sandbox_info = NULL;
 
-    // CefSettings settings;
-    
-    // settings.no_sandbox = true;
-
-    //CefRefPtr<CefAdapterRendererApplication> app(new CefAdapterRendererApplication());
-
-    // CEF applications have multiple sub-processes (render, plugin, GPU, etc)
-  // that share the same executable. This function checks the command-line and,
-  // if this is a sub-process, executes the appropriate logic.
-  int exit_code = CefExecuteProcess(main_args, NULL, sandbox_info);
-  if (exit_code >= 0) {
-    // The sub-process has completed so return here.
-    return exit_code;
-  }
+  CefMainArgs main_args(hInstance);	
 
   // Specify CEF global settings here.
   CefSettings settings;
-
-#if !defined(CEF_USE_SANDBOX)
-  settings.no_sandbox = true;
-#endif
 
   // SimpleApp implements application-level callbacks for the browser process.
   // It will create the first browser instance in OnContextInitialized() after
   // CEF has initialized.
   CefRefPtr<CefAdapterRendererApplication> app(new CefAdapterRendererApplication);
+
+  int exit_code = CefExecuteProcess(main_args, app.get(), sandbox_info);
+
+  if (exit_code >= 0) 
+  {
+    return exit_code;
+  }
 
   // Initialize CEF.
   CefInitialize(main_args, settings, app.get(), sandbox_info);

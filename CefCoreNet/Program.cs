@@ -34,7 +34,7 @@ namespace CefCoreNet
                 {
 
                     Thread.Sleep(10000);
-                    NativeMethods.ExecuteJavaScript(browserId, "alert(window.myval);");
+                    NativeMethods.ExecuteJavaScript(browserId, "alert(test.myfunc());");
 
                     NativeMethods.ShowDeveloperTools(browserId);
                 });

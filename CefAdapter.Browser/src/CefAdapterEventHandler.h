@@ -48,6 +48,8 @@ public:
 
 	CefRefPtr<CefBrowser> GetBrowserById(int id);
 
+	virtual bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId source_process, CefRefPtr<CefProcessMessage> message) OVERRIDE;
+
 private:
 	// Platform-specific implementation.
 	void PlatformTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title);

@@ -15,6 +15,10 @@ public:
 
     virtual void OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context) OVERRIDE;
 
+	virtual void OnWebKitInitialized() OVERRIDE;
+
+	virtual bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId source_process, CefRefPtr<CefProcessMessage> message) OVERRIDE;
+
 private:
-	IMPLEMENT_REFCOUNTING(CefAdapterRendererApplication);    
+	IMPLEMENT_REFCOUNTING(CefAdapterRendererApplication);
 };

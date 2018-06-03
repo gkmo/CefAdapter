@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include <iostream>
 #include "include/cef_browser.h"
 #include "include/cef_command_line.h"
 #include "include/views/cef_browser_view.h"
@@ -34,6 +34,8 @@ CefAdapterBrowserApplication * CefAdapterBrowserApplication::GetInstance()
 void CefAdapterBrowserApplication::OnContextInitialized()
 {
 	CEF_REQUIRE_UI_THREAD();
+
+	std::cout << "CefAdapterBrowserApplication::OnContextInitialized()" << std::endl;
 
 	// SimpleHandler implements browser-level callbacks.
 	CefRefPtr<CefAdapterEventHandler> handler(new CefAdapterEventHandler(_browserCreatedCallback));

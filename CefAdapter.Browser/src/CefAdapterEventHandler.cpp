@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include <sstream>
 #include <string>
+#include <iostream>
 
 #include "include/base/cef_bind.h"
 #include "include/cef_app.h"
@@ -158,4 +159,23 @@ CefRefPtr<CefBrowser> CefAdapterEventHandler::GetBrowserById(int id)
 	}
 
 	return NULL;
+}
+
+bool CefAdapterEventHandler::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId source_process, CefRefPtr<CefProcessMessage> message) 
+{
+	// Check the message name.
+	const std::string& message_name = message->GetName();
+
+	std::cout << "CefAdapterEventHandler::OnProcessMessageReceived: " << message_name << std::endl;
+
+  if (message_name == "OnContextCreated") 
+  {
+	  CefRefPtr<CefListValue> args =  message->GetArgumentList();
+	  std::cout << "OnContextCreated -> Browser ID = " << args->GetInt(0) << "; Frame ID = " << args->GetInt(1) << "Args Count = " << args->GetSize() << std::endl;
+
+		// Handle the message here...
+		return true;
+  }
+  
+  return false;
 }

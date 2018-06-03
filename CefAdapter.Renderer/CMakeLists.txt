@@ -4,7 +4,7 @@ project(CefAdapter.Renderer VERSION 0.1.0)
 include(CTest)
 enable_testing()
 
-include_directories("../Dependencies/cef/cef_binary_windows64")
+include_directories("../Dependencies/cef/cef_binary_windows64" "../Dependencies/spdlog")
 link_directories("../Dependencies/cef/cef_binary_windows64/Debug" "../Dependencies/cef_wrapper")
 
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_DEBUG} /MT /RTC1 /Od /MP /Gy /GR- /W4 /WX /wd4100 /wd4127 /wd4244 /wd4481 /wd4512 /wd4701 /wd4702 /wd4996 /Zi")
@@ -12,7 +12,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd /RTC1 /Od /MP /Gy /GR- 
 
 add_definitions(-DUNICODE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DWIN32 -D_WIN32 -D_WINDOWS -D_UNICODE -DWINVER=0x0601 -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_HAS_EXCEPTIONS=0 -DCEF_USE_ATL)
 
-add_executable(CefAdapter.Renderer WIN32 src/CefAdapter.Renderer.exe.manifest src/Main.cpp src/CefAdapterRendererApplication.cpp)
+add_executable(CefAdapter.Renderer WIN32 src/CefAdapter.Renderer.exe.manifest src/Main.cpp src/CefAdapterRendererApplication.cpp src/Logger.cpp src/CefAdapterExtensionHandler.cpp)
 
 target_link_libraries(CefAdapter.Renderer libcef.lib libcef_dll_wrapper.lib comctl32.lib rpcrt4.lib shlwapi.lib ws2_32.lib)
 
