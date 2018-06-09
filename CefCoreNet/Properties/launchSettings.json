@@ -1,7 +1,7 @@
 {
   "profiles": {
     "CefCoreNet": {
-      "commandName": "Executable"
+      "commandName": "Project"
     }
   }
 }

@@ -4,6 +4,7 @@
         "xstring": "cpp",
         "system_error": "cpp",
         "ostream": "cpp",
-        "xiosbase": "cpp"
+        "xiosbase": "cpp",
+        "*.rh": "cpp"
     }
 }

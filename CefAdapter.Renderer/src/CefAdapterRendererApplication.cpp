@@ -13,8 +13,9 @@ namespace
 	CefAdapterRendererApplication* g_ApplicationInstance = NULL;
 }
 
-CefAdapterRendererApplication::CefAdapterRendererApplication()
+CefAdapterRendererApplication::CefAdapterRendererApplication(Logger* logger)
 {
+	_logger = logger;
 	g_ApplicationInstance = this;
 }
 
@@ -24,64 +25,101 @@ CefAdapterRendererApplication::~CefAdapterRendererApplication()
 }
 
 void CefAdapterRendererApplication::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context)
-{	
-	std::cout << "OnContextCreated" << std::endl;
+{
+	_logger->Debug("CefAdapterRendererApplication", "OnContextCreated");
 
-	// Create the message object.
-	CefRefPtr<CefProcessMessage> msg= CefProcessMessage::Create("OnContextCreated");
+	CefRefPtr<CefProcessMessage> msg = CefProcessMessage::Create("OnContextCreated");
 
-	// Retrieve the argument list object.
 	CefRefPtr<CefListValue> args = msg->GetArgumentList();
 
-	// Populate the argument values.
-	args->SetInt(0, browser->GetIdentifier());
-	args->SetInt(1, frame->GetIdentifier());
+	args->SetInt(0, frame->GetIdentifier());
 
-	// Send the process message to the render process.
-	// Use PID_BROWSER instead when sending a message to the browser process.
-	browser->SendProcessMessage(PID_BROWSER, msg);
+	browser->SendProcessMessage(PID_BROWSER, msg);	
 
-	// Retrieve the context's window object.
-	CefRefPtr<CefV8Value> object = context->GetGlobal();
+	//// Retrieve the context's window object.
+	//CefRefPtr<CefV8Value> object = context->GetGlobal();
 
-	// Create a new V8 string value. See the "Basic JS Types" section below.
-	CefRefPtr<CefV8Value> str = CefV8Value::CreateString("My Value!");
+	//// Create a new V8 string value. See the "Basic JS Types" section below.
+	//CefRefPtr<CefV8Value> str = CefV8Value::CreateString("My Value!");
 
-	// Add the string to the window object as "window.myval". See the "JS Objects" section below.
-	object->SetValue("myval", str, V8_PROPERTY_ATTRIBUTE_NONE);	
+	//// Add the string to the window object as "window.myval". See the "JS Objects" section below.
+	//object->SetValue("myval", str, V8_PROPERTY_ATTRIBUTE_NONE);
+
+	_messageRouter->OnContextCreated(browser, frame, context);
 }
 
-void CefAdapterRendererApplication::OnWebKitInitialized() 
+void CefAdapterRendererApplication::OnWebKitInitialized()
 {
+	_logger->Debug("CefAdapterRendererApplication", "OnWebKitInitialized");
+
+	CefMessageRouterConfig config;
+    _messageRouter = CefMessageRouterRendererSide::Create(config);
+
 	// Define the extension contents.
-  std::string extensionCode =
-    "var test;"
-    "if (!test)"
-    "  test = {};"
-    "(function() {"
-    "  test.myfunc = function() {"
-    "    native function myfunc();"
-    "    return myfunc();"
-    "  };"
-    "})();";
+	/*std::string extensionCode =
+		"var test;"
+		"if (!test)"
+		"  test = {};"
+		"(function() {"
+		"  test.myfunc = function() {"
+		"    native function myfunc();"
+		"    return myfunc();"
+		"  };"
+		"})();";*/
 
-  // Create an instance of my CefV8Handler object.
-  CefRefPtr<CefV8Handler> handler = new CefAdapterExtensionHandler();
+	//// Create an instance of my CefV8Handler object.
+	//CefRefPtr<CefV8Handler> handler = new CefAdapterExtensionHandler();
 
-  // Register the extension.
-  CefRegisterExtension("v8/test", extensionCode, handler);
+	//// Register the extension.
+	//CefRegisterExtension("v8/test", extensionCode, handler);	
+
+	//CefRefPtr<CefProcessMessage> msg = CefProcessMessage::Create("OnWebKitInitialized");
+
+	//CefRefPtr<CefListValue> args = msg->GetArgumentList();
+
+	//args->SetInt(0, frame->GetIdentifier());
+
+	//browser->SendProcessMessage(PID_BROWSER, msg);
 }
 
-bool CefAdapterRendererApplication::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId source_process, CefRefPtr<CefProcessMessage> message) 
+bool CefAdapterRendererApplication::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId sourceProcess, CefRefPtr<CefProcessMessage> message)
 {
-  // Check the message name.
-  const std::string& message_name = message->GetName();
+	// Check the message name.
+	const std::string& messageName = message->GetName();
 
-  if (message_name == "my_message") 
-  {
-    // Handle the message here...
-    return true;
-  }
-  
-  return false;
+	std::ostringstream stringStream;
+	
+	stringStream << "OnProcessMessageReceived. Source Process Id = " << sourceProcess << "; Browser Id = " << browser->GetIdentifier() << "; Message Name = " << messageName;	
+
+	_logger->Debug("CefAdapterRendererApplication", stringStream.str().c_str());
+
+	if (messageName == "CreateJsGlobalFunction")
+	{
+		auto arguments = message->GetArgumentList();
+
+		auto functionName = arguments->GetString(0);
+
+		CefRefPtr<CefV8Context> context = browser->GetMainFrame()->GetV8Context();
+
+		if (context->Enter())
+		{
+			// Retrieve the context's window object.
+			CefRefPtr<CefV8Value> global = context->GetGlobal();
+
+			// Create an instance of my CefV8Handler object.
+			CefRefPtr<CefV8Handler> handler = new CefAdapterExtensionHandler(browser, _logger);
+
+			// Create the "myfunc" function.
+			CefRefPtr<CefV8Value> function = CefV8Value::CreateFunction(functionName, handler);
+
+			// Add the function to the "window" object.
+			global->SetValue(functionName, function.get(), V8_PROPERTY_ATTRIBUTE_NONE);
+
+			context->Exit();
+		}
+
+		return true;
+	}
+
+	return false;
 }

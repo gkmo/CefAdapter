@@ -12,17 +12,21 @@
 
 #include "CefAdapterEventHandler.h"
 
-namespace 
+namespace
 {
 	CefAdapterEventHandler* g_instance = NULL;
 }
 
-CefAdapterEventHandler::CefAdapterEventHandler(BrowserCreatedCallback browserCreatedCallback) : _isClosing(false)
+CefAdapterEventHandler::CefAdapterEventHandler(BrowserCreatedCallback browserCreatedCallback, 
+	ContextCreatedCallback contextCreatedCallback, ExecuteJsFunctionCallback executeJsFunctionCallback)
 {
 	DCHECK(!g_instance);
-	g_instance = this;
 
 	_browserCreatedCallback = browserCreatedCallback;
+	_contextCreatedCallback = contextCreatedCallback;
+	_executeJsFunctionCallback = executeJsFunctionCallback;
+	_isClosing = false;
+	g_instance = this;
 }
 
 
@@ -36,7 +40,7 @@ CefAdapterEventHandler * CefAdapterEventHandler::GetInstance()
 	return g_instance;
 }
 
-void CefAdapterEventHandler::OnTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title) 
+void CefAdapterEventHandler::OnTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title)
 {
 	CEF_REQUIRE_UI_THREAD();
 
@@ -44,30 +48,73 @@ void CefAdapterEventHandler::OnTitleChange(CefRefPtr<CefBrowser> browser, const 
 	PlatformTitleChange(browser, title);
 }
 
-void CefAdapterEventHandler::PlatformTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title) 
+void CefAdapterEventHandler::PlatformTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title)
 {
 	CefWindowHandle hwnd = browser->GetHost()->GetWindowHandle();
 	SetWindowText(hwnd, std::wstring(title).c_str());
 }
 
-void CefAdapterEventHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser) 
+bool CefAdapterEventHandler::OnPreKeyEvent(CefRefPtr<CefBrowser> browser, const CefKeyEvent& event, CefEventHandle os_event, bool* is_keyboard_shortcut) 
+{
+	if (browser->GetIdentifier() != 1)
+	{
+		return false;
+	}
+
+	std::cout << "OnPreKeyEvent: " << os_event->message << " " << event.windows_key_code << std::endl;
+
+	if (os_event && os_event->message == WM_KEYDOWN) 
+	{
+		switch (event.windows_key_code)
+		{
+			case VK_F12: 
+			{
+				// Specify CEF browser settings here.
+				CefBrowserSettings browserSettings;
+
+				// Information used when creating the native window.
+				CefWindowInfo windowInfo;
+				windowInfo.width = 400;
+				windowInfo.height = 400;
+
+	#if defined(OS_WIN)
+				// On Windows we need to specify certain flags that will be passed to
+				// CreateWindowEx().
+				windowInfo.SetAsPopup(NULL, "CefAdapter.DeveloperTools");
+	#endif
+				CefRefPtr<CefClient> client(CefAdapterEventHandler::GetInstance());
+
+				CefPoint point;
+
+				browser->GetHost()->ShowDevTools(windowInfo, client.get(), browserSettings, point);
+
+				return true;
+			};
+			break;
+		}      
+	}
+
+	return false;
+}
+
+void CefAdapterEventHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser)
 {
 	CEF_REQUIRE_UI_THREAD();
 
 	// Add to the list of existing browsers.
-	_browserList.push_back(browser);	
+	_browserList.push_back(browser);
 
 	_browserCreatedCallback(browser->GetIdentifier());
 }
 
-bool CefAdapterEventHandler::DoClose(CefRefPtr<CefBrowser> browser) 
+bool CefAdapterEventHandler::DoClose(CefRefPtr<CefBrowser> browser)
 {
 	CEF_REQUIRE_UI_THREAD();
 
 	// Closing the main window requires special handling. See the DoClose()
 	// documentation in the CEF header for a detailed destription of this
 	// process.
-	if (_browserList.size() == 1) 
+	if (_browserList.size() == 1)
 	{
 		// Set a flag to indicate that the window close should be allowed.
 		_isClosing = true;
@@ -78,7 +125,7 @@ bool CefAdapterEventHandler::DoClose(CefRefPtr<CefBrowser> browser)
 	return false;
 }
 
-void CefAdapterEventHandler::OnBeforeClose(CefRefPtr<CefBrowser> browser) 
+void CefAdapterEventHandler::OnBeforeClose(CefRefPtr<CefBrowser> browser)
 {
 	CEF_REQUIRE_UI_THREAD();
 
@@ -87,22 +134,22 @@ void CefAdapterEventHandler::OnBeforeClose(CefRefPtr<CefBrowser> browser)
 
 	for (; bit != _browserList.end(); ++bit)
 	{
-		if ((*bit)->IsSame(browser)) 
+		if ((*bit)->IsSame(browser))
 		{
 			_browserList.erase(bit);
 			break;
 		}
 	}
 
-	if (_browserList.empty()) 
+	if (_browserList.empty())
 	{
 		// All browser windows have closed. Quit the application message loop.
 		CefQuitMessageLoop();
 	}
 }
 
-void CefAdapterEventHandler::OnLoadError(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, 
-	ErrorCode errorCode, const CefString& errorText, const CefString& failedUrl) 
+void CefAdapterEventHandler::OnLoadError(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame,
+	ErrorCode errorCode, const CefString& errorText, const CefString& failedUrl)
 {
 	CEF_REQUIRE_UI_THREAD();
 
@@ -125,7 +172,7 @@ void CefAdapterEventHandler::OnLoadError(CefRefPtr<CefBrowser> browser, CefRefPt
 
 void CefAdapterEventHandler::CloseAllBrowsers(bool forceClose)
 {
-	if (!CefCurrentlyOn(TID_UI)) 
+	if (!CefCurrentlyOn(TID_UI))
 	{
 		// Execute on the UI thread.
 		CefPostTask(TID_UI, base::Bind(&CefAdapterEventHandler::CloseAllBrowsers, this, forceClose));
@@ -161,21 +208,40 @@ CefRefPtr<CefBrowser> CefAdapterEventHandler::GetBrowserById(int id)
 	return NULL;
 }
 
-bool CefAdapterEventHandler::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId source_process, CefRefPtr<CefProcessMessage> message) 
-{
-	// Check the message name.
-	const std::string& message_name = message->GetName();
+bool CefAdapterEventHandler::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId source_process, CefRefPtr<CefProcessMessage> message)
+{	
+	const std::string& messageName = message->GetName();
 
-	std::cout << "CefAdapterEventHandler::OnProcessMessageReceived: " << message_name << std::endl;
+	std::cout << "CefAdapterEventHandler::OnProcessMessageReceived: " << messageName << std::endl;
 
-  if (message_name == "OnContextCreated") 
-  {
-	  CefRefPtr<CefListValue> args =  message->GetArgumentList();
-	  std::cout << "OnContextCreated -> Browser ID = " << args->GetInt(0) << "; Frame ID = " << args->GetInt(1) << "Args Count = " << args->GetSize() << std::endl;
+	if (messageName == "OnContextCreated")
+	{
+		CefRefPtr<CefListValue> args = message->GetArgumentList();
 
-		// Handle the message here...
+		int browserId = browser->GetIdentifier();
+		int frameId = args->GetInt(0);
+
+		std::cout << "OnContextCreated -> Browser ID = " << browserId << "; Frame ID = " << frameId << std::endl;
+
+		_contextCreatedCallback(browserId, frameId);
+
 		return true;
-  }
-  
-  return false;
+	}
+	else if (messageName == "ExecuteJsFunction")
+	{
+		CefRefPtr<CefListValue> args = message->GetArgumentList();
+
+		auto numberOfArguments = args->GetInt(0);
+		auto functionName = args->GetBinary(1);		
+		auto opa = args->GetBool(2);
+
+		auto fname = functionName->GetSize();
+
+
+		std::cout << "ExecuteJsFunction -> Name = " << fname << "; Arguments = " << numberOfArguments << " Opa = " << opa <<  std::endl;
+
+		//auto result = _executeJsFunctionCallback(browser->GetIdentifier(), fname , 0, NULL);
+	}
+
+	return false;
 }

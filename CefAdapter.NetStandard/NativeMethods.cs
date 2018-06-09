@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace CefAdapter.NetStandard
+namespace CefAdapter
 {
-    public delegate void InitializationProgressCallback(int percentage, string message);
+    internal delegate void InitializationProgressCallback(int percentage, string message);
 
-    public delegate void InitializationErrorCallback(int code, string message);
+    internal delegate void InitializationErrorCallback(int code, string message);
 
-    public delegate void OnBrowserCreatedCallback(int browserId);
+    internal delegate void OnBrowserCreatedCallback(int browserId);
 
-    public static class NativeMethods
+    internal delegate void OnContextCreatedCallback(int browserId, int frameId);
+
+    internal delegate CefAdapterValue ExecuteJsFunctionCallback(int browserId, string functionName, int argumentsCount, CefAdapterValue[] arguments);
+
+    internal static class NativeMethods
     {
         [DllImport("CefAdapter.Browser.dll")]
-        public static extern bool CreateApplication(IntPtr hInstance, string url, string subprocessPath, OnBrowserCreatedCallback onBrowserCreatedCallback);            
+        public static extern bool CreateApplication(IntPtr hInstance, string url, string subprocessPath, string logPath,
+            OnBrowserCreatedCallback onBrowserCreatedCallback, OnContextCreatedCallback contextCreatedCallback, ExecuteJsFunctionCallback executeJsFunctionCallback);            
 
         [DllImport("CefAdapter.Browser.dll")]
         public static extern void RunMessageLoop();
@@ -25,5 +30,8 @@ namespace CefAdapter.NetStandard
 
         [DllImport("CefAdapter.Browser.dll")]
         public static extern bool ShowDeveloperTools(int browserId);
+
+        [DllImport("CefAdapter.Browser.dll")]
+        public static extern void CreateJsGlobalFunction(int browserId, string name, CefAdapterValueType returnType, int argumentsCount, CefAdapterValueType[] argumentTypes);
     }
 }

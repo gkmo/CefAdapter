@@ -4,10 +4,10 @@
 #include <list>
 #include "CefAdapterBrowserApplication.h"
 
-class CefAdapterEventHandler : public CefClient, public CefDisplayHandler, public CefLifeSpanHandler, public CefLoadHandler
+class CefAdapterEventHandler : public CefClient, public CefDisplayHandler, public CefLifeSpanHandler, public CefLoadHandler, public CefKeyboardHandler
 {
 public:
-	CefAdapterEventHandler(BrowserCreatedCallback browserCreatedCallback);
+	CefAdapterEventHandler(BrowserCreatedCallback browserCreatedCallback, ContextCreatedCallback contextCreatedCallback, ExecuteJsFunctionCallback executeJsFunctionCallback);
 	~CefAdapterEventHandler();
 
 	// Provide access to the single global instance of this object.
@@ -27,6 +27,11 @@ public:
 	virtual CefRefPtr<CefLoadHandler> GetLoadHandler() OVERRIDE 
 	{ 
 		return this; 
+	}
+
+	virtual CefRefPtr<CefKeyboardHandler> GetKeyboardHandler() OVERRIDE
+	{
+		return this;
 	}
 
 	// CefDisplayHandler methods:
@@ -50,6 +55,7 @@ public:
 
 	virtual bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId source_process, CefRefPtr<CefProcessMessage> message) OVERRIDE;
 
+	virtual bool OnPreKeyEvent(CefRefPtr<CefBrowser> browser, const CefKeyEvent& event, CefEventHandle os_event, bool* is_keyboard_shortcut) OVERRIDE;
 private:
 	// Platform-specific implementation.
 	void PlatformTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title);
@@ -62,6 +68,8 @@ private:
 	bool _isClosing;
 
 	BrowserCreatedCallback _browserCreatedCallback;
+	ContextCreatedCallback _contextCreatedCallback;
+	ExecuteJsFunctionCallback _executeJsFunctionCallback;
 
 	// Include the default reference counting implementation.
 	IMPLEMENT_REFCOUNTING(CefAdapterEventHandler);

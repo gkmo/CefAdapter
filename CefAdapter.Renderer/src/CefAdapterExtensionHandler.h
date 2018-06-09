@@ -1,14 +1,23 @@
 #pragma once
 
 #include "include/cef_app.h"
+#include "Logger.h"
 
-class CefAdapterExtensionHandler : public CefV8Handler {
+class CefAdapterExtensionHandler : public CefV8Handler
+{
 public:
-  CefAdapterExtensionHandler() {}
+	CefAdapterExtensionHandler(CefRefPtr<CefBrowser> browser, Logger* logger)
+	{
+		_logger = logger;
+		_browser = browser;
+	}
 
-  virtual bool Execute(const CefString& name, CefRefPtr<CefV8Value> object, const CefV8ValueList& arguments,
-                       CefRefPtr<CefV8Value>& retval, CefString& exception) OVERRIDE;
+	virtual bool Execute(const CefString& name, CefRefPtr<CefV8Value> object, const CefV8ValueList& arguments,
+		CefRefPtr<CefV8Value>& retval, CefString& exception) OVERRIDE;	
 
-  // Provide the reference counting implementation for this class.
-  IMPLEMENT_REFCOUNTING(CefAdapterExtensionHandler);
+private:
+	IMPLEMENT_REFCOUNTING(CefAdapterExtensionHandler);
+
+	Logger* _logger;
+	CefRefPtr<CefBrowser> _browser;
 };

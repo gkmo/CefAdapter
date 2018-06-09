@@ -1,8 +1,5 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
-using CefAdapter.NetStandard;
+﻿using CefAdapter;
+using System;
 
 namespace CefCoreNet
 {
@@ -10,35 +7,37 @@ namespace CefCoreNet
     {
         static void Main(string[] args)
         {
-            var hInstance = Process.GetCurrentProcess().Handle;
-            //string subprocessPath = @"C:\Users\goliveira\Downloads\cef_binary_3.3359.1774.gd49d25f_windows64\build\tests\cefsimple\Debug\cefsimple.exe";
-            string subprocessPath = @"C:\Users\goliveira\Source\Workspaces\CefDotNet\CefCoreNet\bin\Debug\netcoreapp2.1\CefAdapter.Renderer.exe";
+            var application = new Application("http://www.google.com");
 
-            var result = NativeMethods.CreateApplication(hInstance, "http://www.goolge.com", subprocessPath, OnBrowserCreated);
+            application.BrowserCreated += OnBrowserCreate;
 
-            if (result)
-            {
-                NativeMethods.RunMessageLoop();
-
-                NativeMethods.Shutdown();
-            }            
+            application.Run();
         }
 
-        private static void OnBrowserCreated(int browserId)
+        private static void OnBrowserCreate(object sender, BrowserCreatedEventAgrs e)
         {
-            Console.WriteLine($"Browser created with Id = {browserId}");
+            e.BrowserWindow.ContextCreated += BrowserWindow_ContextCreated;
+        }
 
-            if (browserId == 1)
+        private static bool _functionCreated = false;
+
+        private static void BrowserWindow_ContextCreated(object sender, BrowserContextCreatedEventArgs e)
+        {
+            if (_functionCreated)
             {
-                Task.Run(() =>
-                {
-
-                    Thread.Sleep(10000);
-                    NativeMethods.ExecuteJavaScript(browserId, "alert(test.myfunc());");
-
-                    NativeMethods.ShowDeveloperTools(browserId);
-                });
+                return;
             }
-        }        
+
+            //e.BrowserWindow.ExecuteJavaScript("alert('Executing JS from C#')");
+
+            e.BrowserWindow.RegisterFunctionHandler("mycsharpfunc", new Action(CSharpFunction));
+
+            _functionCreated = true;
+        }
+
+        private static void CSharpFunction()
+        {
+            Console.WriteLine("Called CSharpFunction!");
+        }
     }
 }

@@ -5,7 +5,8 @@
 
 extern "C"
 {
-	__declspec(dllexport) bool CreateApplication(HINSTANCE hInstance, const char* url, const char* subprocessPath, BrowserCreatedCallback browserCreatedCallback);
+	__declspec(dllexport) bool CreateApplication(HINSTANCE hInstance, const char* url, const char* subprocessPath, const char* logPath, 
+		BrowserCreatedCallback browserCreatedCallback, ContextCreatedCallback contextCreatedCallback, ExecuteJsFunctionCallback executeJsFunctionCallback);
 
 	__declspec(dllexport) void RunMessageLoop();
 
@@ -14,4 +15,7 @@ extern "C"
 	__declspec(dllexport) bool ExecuteJavaScript(int browserId, const char* code);
 
 	__declspec(dllexport) bool ShowDeveloperTools(int browserId);
+
+	__declspec(dllexport) void CreateJsGlobalFunction(int browserId, const char* name, CefAdapterValueType returnType, int argumentsCount, CefAdapterValueType* arguments);
+
 }

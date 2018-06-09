@@ -13,11 +13,14 @@ namespace
 	CefAdapterBrowserApplication* g_ApplicationInstance = NULL;
 }
 
-CefAdapterBrowserApplication::CefAdapterBrowserApplication(std::string url, BrowserCreatedCallback browserCreatedCallback)
+CefAdapterBrowserApplication::CefAdapterBrowserApplication(std::string url, 
+	BrowserCreatedCallback browserCreatedCallback, ContextCreatedCallback contextCreatedCallback, 
+	ExecuteJsFunctionCallback executeJsFunctionCallback)
 {
 	_url = url;
 	_browserCreatedCallback = browserCreatedCallback;	
-
+	_contextCreatedCallback = contextCreatedCallback;
+	_executeJsFunctionCallback = executeJsFunctionCallback;
 	g_ApplicationInstance = this;
 }
 
@@ -38,7 +41,7 @@ void CefAdapterBrowserApplication::OnContextInitialized()
 	std::cout << "CefAdapterBrowserApplication::OnContextInitialized()" << std::endl;
 
 	// SimpleHandler implements browser-level callbacks.
-	CefRefPtr<CefAdapterEventHandler> handler(new CefAdapterEventHandler(_browserCreatedCallback));
+	CefRefPtr<CefAdapterEventHandler> handler(new CefAdapterEventHandler(_browserCreatedCallback, _contextCreatedCallback, _executeJsFunctionCallback));
 
 	// Specify CEF browser settings here.
 	CefBrowserSettings browserSettings;	
@@ -51,7 +54,7 @@ void CefAdapterBrowserApplication::OnContextInitialized()
 #if defined(OS_WIN)
 	// On Windows we need to specify certain flags that will be passed to
 	// CreateWindowEx().
-	windowInfo.SetAsPopup(NULL, "CefCore");
+	windowInfo.SetAsPopup(NULL, "CefAdapter.Browser");
 #endif
 
 	// Create the first browser window.
