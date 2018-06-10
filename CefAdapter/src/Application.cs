@@ -63,6 +63,8 @@ namespace CefAdapter
 
         CefAdapterValue ExecuteJsFunctionCallback(int browserId, string functionName, int argumentsCount, CefAdapterValue[] arguments)
         {
+            Console.WriteLine(functionName);
+            
             if (_browserWindows.TryGetValue(browserId, out var browserWindow))
             {
                 browserWindow.ExecuteFunction(functionName, arguments);

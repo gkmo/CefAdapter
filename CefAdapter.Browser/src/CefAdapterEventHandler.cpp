@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <sstream>
 #include <string>
 #include <iostream>
@@ -25,6 +24,7 @@ CefAdapterEventHandler::CefAdapterEventHandler(BrowserCreatedCallback browserCre
 	_browserCreatedCallback = browserCreatedCallback;
 	_contextCreatedCallback = contextCreatedCallback;
 	_executeJsFunctionCallback = executeJsFunctionCallback;
+	_messageHandler = new CefAdapterMessageHandler();
 	_isClosing = false;
 	g_instance = this;
 }
@@ -32,6 +32,8 @@ CefAdapterEventHandler::CefAdapterEventHandler(BrowserCreatedCallback browserCre
 
 CefAdapterEventHandler::~CefAdapterEventHandler()
 {
+	delete _messageHandler;
+	_messageHandler = NULL;
 	g_instance = NULL;
 }
 
@@ -104,6 +106,14 @@ void CefAdapterEventHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser)
 	// Add to the list of existing browsers.
 	_browserList.push_back(browser);
 
+	if (!_messageRouter) 
+	{
+		// Create the browser-side router for query handling.
+		CefMessageRouterConfig config;
+		_messageRouter = CefMessageRouterBrowserSide::Create(config);
+		_messageRouter->AddHandler(_messageHandler, false);
+  	}
+
 	_browserCreatedCallback(browser->GetIdentifier());
 }
 
@@ -142,11 +152,25 @@ void CefAdapterEventHandler::OnBeforeClose(CefRefPtr<CefBrowser> browser)
 	}
 
 	if (_browserList.empty())
-	{
+	{		
+		_messageRouter->RemoveHandler(_messageHandler);
+		_messageRouter = NULL;
+
 		// All browser windows have closed. Quit the application message loop.
 		CefQuitMessageLoop();
 	}
 }
+
+// bool CefAdapterEventHandler::OnBeforeBrowse(CefRefPtr<CefBrowser> browser,
+//                                    CefRefPtr<CefFrame> frame,
+//                                    CefRefPtr<CefRequest> request,
+//                                    bool user_gesture,
+//                                    bool is_redirect) {
+//   CEF_REQUIRE_UI_THREAD();
+
+//   _messageRouter->OnBeforeBrowse(browser, frame);
+//   return false;
+// }
 
 void CefAdapterEventHandler::OnLoadError(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame,
 	ErrorCode errorCode, const CefString& errorText, const CefString& failedUrl)
@@ -214,6 +238,11 @@ bool CefAdapterEventHandler::OnProcessMessageReceived(CefRefPtr<CefBrowser> brow
 
 	std::cout << "CefAdapterEventHandler::OnProcessMessageReceived: " << messageName << std::endl;
 
+	if (_messageRouter->OnProcessMessageReceived(browser, source_process, message)) 
+	{
+    	return true;
+  	}	
+
 	if (messageName == "OnContextCreated")
 	{
 		CefRefPtr<CefListValue> args = message->GetArgumentList();
@@ -231,16 +260,14 @@ bool CefAdapterEventHandler::OnProcessMessageReceived(CefRefPtr<CefBrowser> brow
 	{
 		CefRefPtr<CefListValue> args = message->GetArgumentList();
 
-		auto numberOfArguments = args->GetInt(0);
-		auto functionName = args->GetBinary(1);		
-		auto opa = args->GetBool(2);
+		auto functionName = args->GetString(0);		
+		auto numberOfArguments = args->GetInt(1);			
 
-		auto fname = functionName->GetSize();
+		auto fname = functionName.ToString();
 
+		std::cout << "ExecuteJsFunction -> Name = " << fname << "; Arguments = " << numberOfArguments << std::endl;
 
-		std::cout << "ExecuteJsFunction -> Name = " << fname << "; Arguments = " << numberOfArguments << " Opa = " << opa <<  std::endl;
-
-		//auto result = _executeJsFunctionCallback(browser->GetIdentifier(), fname , 0, NULL);
+		auto result = _executeJsFunctionCallback(browser->GetIdentifier(), fname.c_str() , 0, NULL);
 	}
 
 	return false;

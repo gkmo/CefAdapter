@@ -36,16 +36,12 @@ void CefAdapterRendererApplication::OnContextCreated(CefRefPtr<CefBrowser> brows
 
 	browser->SendProcessMessage(PID_BROWSER, msg);	
 
-	//// Retrieve the context's window object.
-	//CefRefPtr<CefV8Value> object = context->GetGlobal();
-
-	//// Create a new V8 string value. See the "Basic JS Types" section below.
-	//CefRefPtr<CefV8Value> str = CefV8Value::CreateString("My Value!");
-
-	//// Add the string to the window object as "window.myval". See the "JS Objects" section below.
-	//object->SetValue("myval", str, V8_PROPERTY_ATTRIBUTE_NONE);
-
 	_messageRouter->OnContextCreated(browser, frame, context);
+}
+
+void CefAdapterRendererApplication::OnContextReleased(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context)
+{
+    _messageRouter->OnContextReleased(browser, frame, context);
 }
 
 void CefAdapterRendererApplication::OnWebKitInitialized()
@@ -53,38 +49,12 @@ void CefAdapterRendererApplication::OnWebKitInitialized()
 	_logger->Debug("CefAdapterRendererApplication", "OnWebKitInitialized");
 
 	CefMessageRouterConfig config;
+
     _messageRouter = CefMessageRouterRendererSide::Create(config);
-
-	// Define the extension contents.
-	/*std::string extensionCode =
-		"var test;"
-		"if (!test)"
-		"  test = {};"
-		"(function() {"
-		"  test.myfunc = function() {"
-		"    native function myfunc();"
-		"    return myfunc();"
-		"  };"
-		"})();";*/
-
-	//// Create an instance of my CefV8Handler object.
-	//CefRefPtr<CefV8Handler> handler = new CefAdapterExtensionHandler();
-
-	//// Register the extension.
-	//CefRegisterExtension("v8/test", extensionCode, handler);	
-
-	//CefRefPtr<CefProcessMessage> msg = CefProcessMessage::Create("OnWebKitInitialized");
-
-	//CefRefPtr<CefListValue> args = msg->GetArgumentList();
-
-	//args->SetInt(0, frame->GetIdentifier());
-
-	//browser->SendProcessMessage(PID_BROWSER, msg);
 }
 
 bool CefAdapterRendererApplication::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId sourceProcess, CefRefPtr<CefProcessMessage> message)
-{
-	// Check the message name.
+{	
 	const std::string& messageName = message->GetName();
 
 	std::ostringstream stringStream;
@@ -121,5 +91,5 @@ bool CefAdapterRendererApplication::OnProcessMessageReceived(CefRefPtr<CefBrowse
 		return true;
 	}
 
-	return false;
+	return _messageRouter->OnProcessMessageReceived(browser, sourceProcess, message);;
 }

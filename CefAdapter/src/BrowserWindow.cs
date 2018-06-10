@@ -41,6 +41,8 @@ namespace CefAdapter
 
             NativeMethods.CreateJsGlobalFunction(_id, functionName, 
                 ConvertToCefAdapterValue(function.Method.ReturnParameter), arguments.Length, arguments);
+
+            _functions[functionName] = function;
         }
 
 

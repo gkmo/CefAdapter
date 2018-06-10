@@ -3,12 +3,12 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <StartupObject>CefCoreNet.Program</StartupObject>
+    <StartupObject>CefAdapter.Samples.Simple.Program</StartupObject>
     <ApplicationIcon />
 	  <RuntimeIdentifiers>win10-x64;ubuntu.16.10-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
-  <ItemGroup>
+  <!-- <ItemGroup>
     <Compile Remove="GPUCache\**" />
     <EmbeddedResource Remove="GPUCache\**" />
     <None Remove="GPUCache\**" />
@@ -16,15 +16,15 @@
 
   <ItemGroup>
     <None Remove="debug.log" />
-  </ItemGroup>
+  </ItemGroup> -->
 
   <ItemGroup>
-    <ProjectReference Include="..\CefAdapter.NetStandard\CefAdapter.NetStandard.csproj" />
+    <ProjectReference Include="..\..\CefAdapter\CefAdapter.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="XCOPY ..\build\CefAdapter.Browser\$(ConfigurationName) $(ProjectDir)$(OutDir) /Y /E" />
-    <Exec Command="XCOPY ..\build\CefAdapter.Renderer\$(ConfigurationName) $(ProjectDir)$(OutDir) /Y /E" />
+    <Exec Command="XCOPY ..\..\build\CefAdapter.Browser\$(ConfigurationName) $(ProjectDir)$(OutDir) /Y /E" />
+    <Exec Command="XCOPY ..\..\build\CefAdapter.Renderer\$(ConfigurationName) $(ProjectDir)$(OutDir) /Y /E" />
   </Target>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿using CefAdapter;
 using System;
 
-namespace CefCoreNet
+namespace CefAdapter.Samples.Simple
 {
     class Program
     {
@@ -31,6 +31,8 @@ namespace CefCoreNet
             //e.BrowserWindow.ExecuteJavaScript("alert('Executing JS from C#')");
 
             e.BrowserWindow.RegisterFunctionHandler("mycsharpfunc", new Action(CSharpFunction));
+
+            e.BrowserWindow.ShowDeveloperTools();
 
             _functionCreated = true;
         }

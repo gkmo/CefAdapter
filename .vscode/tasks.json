@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/CefCoreNet/CefCoreNet.csproj"
+                "${workspaceFolder}/Samples/Simple/Simple.csproj"
             ],
             "problemMatcher": "$msCompile"
         },

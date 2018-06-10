@@ -1,8 +1,10 @@
 #pragma once
 
-#include "include/cef_client.h"
 #include <list>
+#include "include/cef_client.h"
+#include "include/wrapper/cef_message_router.h"
 #include "CefAdapterBrowserApplication.h"
+#include "CefAdapterMessageHandler.h"
 
 class CefAdapterEventHandler : public CefClient, public CefDisplayHandler, public CefLifeSpanHandler, public CefLoadHandler, public CefKeyboardHandler
 {
@@ -70,6 +72,8 @@ private:
 	BrowserCreatedCallback _browserCreatedCallback;
 	ContextCreatedCallback _contextCreatedCallback;
 	ExecuteJsFunctionCallback _executeJsFunctionCallback;
+	CefAdapterMessageHandler* _messageHandler;
+  	CefRefPtr<CefMessageRouterBrowserSide> _messageRouter;
 
 	// Include the default reference counting implementation.
 	IMPLEMENT_REFCOUNTING(CefAdapterEventHandler);

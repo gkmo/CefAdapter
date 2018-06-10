@@ -11,14 +11,9 @@ bool CefAdapterExtensionHandler::Execute(const CefString& name, CefRefPtr<CefV8V
 
 	CefRefPtr<CefListValue> messageArguments = message->GetArgumentList();
 
-
-	CefRefPtr<CefBinaryValue> opa = CefBinaryValue::Create(nameArg, strlen(nameArg));
-
-	messageArguments->SetInt(0, 10);
-	//messageArguments->SetString(1, "mycsharpfunc");
-	messageArguments->SetBinary(1, opa);
-
-	/*int index = 2;
+	messageArguments->SetString(0, name);
+	
+	int index = 2;
 
 	for (auto argument : arguments)
 	{
@@ -42,10 +37,10 @@ bool CefAdapterExtensionHandler::Execute(const CefString& name, CefRefPtr<CefV8V
 		{
 			messageArguments->SetNull(index++);
 		}
-	}*/
+	}
 
-	messageArguments->SetBool(2, true);
-
+	messageArguments->SetInt(1, index - 2);
+	
 	_browser->SendProcessMessage(PID_BROWSER, message);
 
 	return true;
