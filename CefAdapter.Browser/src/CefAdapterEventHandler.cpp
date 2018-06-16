@@ -52,8 +52,10 @@ void CefAdapterEventHandler::OnTitleChange(CefRefPtr<CefBrowser> browser, const 
 
 void CefAdapterEventHandler::PlatformTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title)
 {
+#if defined(OS_WIN)
 	CefWindowHandle hwnd = browser->GetHost()->GetWindowHandle();
 	SetWindowText(hwnd, std::wstring(title).c_str());
+#endif
 }
 
 bool CefAdapterEventHandler::OnPreKeyEvent(CefRefPtr<CefBrowser> browser, const CefKeyEvent& event, CefEventHandle os_event, bool* is_keyboard_shortcut) 
@@ -63,38 +65,38 @@ bool CefAdapterEventHandler::OnPreKeyEvent(CefRefPtr<CefBrowser> browser, const 
 		return false;
 	}
 
-	std::cout << "OnPreKeyEvent: " << os_event->message << " " << event.windows_key_code << std::endl;
+	//std::cout << "OnPreKeyEvent: " << os_event->message << " " << event.windows_key_code << std::endl;
 
-	if (os_event && os_event->message == WM_KEYDOWN) 
-	{
-		switch (event.windows_key_code)
-		{
-			case VK_F12: 
-			{
-				// Specify CEF browser settings here.
-				CefBrowserSettings browserSettings;
+	// if (os_event && os_event->message == WM_KEYDOWN) 
+	// {
+	// 	switch (event.windows_key_code)
+	// 	{
+	// 		case VK_F12: 
+	// 		{
+	// 			// Specify CEF browser settings here.
+	// 			CefBrowserSettings browserSettings;
 
-				// Information used when creating the native window.
-				CefWindowInfo windowInfo;
-				windowInfo.width = 400;
-				windowInfo.height = 400;
+	// 			// Information used when creating the native window.
+	// 			CefWindowInfo windowInfo;
+	// 			windowInfo.width = 400;
+	// 			windowInfo.height = 400;
 
-	#if defined(OS_WIN)
-				// On Windows we need to specify certain flags that will be passed to
-				// CreateWindowEx().
-				windowInfo.SetAsPopup(NULL, "CefAdapter.DeveloperTools");
-	#endif
-				CefRefPtr<CefClient> client(CefAdapterEventHandler::GetInstance());
+	// #if defined(OS_WIN)
+	// 			// On Windows we need to specify certain flags that will be passed to
+	// 			// CreateWindowEx().
+	// 			windowInfo.SetAsPopup(NULL, "CefAdapter.DeveloperTools");
+	// #endif
+	// 			CefRefPtr<CefClient> client(CefAdapterEventHandler::GetInstance());
 
-				CefPoint point;
+	// 			CefPoint point;
 
-				browser->GetHost()->ShowDevTools(windowInfo, client.get(), browserSettings, point);
+	// 			browser->GetHost()->ShowDevTools(windowInfo, client.get(), browserSettings, point);
 
-				return true;
-			};
-			break;
-		}      
-	}
+	// 			return true;
+	// 		};
+	// 		break;
+	// 	}      
+	// }
 
 	return false;
 }

@@ -9,7 +9,11 @@
                 "build",
                 "${workspaceFolder}/Samples/Simple/Simple.csproj"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         {
             "label": "publish",
