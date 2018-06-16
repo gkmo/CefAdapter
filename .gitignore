@@ -1,6 +1,6 @@
 .vs/CefCoreNet/
-CefAdapter.Browser/build/
-CefAdapter.Renderer/build/
+CefAdapter.Browser/Release/
+CefAdapter.Renderer/Release/
 CefAdapter/bin/
 CefAdapter/obj/
 Samples/Simple/bin/
@@ -12,7 +12,11 @@ packages/
 Dependencies/
 Debug/
 GPUCache/
+CMakeFiles/
+libcef_dll_wrapper/
 build/
+CMakeCache.txt
+Makefile
 # Prerequisites
 *.d
 
@@ -48,3 +52,5 @@ build/
 
 # Logs
 *.log0
+
+*.cmake

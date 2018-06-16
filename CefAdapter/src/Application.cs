@@ -3,23 +3,20 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using CefAdapter.Native;
 
 namespace CefAdapter
 {
     public class Application
     {
         private readonly Dictionary<int, BrowserWindow> _browserWindows = new Dictionary<int, BrowserWindow>();
+        private readonly ICefAdapterNativeInterface _nativeInterface;
 
         public Application(string initialPage)
         {
-            var hInstance = Process.GetCurrentProcess().Handle;
-                        
-            var rootDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            _nativeInterface = Native.CefNativeInterfaceFactory.GetCefNativeInterface();
 
-            string subprocessPath = Path.Combine(rootDirectory, @"CefAdapter.Renderer.exe");
-            string browserLogs = Path.Combine(rootDirectory, "CefAdapter_Browser.log");
-
-            var initialized = NativeMethods.CreateApplication(hInstance, initialPage, subprocessPath, browserLogs, 
+            var initialized = _nativeInterface.CreateApplication(initialPage, 
                 OnBrowserCreated, OnContextCreated, ExecuteJsFunctionCallback);
 
             if (!initialized)
@@ -34,14 +31,14 @@ namespace CefAdapter
 
         public void Run()
         {
-            NativeMethods.RunMessageLoop();
+            _nativeInterface.RunMessageLoop();
 
-            NativeMethods.Shutdown();
+            _nativeInterface.Shutdown();
         }
 
         private void OnBrowserCreated(int browserId)
         {
-            var browserWindow = new BrowserWindow(browserId);
+            var browserWindow = new BrowserWindow(browserId, _nativeInterface);
 
             _browserWindows[browserId] = browserWindow;
 

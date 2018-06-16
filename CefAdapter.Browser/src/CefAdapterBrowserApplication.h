@@ -1,29 +1,7 @@
 #pragma once
 
 #include "include/cef_app.h"
-
-enum CefAdapterValueType
-{
-	Boolean = 0,
-	Byte,
-	Int16,
-	Int32,
-	Int64,
-	Double,
-	String
-};
-
-struct CefAdapterValue
-{
-	CefAdapterValueType ValueType;
-	void* Value;
-};
-
-typedef VOID (CALLBACK* ProgressCallback)(INT32, LPCTSTR);
-typedef VOID (CALLBACK* ErrorCallback)(INT32, LPCTSTR);
-typedef VOID (CALLBACK* BrowserCreatedCallback)(INT32);
-typedef VOID (CALLBACK* ContextCreatedCallback)(INT32, INT32);
-typedef CefAdapterValue (CALLBACK* ExecuteJsFunctionCallback)(INT32, const char*, INT32, CefAdapterValue*);
+#include "CefAdapterDefinitions.h"
 
 class CefAdapterBrowserApplication : public CefApp, public CefBrowserProcessHandler
 {

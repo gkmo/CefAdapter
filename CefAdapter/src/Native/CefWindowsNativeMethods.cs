@@ -1,19 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace CefAdapter
-{
-    internal delegate void InitializationProgressCallback(int percentage, string message);
-
-    internal delegate void InitializationErrorCallback(int code, string message);
-
-    internal delegate void OnBrowserCreatedCallback(int browserId);
-
-    internal delegate void OnContextCreatedCallback(int browserId, int frameId);
-
-    internal delegate CefAdapterValue ExecuteJsFunctionCallback(int browserId, string functionName, int argumentsCount, CefAdapterValue[] arguments);
-
-    internal static class NativeMethods
+namespace CefAdapter.Native
+{    
+    internal static class CefWindowsNativeMethods
     {
         [DllImport("CefAdapter.Browser.dll")]
         public static extern bool CreateApplication(IntPtr hInstance, string url, string subprocessPath, string logPath,

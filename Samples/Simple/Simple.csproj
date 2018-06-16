@@ -8,23 +8,13 @@
 	  <RuntimeIdentifiers>win10-x64;ubuntu.16.10-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
-  <!-- <ItemGroup>
-    <Compile Remove="GPUCache\**" />
-    <EmbeddedResource Remove="GPUCache\**" />
-    <None Remove="GPUCache\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="debug.log" />
-  </ItemGroup> -->
-
   <ItemGroup>
     <ProjectReference Include="..\..\CefAdapter\CefAdapter.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="XCOPY ..\..\build\CefAdapter.Browser\$(ConfigurationName) $(ProjectDir)$(OutDir) /Y /E" />
-    <Exec Command="XCOPY ..\..\build\CefAdapter.Renderer\$(ConfigurationName) $(ProjectDir)$(OutDir) /Y /E" />
+    <Exec Command="cp ../../build/CefAdapter.Browser/Debug/CefAdapter.Browser.so $(ProjectDir)$(OutDir)" />
+    <Exec Command="cp ../../build/CefAdapter.Renderer/Debug/CefAdapter.Renderer $(ProjectDir)$(OutDir)" />
   </Target>
 
 </Project>
