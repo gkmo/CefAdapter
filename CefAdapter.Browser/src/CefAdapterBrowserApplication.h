@@ -2,28 +2,31 @@
 
 #include "include/cef_app.h"
 
-enum CefAdapterValueType
+enum JavaScriptType
 {
-	Boolean = 0,
-	Byte,
-	Int16,
-	Int32,
-	Int64,
-	Double,
-	String
+	Undefined = 0,
+	Number,
+	String,
+	Boolean,
+	Void 
 };
 
-struct CefAdapterValue
+struct JavaScriptValue
 {
-	CefAdapterValueType ValueType;
-	void* Value;
+	JavaScriptType ValueType;
+	bool BooleanValue;
+	double NumberValue;
+    const char* StringValue;
 };
 
 typedef VOID (CALLBACK* ProgressCallback)(INT32, LPCTSTR);
 typedef VOID (CALLBACK* ErrorCallback)(INT32, LPCTSTR);
 typedef VOID (CALLBACK* BrowserCreatedCallback)(INT32);
 typedef VOID (CALLBACK* ContextCreatedCallback)(INT32, INT32);
-typedef CefAdapterValue (CALLBACK* ExecuteJsFunctionCallback)(INT32, const char*, INT32, CefAdapterValue*);
+typedef VOID (CALLBACK* ExecuteJsFunctionCallback)(INT32, const char*, INT32, JavaScriptValue*);
+typedef VOID (CALLBACK* QuerySuccessCallback)(const char*);
+typedef VOID (CALLBACK* QueryFailureCallback)(INT32, const char*);
+typedef bool (CALLBACK* QueryCallback)(INT32, INT32, INT64, const char*, QuerySuccessCallback, QueryFailureCallback);
 
 class CefAdapterBrowserApplication : public CefApp, public CefBrowserProcessHandler
 {

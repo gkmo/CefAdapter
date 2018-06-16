@@ -11,7 +11,7 @@ namespace CefAdapter
 
     internal delegate void OnContextCreatedCallback(int browserId, int frameId);
 
-    internal delegate CefAdapterValue ExecuteJsFunctionCallback(int browserId, string functionName, int argumentsCount, CefAdapterValue[] arguments);
+    internal delegate void ExecuteJsFunctionCallback(int browserId, string functionName, int argumentsCount, JavaScriptValue[] values);
 
     internal static class NativeMethods
     {
@@ -32,6 +32,6 @@ namespace CefAdapter
         public static extern bool ShowDeveloperTools(int browserId);
 
         [DllImport("CefAdapter.Browser.dll")]
-        public static extern void CreateJsGlobalFunction(int browserId, string name, CefAdapterValueType returnType, int argumentsCount, CefAdapterValueType[] argumentTypes);
+        public static extern void CreateJsGlobalFunction(int browserId, string name);
     }
 }

@@ -62,6 +62,8 @@ private:
 	// Platform-specific implementation.
 	void PlatformTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title);
 
+	void ConvertToJavaScriptValues(int numberOfArguments, CefRefPtr<CefListValue> args, JavaScriptValue* convertedValues);
+
 	// List of existing browser windows. Only accessed on the CEF UI thread.
 	typedef std::list<CefRefPtr<CefBrowser>> BrowserList;
 

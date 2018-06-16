@@ -18,7 +18,12 @@ namespace CefAdapter
 
             string subprocessPath = Path.Combine(rootDirectory, @"CefAdapter.Renderer.exe");
             string browserLogs = Path.Combine(rootDirectory, "CefAdapter_Browser.log");
-
+            
+            if (!initialPage.StartsWith("http://") && !initialPage.StartsWith("https://"))
+            {
+                initialPage = string.Format("file:///{0}", Path.GetFullPath(Path.Combine(rootDirectory, initialPage)));
+            }            
+            
             var initialized = NativeMethods.CreateApplication(hInstance, initialPage, subprocessPath, browserLogs, 
                 OnBrowserCreated, OnContextCreated, ExecuteJsFunctionCallback);
 
@@ -61,19 +66,19 @@ namespace CefAdapter
             }
         }
 
-        CefAdapterValue ExecuteJsFunctionCallback(int browserId, string functionName, int argumentsCount, CefAdapterValue[] arguments)
+        private void ExecuteJsFunctionCallback(int browserId, string functionName, int argumentsCount, JavaScriptValue[] values)
         {
             Console.WriteLine(functionName);
             
             if (_browserWindows.TryGetValue(browserId, out var browserWindow))
             {
-                browserWindow.ExecuteFunction(functionName, arguments);
+                browserWindow.ExecuteFunction(functionName, values);
             }
 
-            return new CefAdapterValue()
-            {
-                ValueType = CefAdapterValueType.Void
-            };
+            // return new JavaScriptValue()
+            // {
+            //     ValueType = JavaScriptType.Void
+            // };
         }
     }
 }

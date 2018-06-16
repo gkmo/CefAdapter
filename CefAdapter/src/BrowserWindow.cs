@@ -30,61 +30,34 @@ namespace CefAdapter
 
         public void RegisterFunctionHandler(string functionName, Delegate function)
         {
-            var parameters = function.Method.GetParameters();
-
-            var arguments = new CefAdapterValueType[parameters.Length];
-
-            for (int i = 0; i < parameters.Length; i++)
-            {
-                arguments[i] = ConvertToCefAdapterValue(parameters[i]);
-            }
-
-            NativeMethods.CreateJsGlobalFunction(_id, functionName, 
-                ConvertToCefAdapterValue(function.Method.ReturnParameter), arguments.Length, arguments);
+            NativeMethods.CreateJsGlobalFunction(_id, functionName);
 
             _functions[functionName] = function;
         }
-
 
         internal void OnContextCreated(int frameId)
         {
             ContextCreated?.Invoke(this, new BrowserContextCreatedEventArgs(this, frameId));
         }
 
-        private static CefAdapterValueType ConvertToCefAdapterValue(System.Reflection.ParameterInfo parameter)
-        {
-            var cSharpType = parameter.ParameterType;
-
-            if (cSharpType == typeof(byte))
+        internal void ExecuteFunction(string functionName, JavaScriptValue[] arguments)
+        {            
+            if (!_functions.TryGetValue(functionName, out var function))
             {
-                return CefAdapterValueType.Byte;
-            }
-            else if (cSharpType == typeof(bool))
-            {
-                return CefAdapterValueType.Boolean;
-            }
-            else if (cSharpType == typeof(int))
-            {
-                return CefAdapterValueType.Int32;
-            }
-            else if (cSharpType == typeof(string))
-            {
-                return CefAdapterValueType.String;
-            }
-            else if (cSharpType == typeof(void))
-            {
-                return CefAdapterValueType.Void;
+                throw new Exception(string.Format($"Function '{functionName}' was not found"));
             }
 
-            throw new Exception(string.Format($"Type '{cSharpType}' is not supported"));
-        }
-
-        internal void ExecuteFunction(string functionName, CefAdapterValue[] arguments)
-        {
-            if (_functions.TryGetValue(functionName, out var function))
+            if (arguments != null && arguments.Length > 0)
             {
-                function.DynamicInvoke();
+                if (arguments[0].ValueType == JavaScriptType.String)
+                {
+                    var myString = Marshal.PtrToStringAnsi(arguments[0].StringValue);
+
+                    Console.WriteLine(myString);
+                }
             }
-        }
+
+            function.DynamicInvoke();
+        }        
     }
 }

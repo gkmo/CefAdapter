@@ -15,6 +15,6 @@ extern "C"
 
 	__declspec(dllexport) bool ShowDeveloperTools(int browserId);
 
-	__declspec(dllexport) void CreateJsGlobalFunction(int browserId, const char* name, CefAdapterValueType returnType, int argumentsCount, CefAdapterValueType* arguments);
+	__declspec(dllexport) void CreateJsGlobalFunction(int browserId, const char* name);
 
 }

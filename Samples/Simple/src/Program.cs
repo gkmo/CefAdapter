@@ -7,7 +7,7 @@ namespace CefAdapter.Samples.Simple
     {
         static void Main(string[] args)
         {
-            var application = new Application("http://www.google.com");
+            var application = new Application(@"..\..\..\presentation\index.html");
 
             application.BrowserCreated += OnBrowserCreate;
 
@@ -32,7 +32,7 @@ namespace CefAdapter.Samples.Simple
 
             e.BrowserWindow.RegisterFunctionHandler("mycsharpfunc", new Action(CSharpFunction));
 
-            e.BrowserWindow.ShowDeveloperTools();
+            //e.BrowserWindow.ShowDeveloperTools();
 
             _functionCreated = true;
         }

@@ -153,8 +153,8 @@ void CefAdapterEventHandler::OnBeforeClose(CefRefPtr<CefBrowser> browser)
 
 	if (_browserList.empty())
 	{		
-		_messageRouter->RemoveHandler(_messageHandler);
-		_messageRouter = NULL;
+		 _messageRouter->RemoveHandler(_messageHandler);
+		 _messageRouter = NULL;
 
 		// All browser windows have closed. Quit the application message loop.
 		CefQuitMessageLoop();
@@ -236,12 +236,7 @@ bool CefAdapterEventHandler::OnProcessMessageReceived(CefRefPtr<CefBrowser> brow
 {	
 	const std::string& messageName = message->GetName();
 
-	std::cout << "CefAdapterEventHandler::OnProcessMessageReceived: " << messageName << std::endl;
-
-	if (_messageRouter->OnProcessMessageReceived(browser, source_process, message)) 
-	{
-    	return true;
-  	}	
+	std::cout << "CefAdapterEventHandler::OnProcessMessageReceived: " << messageName << std::endl;		
 
 	if (messageName == "OnContextCreated")
 	{
@@ -260,15 +255,53 @@ bool CefAdapterEventHandler::OnProcessMessageReceived(CefRefPtr<CefBrowser> brow
 	{
 		CefRefPtr<CefListValue> args = message->GetArgumentList();
 
-		auto functionName = args->GetString(0);		
-		auto numberOfArguments = args->GetInt(1);			
+		auto functionName = args->GetString(0).ToString();		
+		auto numberOfArguments = args->GetInt(1);
 
-		auto fname = functionName.ToString();
+		std::cout << "ExecuteJsFunction -> Name = " << functionName << "; Arguments = " << numberOfArguments << std::endl;
 
-		std::cout << "ExecuteJsFunction -> Name = " << fname << "; Arguments = " << numberOfArguments << std::endl;
+		JavaScriptValue* convertedArguments = new JavaScriptValue[numberOfArguments];
 
-		auto result = _executeJsFunctionCallback(browser->GetIdentifier(), fname.c_str() , 0, NULL);
+		ConvertToJavaScriptValues(numberOfArguments, args, convertedArguments);
+
+		_executeJsFunctionCallback(browser->GetIdentifier(), functionName.c_str() , 0, convertedArguments);
+
+		delete convertedArguments;
+
+		return true;
 	}
 
-	return false;
+	return _messageRouter->OnProcessMessageReceived(browser, source_process, message);
+}
+
+void CefAdapterEventHandler::ConvertToJavaScriptValues(int numberOfArguments, CefRefPtr<CefListValue> args, JavaScriptValue* convertedValues)
+{	
+	const int offset = 2;
+
+	for(size_t i = 0; i < numberOfArguments; i++)
+	{
+		auto argumentType = args->GetType(i + offset);
+
+		if (argumentType == CefValueType::VTYPE_INT)
+		{
+			convertedValues[i].ValueType = JavaScriptType::Number;
+			convertedValues[i].NumberValue = args->GetInt(i + offset);
+		}
+		else if (argumentType == CefValueType::VTYPE_DOUBLE)
+		{
+			convertedValues[i].ValueType = JavaScriptType::Number;
+			convertedValues[i].NumberValue = args->GetDouble(i + offset);
+		}
+		else if (argumentType == CefValueType::VTYPE_BOOL)
+		{
+			convertedValues[i].ValueType = JavaScriptType::Boolean;
+			convertedValues[i].BooleanValue = args->GetBool(i + offset);
+		}
+		else if (argumentType == CefValueType::VTYPE_STRING)
+		{
+			convertedValues[i].ValueType = JavaScriptType::String;
+			convertedValues[i].StringValue = args->GetString(i + offset).ToString().c_str();
+		}
+	}
+	
 }
