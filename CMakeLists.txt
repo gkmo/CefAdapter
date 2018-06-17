@@ -151,9 +151,13 @@ set_property(GLOBAL PROPERTY OS_FOLDERS ON)
 #    files as an example.
 # D. Comment in these lines:
 #
-#set(CEF_ROOT "Dependencies/cef_binary_linux64")
+if (UNIX)
+set(CEF_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/cef_binary_linux64")
+endif (UNIX)
 
+if (WIN32)
 set(CEF_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/cef_binary_windows64")
+endif (WIN32)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CEF_ROOT}/cmake")
 
