@@ -7,7 +7,7 @@
 #
 
 # CefAdapter.Browser sources.
-set(CEFADAPTER_BROWSER_SRCS    
+set(CEFADAPTER_BROWSER_SRCS
     src/CefAdapterBrowserApplication.cpp
     src/CefAdapterEventHandler.cpp
     src/CefAdapterMessageHandler.cpp
@@ -22,26 +22,12 @@ set(CEFADAPTER_BROWSER_SRCS_MACOSX
 #   simple_handler_mac.mm
 )
 
-set(CEFADAPTER_BROWSER_SRCS_WINDOWS
-    CefAdapter.Browser.exe.manifest
+set(CEFADAPTER_BROWSER_SRCS_WINDOWS    
     src/CefAdapterExportWindows.cpp
 )
 
 APPEND_PLATFORM_SOURCES(CEFADAPTER_BROWSER_SRCS)
 source_group(CefAdapter.Browser FILES ${CEFADAPTER_BROWSER_SRCS})
-
-set(CEFADAPTER_BROWSER_RES_SRCS_WINDOWS
-  res/CefAdapter.Browser.ico
-  res/small.ico
-)
-
-APPEND_PLATFORM_SOURCES(CEFADAPTER_BROWSER_RES_SRCS)
-source_group(CefAdapter.Browser\\\\res FILES ${CEFADAPTER_BROWSER_RES_SRCS})
-
-set(CEFADAPTER_BROWSER_SRCS
-  ${CEFADAPTER_BROWSER_SRCS}
-  ${CEFADAPTER_BROWSER_RES_SRCS}
-  )
 
 # CefAdapter.Browser helper sources.
 set(CEFADAPTER_BROWSER_HELPER_SRCS_MACOSX
@@ -101,9 +87,9 @@ if(OS_LINUX)
   # Executable target.
   add_library(${CEF_TARGET} SHARED ${CEFADAPTER_BROWSER_SRCS} ${CEFADAPTER_BROWSER_SRCS_LINUX})
   SET_LIBRARY_TARGET_PROPERTIES(${CEF_TARGET})
-  
+
   add_dependencies(${CEF_TARGET} libcef_dll_wrapper)
-  
+
   target_link_libraries(${CEF_TARGET} libcef_lib libcef_dll_wrapper ${CEF_STANDARD_LIBS})
 
   # Remove the default "lib" prefix from the resulting library.
@@ -177,22 +163,17 @@ endif()
 #
 
 if(OS_WINDOWS)
-  # Executable target.
-  add_executable(${CEF_TARGET} WIN32 ${CEFADAPTER_BROWSER_SRCS})
+  include_directories("../Dependencies/cef_binary_windows64")
+
+  add_library(${CEF_TARGET} SHARED ${CEFADAPTER_BROWSER_SRCS})
   add_dependencies(${CEF_TARGET} libcef_dll_wrapper)
-  SET_EXECUTABLE_TARGET_PROPERTIES(${CEF_TARGET})
   target_link_libraries(${CEF_TARGET} libcef_lib libcef_dll_wrapper ${CEF_STANDARD_LIBS})
+
+  SET_LIBRARY_TARGET_PROPERTIES(${CEF_TARGET})
 
   if(USE_SANDBOX)
     # Logical target used to link the cef_sandbox library.
     ADD_LOGICAL_TARGET("cef_sandbox_lib" "${CEF_SANDBOX_LIB_DEBUG}" "${CEF_SANDBOX_LIB_RELEASE}")
     target_link_libraries(${CEF_TARGET} cef_sandbox_lib ${CEF_SANDBOX_STANDARD_LIBS})
   endif()
-
-  # Add the custom manifest files to the executable.
-  ADD_WINDOWS_MANIFEST("${CMAKE_CURRENT_SOURCE_DIR}" "${CEF_TARGET}" "exe")
-
-  # Copy binary and resource files to the target output directory.
-  COPY_FILES("${CEF_TARGET}" "${CEF_BINARY_FILES}" "${CEF_BINARY_DIR}" "${CEF_TARGET_OUT_DIR}")
-  COPY_FILES("${CEF_TARGET}" "${CEF_RESOURCE_FILES}" "${CEF_RESOURCE_DIR}" "${CEF_TARGET_OUT_DIR}")
 endif()

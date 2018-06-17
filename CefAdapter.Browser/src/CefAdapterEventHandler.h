@@ -9,7 +9,9 @@
 class CefAdapterEventHandler : public CefClient, public CefDisplayHandler, public CefLifeSpanHandler, public CefLoadHandler, public CefKeyboardHandler
 {
 public:
-	CefAdapterEventHandler(BrowserCreatedCallback browserCreatedCallback, ContextCreatedCallback contextCreatedCallback, ExecuteJsFunctionCallback executeJsFunctionCallback);
+	CefAdapterEventHandler(BrowserCreatedCallback browserCreatedCallback, ContextCreatedCallback contextCreatedCallback, 
+		ExecuteJsFunctionCallback executeJsFunctionCallback, QueryCallback queryCallback);
+	
 	~CefAdapterEventHandler();
 
 	// Provide access to the single global instance of this object.

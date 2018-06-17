@@ -10,7 +10,8 @@ namespace CefAdapter.Native
 
         [DllImport("CefAdapter.Browser")]
         public static extern bool CreateApplication(string url, string subprocessPath, string logPath,
-            OnBrowserCreatedCallback onBrowserCreatedCallback, OnContextCreatedCallback contextCreatedCallback, ExecuteJsFunctionCallback executeJsFunctionCallback);            
+            OnBrowserCreatedCallback onBrowserCreatedCallback, OnContextCreatedCallback contextCreatedCallback, 
+            ExecuteJsFunctionCallback executeJsFunctionCallback, QueryCallback queryCallback);
 
         [DllImport("CefAdapter.Browser.so")]
         public static extern void RunMessageLoop();
@@ -25,6 +26,6 @@ namespace CefAdapter.Native
         public static extern bool ShowDeveloperTools(int browserId);
 
         [DllImport("CefAdapter.Browser.so")]
-        public static extern void CreateJsGlobalFunction(int browserId, string name, CefAdapterValueType returnType, int argumentsCount, CefAdapterValueType[] argumentTypes);        
+        public static extern void CreateJsGlobalFunction(int browserId, string name);
     }
 }

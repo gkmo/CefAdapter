@@ -11,11 +11,18 @@ namespace CefAdapter.Native
 
     internal delegate void OnContextCreatedCallback(int browserId, int frameId);
 
-    internal delegate CefAdapterValue ExecuteJsFunctionCallback(int browserId, string functionName, int argumentsCount, CefAdapterValue[] arguments);
+    internal delegate JavaScriptValue ExecuteJsFunctionCallback(int browserId, string functionName, int argumentsCount, JavaScriptValue[] arguments);
+
+    internal delegate void QuerySuccessCallback(string message);
+
+    internal delegate void QueryFailureCallback(int errorCode, string message);
+
+    internal delegate bool QueryCallback(int a, int b, long c, string d, QuerySuccessCallback successCallback, QueryFailureCallback failureCallback);
 
     internal interface ICefAdapterNativeInterface
     {
-        bool CreateApplication(string url, OnBrowserCreatedCallback browserCreatedCallback, OnContextCreatedCallback contextCreatedCallback, ExecuteJsFunctionCallback executeJsFunctionCallback);            
+        bool CreateApplication(string url, OnBrowserCreatedCallback browserCreatedCallback, OnContextCreatedCallback contextCreatedCallback, 
+            ExecuteJsFunctionCallback executeJsFunctionCallback, QueryCallback queryCallback);
 
         void RunMessageLoop();
 
@@ -24,6 +31,6 @@ namespace CefAdapter.Native
 
         bool ShowDeveloperTools(int browserId);
 
-        void CreateJsGlobalFunction(int browserId, string name, CefAdapterValueType returnType, int argumentsCount, CefAdapterValueType[] argumentTypes);
+        void CreateJsGlobalFunction(int browserId, string name);
     }
 }

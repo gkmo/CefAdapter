@@ -7,7 +7,7 @@ class CefAdapterBrowserApplication : public CefApp, public CefBrowserProcessHand
 {
 public:
 	CefAdapterBrowserApplication(std::string url, BrowserCreatedCallback browserCreatedCallback, 
-		ContextCreatedCallback contextCreatedCallback, ExecuteJsFunctionCallback executeJsFunctionCallback);
+		ContextCreatedCallback contextCreatedCallback, ExecuteJsFunctionCallback executeJsFunctionCallback, QueryCallback queryCallback);
 
 	~CefAdapterBrowserApplication();
 
@@ -32,7 +32,7 @@ private:
 	BrowserCreatedCallback _browserCreatedCallback;	
 	ContextCreatedCallback _contextCreatedCallback;
 	ExecuteJsFunctionCallback _executeJsFunctionCallback;
+	QueryCallback _queryCallback;
 	CefRefPtr<CefBrowser> _browser;
-
 };
 

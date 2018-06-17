@@ -1,5 +1,5 @@
 
-namespace CefAdapter
+namespace CefAdapter.Native
 {
     internal enum JavaScriptType
     {

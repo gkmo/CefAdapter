@@ -6,7 +6,8 @@ namespace CefAdapter.Native
 {
     internal class CefWindowsNativeInterface : ICefAdapterNativeInterface
     {
-        public bool CreateApplication(string url, OnBrowserCreatedCallback browserCreatedCallback, OnContextCreatedCallback contextCreatedCallback, ExecuteJsFunctionCallback executeJsFunctionCallback)
+        public bool CreateApplication(string url, OnBrowserCreatedCallback browserCreatedCallback, OnContextCreatedCallback contextCreatedCallback, 
+            ExecuteJsFunctionCallback executeJsFunctionCallback, QueryCallback queryCallback)
         {
             var hInstance = Process.GetCurrentProcess().Handle;
                         
@@ -16,32 +17,32 @@ namespace CefAdapter.Native
             string browserLogs = Path.Combine(rootDirectory, "CefAdapter_Browser.log");
 
             return CefWindowsNativeMethods.CreateApplication(hInstance, url, subprocessPath, browserLogs, 
-                browserCreatedCallback, contextCreatedCallback, executeJsFunctionCallback);
+                browserCreatedCallback, contextCreatedCallback, executeJsFunctionCallback, queryCallback);
         }
 
-        public void CreateJsGlobalFunction(int browserId, string name, CefAdapterValueType returnType, int argumentsCount, CefAdapterValueType[] argumentTypes)
+        public void CreateJsGlobalFunction(int browserId, string name)
         {
-            throw new System.NotImplementedException();
+            CefWindowsNativeMethods.CreateJsGlobalFunction(browserId, name);
         }
 
         public bool ExecuteJavaScript(int browserId, string code)
         {
-            throw new System.NotImplementedException();
+            return CefWindowsNativeMethods.ExecuteJavaScript(browserId, code);
         }
 
         public void RunMessageLoop()
         {
-            throw new System.NotImplementedException();
+            CefWindowsNativeMethods.RunMessageLoop();
         }
 
         public bool ShowDeveloperTools(int browserId)
         {
-            throw new System.NotImplementedException();
+            return CefWindowsNativeMethods.ShowDeveloperTools(browserId);
         }
 
         public void Shutdown()
         {
-            throw new System.NotImplementedException();
+            CefWindowsNativeMethods.Shutdown();
         }
     }
 }

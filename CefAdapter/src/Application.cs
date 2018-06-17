@@ -18,11 +18,12 @@ namespace CefAdapter
             
             if (!initialPage.StartsWith("http://") && !initialPage.StartsWith("https://"))
             {
+                var rootDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
                 initialPage = string.Format("file:///{0}", Path.GetFullPath(Path.Combine(rootDirectory, initialPage)));
             }            
             
             var initialized = _nativeInterface.CreateApplication(initialPage, 
-                OnBrowserCreated, OnContextCreated, ExecuteJsFunctionCallback);
+                OnBrowserCreated, OnContextCreated, ExecuteJsFunctionCallback, QueryCallback);
 
             if (!initialized)
             {
@@ -63,7 +64,7 @@ namespace CefAdapter
             }
         }
 
-        private void ExecuteJsFunctionCallback(int browserId, string functionName, int argumentsCount, JavaScriptValue[] values)
+        private JavaScriptValue ExecuteJsFunctionCallback(int browserId, string functionName, int argumentsCount, JavaScriptValue[] values)
         {
             Console.WriteLine(functionName);
             
@@ -72,10 +73,15 @@ namespace CefAdapter
                 browserWindow.ExecuteFunction(functionName, values);
             }
 
-            // return new JavaScriptValue()
-            // {
-            //     ValueType = JavaScriptType.Void
-            // };
+            return new JavaScriptValue()
+            {
+                ValueType = JavaScriptType.Undefined
+            };
+        }
+
+        private bool QueryCallback(int a, int b, long c, string d, QuerySuccessCallback successCallback, QueryFailureCallback failureCallback)
+        {
+            return false;
         }
     }
 }

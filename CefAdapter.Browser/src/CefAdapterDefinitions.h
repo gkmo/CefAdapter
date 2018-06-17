@@ -7,24 +7,26 @@
 #define EXPORT __attribute__((visibility("default")))
 #endif
 
-enum CefAdapterValueType
+enum JavaScriptType
 {
-	Boolean = 0,
-	Byte,
-	Int16,
-	Int32,
-	Int64,
-	Double,
-	String
+	Boolean = 0,	
+	Number,
+	String,
+	Undefined
 };
 
-struct CefAdapterValue
+struct JavaScriptValue
 {
-	CefAdapterValueType ValueType;
-	void* Value;
+	JavaScriptType ValueType;
+	bool BooleanValue;
+	double NumberValue;
+	const char* StringValue;
 };
 
 typedef void (*ErrorCallback)(int, const char*);
 typedef void (*BrowserCreatedCallback)(int);
 typedef void (*ContextCreatedCallback)(int, int);
-typedef CefAdapterValue (*ExecuteJsFunctionCallback)(int, const char*, int, CefAdapterValue*);
+typedef JavaScriptValue (*ExecuteJsFunctionCallback)(int, const char*, int, JavaScriptValue*);
+typedef void (*QuerySuccessCallback)(const char*);
+typedef void (*QueryFailureCallback)(int, const char*);
+typedef bool (*QueryCallback)(int, int, long, const char*, QuerySuccessCallback, QueryFailureCallback);

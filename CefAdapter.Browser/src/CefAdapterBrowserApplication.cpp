@@ -15,12 +15,13 @@ namespace
 
 CefAdapterBrowserApplication::CefAdapterBrowserApplication(std::string url, 
 	BrowserCreatedCallback browserCreatedCallback, ContextCreatedCallback contextCreatedCallback, 
-	ExecuteJsFunctionCallback executeJsFunctionCallback)
+	ExecuteJsFunctionCallback executeJsFunctionCallback, QueryCallback queryCallback)
 {
 	_url = url;
 	_browserCreatedCallback = browserCreatedCallback;	
 	_contextCreatedCallback = contextCreatedCallback;
 	_executeJsFunctionCallback = executeJsFunctionCallback;
+	_queryCallback = queryCallback;
 	g_ApplicationInstance = this;
 }
 
@@ -41,7 +42,7 @@ void CefAdapterBrowserApplication::OnContextInitialized()
 	std::cout << "CefAdapterBrowserApplication::OnContextInitialized()" << std::endl;
 
 	// SimpleHandler implements browser-level callbacks.
-	CefRefPtr<CefAdapterEventHandler> handler(new CefAdapterEventHandler(_browserCreatedCallback, _contextCreatedCallback, _executeJsFunctionCallback));
+	CefRefPtr<CefAdapterEventHandler> handler(new CefAdapterEventHandler(_browserCreatedCallback, _contextCreatedCallback, _executeJsFunctionCallback, _queryCallback));
 
 	// Specify CEF browser settings here.
 	CefBrowserSettings browserSettings;	

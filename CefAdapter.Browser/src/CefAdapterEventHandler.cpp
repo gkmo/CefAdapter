@@ -17,14 +17,14 @@ namespace
 }
 
 CefAdapterEventHandler::CefAdapterEventHandler(BrowserCreatedCallback browserCreatedCallback, 
-	ContextCreatedCallback contextCreatedCallback, ExecuteJsFunctionCallback executeJsFunctionCallback)
+	ContextCreatedCallback contextCreatedCallback, ExecuteJsFunctionCallback executeJsFunctionCallback, QueryCallback queryCallback)
 {
 	DCHECK(!g_instance);
 
 	_browserCreatedCallback = browserCreatedCallback;
 	_contextCreatedCallback = contextCreatedCallback;
 	_executeJsFunctionCallback = executeJsFunctionCallback;
-	_messageHandler = new CefAdapterMessageHandler();
+	_messageHandler = new CefAdapterMessageHandler(queryCallback);
 	_isClosing = false;
 	g_instance = this;
 }
@@ -53,8 +53,8 @@ void CefAdapterEventHandler::OnTitleChange(CefRefPtr<CefBrowser> browser, const 
 void CefAdapterEventHandler::PlatformTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title)
 {
 #if defined(OS_WIN)
-	CefWindowHandle hwnd = browser->GetHost()->GetWindowHandle();
-	SetWindowText(hwnd, std::wstring(title).c_str());
+	// CefWindowHandle hwnd = browser->GetHost()->GetWindowHandle();
+	// SetWindowText(hwnd, std::wstring(title).c_str());
 #endif
 }
 
@@ -304,6 +304,5 @@ void CefAdapterEventHandler::ConvertToJavaScriptValues(int numberOfArguments, Ce
 			convertedValues[i].ValueType = JavaScriptType::String;
 			convertedValues[i].StringValue = args->GetString(i + offset).ToString().c_str();
 		}
-	}
-	
+	}	
 }

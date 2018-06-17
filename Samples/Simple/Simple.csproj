@@ -12,9 +12,12 @@
     <ProjectReference Include="..\..\CefAdapter\CefAdapter.csproj" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  <!-- <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="cp ../../build/CefAdapter.Browser/Debug/CefAdapter.Browser.so $(ProjectDir)$(OutDir)" />
     <Exec Command="cp ../../build/CefAdapter.Renderer/Debug/CefAdapter.Renderer $(ProjectDir)$(OutDir)" />
+  </Target> -->
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="XCOPY ..\..\build\CefAdapter.Browser\$(ConfigurationName) $(ProjectDir)$(OutDir) /Y /E" />
+    <Exec Command="XCOPY ..\..\build\CefAdapter.Renderer\$(ConfigurationName) $(ProjectDir)$(OutDir) /Y /E" />
   </Target>
-
 </Project>
