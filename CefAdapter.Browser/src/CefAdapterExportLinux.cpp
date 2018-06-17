@@ -16,7 +16,8 @@
 extern "C"
 {	
 	EXPORT bool CreateApplication(const char* url, const char* subprocessPath, const char* logPath,
-		BrowserCreatedCallback browserCreatedCallback, ContextCreatedCallback contextCreatedCallback, ExecuteJsFunctionCallback executeJsFunctionCallback)
+		BrowserCreatedCallback browserCreatedCallback, ContextCreatedCallback contextCreatedCallback, 
+		ExecuteJsFunctionCallback executeJsFunctionCallback, QueryCallback queryCallback)
 	{		
 		void* sandbox_info = NULL;		
 
@@ -27,10 +28,10 @@ extern "C"
 		settings.command_line_args_disabled = true;
 		//settings.log_severity = LOGSEVERITY_VERBOSE;
 
-		//CefString(&settings.resources_dir_path).FromASCII("/home/gkmo/Workspaces/DotNetCoreUI/Samples/Simple/bin/Debug/netcoreapp2.1");		
 		CefString(&settings.log_file).FromASCII(logPath);		
 
-		CefRefPtr<CefAdapterBrowserApplication> app(new CefAdapterBrowserApplication(url, browserCreatedCallback, contextCreatedCallback, executeJsFunctionCallback));
+		CefRefPtr<CefAdapterBrowserApplication> app(new CefAdapterBrowserApplication(url, browserCreatedCallback, 
+			contextCreatedCallback, executeJsFunctionCallback, queryCallback));
 
 		if (subprocessPath) 
 		{
@@ -75,16 +76,9 @@ extern "C"
 		return true;
 	}
 
-	EXPORT void CreateJsGlobalFunction(int browserId, const char* name, CefAdapterValueType returnType, int argumentsCount, CefAdapterValueType* arguments)
+	EXPORT void CreateJsGlobalFunction(int browserId, const char* name)
 	{
-		std::cout << "CreateJsGlobalFunction. Function Name = " << name << "; Arguments Count = " << argumentsCount << ";";
-
-		for (int i = 0; i < argumentsCount; i++)
-		{
-			std::cout << " " << arguments[i];
-		}
-
-		std::cout << std::endl;
+		std::cout << "CreateJsGlobalFunction. Function Name = " << name << std::endl;
 
 		CefRefPtr<CefBrowser> browser = CefAdapterEventHandler::GetInstance()->GetBrowserById(browserId);
 
@@ -94,8 +88,7 @@ extern "C"
 
 			CefRefPtr<CefListValue> messageArguments = message->GetArgumentList();
 
-			messageArguments->SetString(0, name);
-			messageArguments->SetInt(1, argumentsCount);
+			messageArguments->SetString(0, name);			
 
 			browser->SendProcessMessage(PID_RENDERER, message);
 		}

@@ -280,7 +280,7 @@ void CefAdapterEventHandler::ConvertToJavaScriptValues(int numberOfArguments, Ce
 {	
 	const int offset = 2;
 
-	for(size_t i = 0; i < numberOfArguments; i++)
+	for(int i = 0; i < numberOfArguments; i++)
 	{
 		auto argumentType = args->GetType(i + offset);
 

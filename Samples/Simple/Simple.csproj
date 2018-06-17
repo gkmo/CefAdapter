@@ -12,9 +12,9 @@
     <ProjectReference Include="..\..\CefAdapter\CefAdapter.csproj" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="Exists('..\..\build\CefAdapter.Browser\$(ConfigurationName)\CefAdapter.Browser.so')">
-    <Exec Command="cp -a ../../build/CefAdapter.Browser/$(ConfigurationName) $(ProjectDir)$(OutDir)" />
-    <Exec Command="cp -a ../../build/CefAdapter.Renderer/$(ConfigurationName) $(ProjectDir)$(OutDir)" />
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="Exists('../../build/CefAdapter.Browser/$(ConfigurationName)/CefAdapter.Browser.so')">
+    <Exec Command="cp ../../build/CefAdapter.Browser/$(ConfigurationName)/CefAdapter.Browser.so $(ProjectDir)$(OutDir)" />
+    <Exec Command="cp ../../build/CefAdapter.Renderer/$(ConfigurationName)/CefAdapter.Renderer $(ProjectDir)$(OutDir)" />
   </Target>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="Exists('..\..\build\CefAdapter.Browser\$(ConfigurationName)\CefAdapter.Browser.dll')">
     <Exec Command="XCOPY ..\..\build\CefAdapter.Browser\$(ConfigurationName) $(ProjectDir)$(OutDir) /Y /E" />
