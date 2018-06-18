@@ -1,14 +1,12 @@
 
 function openDevTools() {
-    alert('Opening dev tools');
-    
-    window.cefQuery({
+    window.executeQuery({
         request: 'openDevTools',
         onSuccess: function (response) {
-            alert(response);
+            console.log(response);
         },
-        onFailure: function(error){
-            alert(error);
+        onFailure: function(error, message){
+            console.log("Error Code %d - %s", error, message);
         }
     });
 }

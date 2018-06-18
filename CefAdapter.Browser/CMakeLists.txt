@@ -11,6 +11,7 @@ set(CEFADAPTER_BROWSER_SRCS
     src/CefAdapterBrowserApplication.cpp
     src/CefAdapterEventHandler.cpp
     src/CefAdapterMessageHandler.cpp
+    src/CefAdapterExport.cpp
 )
 
 set(CEFADAPTER_BROWSER_SRCS_LINUX

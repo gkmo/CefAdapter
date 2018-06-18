@@ -112,6 +112,9 @@ void CefAdapterEventHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser)
 	{
 		// Create the browser-side router for query handling.
 		CefMessageRouterConfig config;
+		config.js_query_function = "executeQuery";
+		config.js_cancel_function = "cancelQuery";
+		
 		_messageRouter = CefMessageRouterBrowserSide::Create(config);
 		_messageRouter->AddHandler(_messageHandler, false);
   	}

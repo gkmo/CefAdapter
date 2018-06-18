@@ -48,7 +48,9 @@ void CefAdapterRendererApplication::OnWebKitInitialized()
 {
 	_logger->Debug("CefAdapterRendererApplication", "OnWebKitInitialized");
 
-	CefMessageRouterConfig config;
+	CefMessageRouterConfig config;	 
+	config.js_query_function = "executeQuery";
+	config.js_cancel_function = "cancelQuery";
 
     _messageRouter = CefMessageRouterRendererSide::Create(config);
 }

@@ -30,9 +30,7 @@ namespace CefAdapter.Samples.Simple
 
             e.BrowserWindow.ExecuteJavaScript("console.log('Executing JS from C#')");
 
-            e.BrowserWindow.RegisterFunctionHandler("mycsharpfunc", new Action(CSharpFunction));
-
-            //e.BrowserWindow.ShowDeveloperTools();
+            e.BrowserWindow.RegisterFunctionHandler("mycsharpfunc", new Action(CSharpFunction));            
 
             _functionCreated = true;
         }

@@ -27,6 +27,6 @@ typedef void (*ErrorCallback)(int, const char*);
 typedef void (*BrowserCreatedCallback)(int);
 typedef void (*ContextCreatedCallback)(int, int);
 typedef JavaScriptValue (*ExecuteJsFunctionCallback)(int, const char*, int, JavaScriptValue*);
-typedef void (*QuerySuccessCallback)(const char*);
-typedef void (*QueryFailureCallback)(int, const char*);
+typedef void (*QuerySuccessCallback)(long, const char*);
+typedef void (*QueryFailureCallback)(long, int, const char*);
 typedef bool (*QueryCallback)(int, int, long, const char*, QuerySuccessCallback, QueryFailureCallback);

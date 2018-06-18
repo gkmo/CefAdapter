@@ -13,9 +13,9 @@ namespace CefAdapter.Native
 
     internal delegate JavaScriptValue ExecuteJsFunctionCallback(int browserId, string functionName, int argumentsCount, JavaScriptValue[] arguments);
 
-    internal delegate void QuerySuccessCallback(string message);
+    internal delegate void QuerySuccessCallback(long queryId, string message);
 
-    internal delegate void QueryFailureCallback(int errorCode, string message);
+    internal delegate void QueryFailureCallback(long queryId, int errorCode, string message);
 
     internal delegate bool QueryCallback(int a, int b, long c, string d, QuerySuccessCallback successCallback, QueryFailureCallback failureCallback);
 

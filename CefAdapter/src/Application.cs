@@ -79,8 +79,25 @@ namespace CefAdapter
             };
         }
 
-        private bool QueryCallback(int a, int b, long c, string d, QuerySuccessCallback successCallback, QueryFailureCallback failureCallback)
+        private bool QueryCallback(int browserId, int frameId, long queryId, string request, QuerySuccessCallback successCallback, QueryFailureCallback failureCallback)
         {
+            
+            Console.WriteLine($"QueryCallback {queryId} - {request}");
+            
+            if (request == "openDevTools")
+            {
+                if (_nativeInterface.ShowDeveloperTools(browserId))
+                {
+                    successCallback(queryId, "Opened developer tools");
+                }
+                else
+                {
+                     failureCallback(queryId, 1, "Failed to open developer tools");
+                }
+
+                return true;
+            }            
+
             return false;
         }
     }
