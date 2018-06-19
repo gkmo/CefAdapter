@@ -2,9 +2,9 @@
 
 namespace CefAdapter
 {
-    public class BrowserCreatedEventAgrs : EventArgs
+    public class BrowserWindowEventArgs : EventArgs
     {
-        public BrowserCreatedEventAgrs(BrowserWindow browserWindow)
+        public BrowserWindowEventArgs(BrowserWindow browserWindow)
         {
             BrowserWindow = browserWindow;
         }

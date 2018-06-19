@@ -1,7 +1,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using Newtonsoft.Json;
 using CefAdapter.Native;
 
 namespace CefAdapter
@@ -10,20 +10,29 @@ namespace CefAdapter
     {
         private readonly int _id;
         private readonly ICefAdapterNativeInterface _nativeInterface;
-        private readonly Dictionary<string, Delegate> _functions;
+        private readonly Dictionary<string, Action<JavaScriptRequest>> _javaScriptQueryHandlers;
+
+        private bool _isClosing;
 
         internal BrowserWindow(int id, ICefAdapterNativeInterface nativeInterface)
         {
             _id = id;
             _nativeInterface = nativeInterface;
-            _functions = new Dictionary<string, Delegate>();
+            _javaScriptQueryHandlers = new Dictionary<string, Action<JavaScriptRequest>>();
         }
 
         public event EventHandler<BrowserContextCreatedEventArgs> ContextCreated;
 
-        public void ExecuteJavaScript(string code)
+        public event EventHandler<BrowserWindowEventArgs> Closing;
+
+        public void Send(string channel, object argument)
         {
-            _nativeInterface.ExecuteJavaScript(_id, code);
+            if (!_isClosing)
+            {            
+                var jsonArgument = JsonConvert.SerializeObject(argument);
+
+                _nativeInterface.ExecuteJavaScript(_id, $"ipcDotNet.receive('{channel}', '{jsonArgument}');");
+            }
         }
 
         public void ShowDeveloperTools()
@@ -31,11 +40,9 @@ namespace CefAdapter
             _nativeInterface.ShowDeveloperTools(_id);
         }
 
-        public void RegisterFunctionHandler(string functionName, Delegate function)
+        public void On(string channel, Action<JavaScriptRequest> handler)
         {
-            _nativeInterface.CreateJsGlobalFunction(_id, functionName);
-
-            _functions[functionName] = function;
+            _javaScriptQueryHandlers[channel] = handler;
         }
 
         internal void OnContextCreated(int frameId)
@@ -43,24 +50,44 @@ namespace CefAdapter
             ContextCreated?.Invoke(this, new BrowserContextCreatedEventArgs(this, frameId));
         }
 
-        internal void ExecuteFunction(string functionName, JavaScriptValue[] arguments)
-        {            
-            if (!_functions.TryGetValue(functionName, out var function))
+        internal void OnClosing()
+        {
+            _isClosing = true;
+            Closing?.Invoke(this, new BrowserWindowEventArgs(this));
+        }
+
+        internal bool ProcessJavaScriptRequest(int frameId, long queryId, string request, 
+            JavaScriptRequestSuccessCallback successCallback, JavaScriptRequestFailureCallback failureCallback)
+        {
+            var jsRequest = JsonConvert.DeserializeObject<JavaScriptRequest>(request);
+            
+            if (!_javaScriptQueryHandlers.TryGetValue(jsRequest.Channel, out var handler))
             {
-                throw new Exception(string.Format($"Function '{functionName}' was not found"));
+                return false;
             }
+            
+            jsRequest.FrameId = frameId;
+            jsRequest.QueryId = queryId;
+            jsRequest.SuccessCallback = successCallback;
+            jsRequest.FailureCallback = failureCallback;
+            jsRequest.BrowserWindow = this;
+            
+            handler(jsRequest);
 
-            if (arguments != null && arguments.Length > 0)
-            {
-                if (arguments[0].ValueType == JavaScriptType.String)
-                {
-                    var myString = Marshal.PtrToStringAnsi(arguments[0].StringValue);
+            return true;
+            // if (jsRequest.Channel == "openDevTools")
+            // {
+            //     if (_nativeInterface.ShowDeveloperTools(browserId))
+            //     {
+            //         successCallback(queryId, "Opened developer tools");
+            //     }
+            //     else
+            //     {
+            //          failureCallback(queryId, 1, "Failed to open developer tools");
+            //     }
 
-                    Console.WriteLine(myString);
-                }
-            }
-
-            function.DynamicInvoke();
-        }        
+            //     return true;
+            // }            
+        }
     }
 }

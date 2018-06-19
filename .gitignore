@@ -3,6 +3,7 @@ CefAdapter.Browser/Release/
 CefAdapter.Renderer/Release/
 CefAdapter/bin/
 CefAdapter/obj/
+CefAdapter/.vs/
 Samples/Simple/bin/
 Samples/Simple/blob_storage/
 Samples/Simple/debug.log

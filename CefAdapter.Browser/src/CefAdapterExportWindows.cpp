@@ -15,8 +15,8 @@
 extern "C"
 {
 	EXPORT bool CreateApplication(HINSTANCE hInstance, const char* url, const char* subprocessPath, const char* logPath,
-		BrowserCreatedCallback browserCreatedCallback, ContextCreatedCallback contextCreatedCallback, 
-		ExecuteJsFunctionCallback executeJsFunctionCallback, QueryCallback queryCallback)
+		BrowserCreatedCallback browserCreatedCallback, BrowserClosingCallback browserClosingCallback, 
+		ContextCreatedCallback contextCreatedCallback, QueryCallback queryCallback)
 	{
 		CefEnableHighDPISupport();
 
@@ -30,7 +30,7 @@ extern "C"
 		CefString(&settings.log_file).FromASCII(logPath);		
 
 		CefRefPtr<CefAdapterBrowserApplication> app(new CefAdapterBrowserApplication(url, browserCreatedCallback, 
-			contextCreatedCallback, executeJsFunctionCallback, queryCallback));
+			browserClosingCallback, contextCreatedCallback, queryCallback));
 
 		if (subprocessPath) 
 		{

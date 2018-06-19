@@ -5,6 +5,15 @@
         "system_error": "cpp",
         "ostream": "cpp",
         "xiosbase": "cpp",
-        "*.rh": "cpp"
+        "*.rh": "cpp",
+        "functional": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "initializer_list": "cpp",
+        "list": "cpp",
+        "vector": "cpp",
+        "xhash": "cpp",
+        "xtree": "cpp",
+        "xutility": "cpp"
     }
 }

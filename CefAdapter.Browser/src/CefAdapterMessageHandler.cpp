@@ -39,19 +39,19 @@ void OnFailure(long queryId, int errorCode, const char* message)
     callback->Failure(errorCode, message);
 }
 
-bool CefAdapterMessageHandler::OnQuery(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int64 query_id,
+bool CefAdapterMessageHandler::OnQuery(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int64 queryId,
                          const CefString& request, bool persistent, CefRefPtr<Callback> callback)
 {
-    std::cout << "CefAdapterMessageHandler::OnQuery = " << request.ToString() << "; Query Id = " << query_id << std::endl;    
+    std::cout << "CefAdapterMessageHandler::OnQuery = " << request.ToString() << "; Query Id = " << queryId << std::endl;    
     
-    _queries[query_id] = callback;
+    _queries[queryId] = callback;
 
-    if(_queryCallback(browser->GetIdentifier(), frame->GetIdentifier(), query_id, request.ToString().c_str(), &OnSuccess, &OnFailure))
+    if(_queryCallback(browser->GetIdentifier(), frame->GetIdentifier(), queryId, request.ToString().c_str(), &OnSuccess, &OnFailure))
     {
         return true;
     }
 
-    _queries.erase(query_id);    
+    _queries.erase(queryId);    
 
     return false;
 }

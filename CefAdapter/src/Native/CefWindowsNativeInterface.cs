@@ -1,13 +1,14 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System;
 
 namespace CefAdapter.Native
 {
     internal class CefWindowsNativeInterface : ICefAdapterNativeInterface
     {
-        public bool CreateApplication(string url, OnBrowserCreatedCallback browserCreatedCallback, OnContextCreatedCallback contextCreatedCallback, 
-            ExecuteJsFunctionCallback executeJsFunctionCallback, QueryCallback queryCallback)
+        public bool CreateApplication(string url, OnBrowserCreatedCallback browserCreatedCallback, OnBrowserClosingCallback browserClosingCallback, 
+            OnContextCreatedCallback contextCreatedCallback, JavaScriptRequestCallback queryCallback)
         {
             var hInstance = Process.GetCurrentProcess().Handle;
                         
@@ -17,7 +18,7 @@ namespace CefAdapter.Native
             string browserLogs = Path.Combine(rootDirectory, "CefAdapter_Browser.log");
 
             return CefWindowsNativeMethods.CreateApplication(hInstance, url, subprocessPath, browserLogs, 
-                browserCreatedCallback, contextCreatedCallback, executeJsFunctionCallback, queryCallback);
+                browserCreatedCallback, browserClosingCallback, contextCreatedCallback, queryCallback);
         }
 
         public void CreateJsGlobalFunction(int browserId, string name)
@@ -27,7 +28,17 @@ namespace CefAdapter.Native
 
         public bool ExecuteJavaScript(int browserId, string code)
         {
-            return CefWindowsNativeMethods.ExecuteJavaScript(browserId, code);
+            try 
+            {
+                return CefWindowsNativeMethods.ExecuteJavaScript(browserId, code);
+            }
+            catch(AccessViolationException ex)
+            {
+                Console.WriteLine("Error:");
+                Console.WriteLine(ex.GetType().FullName);
+            }
+
+            return false;
         }
 
         public void RunMessageLoop()

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using CefAdapter.Native;
@@ -14,7 +13,7 @@ namespace CefAdapter
 
         public Application(string initialPage)
         {
-            _nativeInterface = Native.CefNativeInterfaceFactory.GetCefNativeInterface();
+            _nativeInterface = CefNativeInterfaceFactory.GetCefNativeInterface();
             
             if (!initialPage.StartsWith("http://") && !initialPage.StartsWith("https://"))
             {
@@ -23,7 +22,7 @@ namespace CefAdapter
             }            
             
             var initialized = _nativeInterface.CreateApplication(initialPage, 
-                OnBrowserCreated, OnContextCreated, ExecuteJsFunctionCallback, QueryCallback);
+                OnBrowserCreated, OnBrowserClosing, OnContextCreated, JavaScriptRequestCallback);
 
             if (!initialized)
             {
@@ -31,7 +30,7 @@ namespace CefAdapter
             }
         }
 
-        public event EventHandler<BrowserCreatedEventAgrs> BrowserCreated;
+        public event EventHandler<BrowserWindowEventArgs> BrowserWindowCreated;        
 
         public BrowserWindow MainBrowserWindow { get; private set; }
 
@@ -53,7 +52,22 @@ namespace CefAdapter
                 MainBrowserWindow = browserWindow;
             }
 
-            BrowserCreated?.Invoke(this, new BrowserCreatedEventAgrs(browserWindow));
+            BrowserWindowCreated?.Invoke(this, new BrowserWindowEventArgs(browserWindow));
+        }   
+
+        private void OnBrowserClosing(int browserId)
+        {
+            if (_browserWindows.TryGetValue(browserId, out var browserWindow))
+            {                
+                browserWindow.OnClosing();
+
+                if (MainBrowserWindow == browserWindow)
+                {
+                    MainBrowserWindow = null;
+                }
+
+                _browserWindows.Remove(browserId);
+            }                    
         }   
 
         private void OnContextCreated(int browserId, int frameId)
@@ -62,41 +76,17 @@ namespace CefAdapter
             {
                 browserWindow.OnContextCreated(frameId);
             }
-        }
+        }        
 
-        private JavaScriptValue ExecuteJsFunctionCallback(int browserId, string functionName, int argumentsCount, JavaScriptValue[] values)
-        {
-            Console.WriteLine(functionName);
+        private bool JavaScriptRequestCallback(int browserId, int frameId, long queryId, string request, 
+            JavaScriptRequestSuccessCallback successCallback, JavaScriptRequestFailureCallback failureCallback)
+        {            
+            Console.WriteLine($"JavaScriptRequestCallback {queryId} - {request}");
             
             if (_browserWindows.TryGetValue(browserId, out var browserWindow))
             {
-                browserWindow.ExecuteFunction(functionName, values);
+                return browserWindow.ProcessJavaScriptRequest(frameId, queryId, request, successCallback, failureCallback);
             }
-
-            return new JavaScriptValue()
-            {
-                ValueType = JavaScriptType.Undefined
-            };
-        }
-
-        private bool QueryCallback(int browserId, int frameId, long queryId, string request, QuerySuccessCallback successCallback, QueryFailureCallback failureCallback)
-        {
-            
-            Console.WriteLine($"QueryCallback {queryId} - {request}");
-            
-            if (request == "openDevTools")
-            {
-                if (_nativeInterface.ShowDeveloperTools(browserId))
-                {
-                    successCallback(queryId, "Opened developer tools");
-                }
-                else
-                {
-                     failureCallback(queryId, 1, "Failed to open developer tools");
-                }
-
-                return true;
-            }            
 
             return false;
         }

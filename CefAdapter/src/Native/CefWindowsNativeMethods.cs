@@ -7,8 +7,8 @@ namespace CefAdapter.Native
     {
         [DllImport("CefAdapter.Browser.dll")]
         public static extern bool CreateApplication(IntPtr hInstance, string url, string subprocessPath, string logPath,
-            OnBrowserCreatedCallback onBrowserCreatedCallback, OnContextCreatedCallback contextCreatedCallback, 
-            ExecuteJsFunctionCallback executeJsFunctionCallback, QueryCallback queryCallback);
+            OnBrowserCreatedCallback onBrowserCreatedCallback, OnBrowserClosingCallback browserClosingCallback, 
+            OnContextCreatedCallback contextCreatedCallback, JavaScriptRequestCallback queryCallback);
 
         [DllImport("CefAdapter.Browser.dll")]
         public static extern void RunMessageLoop();

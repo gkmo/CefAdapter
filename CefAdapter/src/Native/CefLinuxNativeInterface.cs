@@ -7,8 +7,8 @@ namespace CefAdapter.Native
 {
     internal class CefLinuxNativeInterface : ICefAdapterNativeInterface
     {
-        public bool CreateApplication(string url, OnBrowserCreatedCallback browserCreatedCallback, 
-            OnContextCreatedCallback contextCreatedCallback, ExecuteJsFunctionCallback executeJsFunctionCallback, QueryCallback queryCallback)
+        public bool CreateApplication(string url, OnBrowserCreatedCallback browserCreatedCallback, OnBrowserClosingCallback browserClosingCallback, 
+            OnContextCreatedCallback contextCreatedCallback, JavaScriptRequestCallback queryCallback)
         {
             var hInstance = Process.GetCurrentProcess().Handle;
                         
@@ -18,7 +18,7 @@ namespace CefAdapter.Native
             string browserLogs = Path.Combine(rootDirectory, "CefAdapter_Browser.log");
                         
             return CefLinuxNativeMethods.CreateApplication(url, subprocessPath, browserLogs, 
-                browserCreatedCallback, contextCreatedCallback, executeJsFunctionCallback, queryCallback);
+                browserCreatedCallback, browserClosingCallback, contextCreatedCallback, queryCallback);
         }
 
         public void CreateJsGlobalFunction(int browserId, string name)

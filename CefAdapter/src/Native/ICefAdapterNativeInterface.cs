@@ -3,34 +3,29 @@ using System.Runtime.InteropServices;
 
 namespace CefAdapter.Native
 {
-    internal delegate void InitializationProgressCallback(int percentage, string message);
-
-    internal delegate void InitializationErrorCallback(int code, string message);
-
     internal delegate void OnBrowserCreatedCallback(int browserId);
+
+    internal delegate void OnBrowserClosingCallback(int browserId);
 
     internal delegate void OnContextCreatedCallback(int browserId, int frameId);
 
-    internal delegate JavaScriptValue ExecuteJsFunctionCallback(int browserId, string functionName, int argumentsCount, JavaScriptValue[] arguments);
+    internal delegate void JavaScriptRequestSuccessCallback(long queryId, string message);
 
-    internal delegate void QuerySuccessCallback(long queryId, string message);
+    internal delegate void JavaScriptRequestFailureCallback(long queryId, int errorCode, string message);
 
-    internal delegate void QueryFailureCallback(long queryId, int errorCode, string message);
-
-    internal delegate bool QueryCallback(int a, int b, long c, string d, QuerySuccessCallback successCallback, QueryFailureCallback failureCallback);
+    internal delegate bool JavaScriptRequestCallback(int browserId, int frameId, long queryId, string request, JavaScriptRequestSuccessCallback successCallback, JavaScriptRequestFailureCallback failureCallback);
 
     internal interface ICefAdapterNativeInterface
     {
-        bool CreateApplication(string url, OnBrowserCreatedCallback browserCreatedCallback, OnContextCreatedCallback contextCreatedCallback, 
-            ExecuteJsFunctionCallback executeJsFunctionCallback, QueryCallback queryCallback);
+        bool CreateApplication(string url, OnBrowserCreatedCallback browserCreatedCallback, OnBrowserClosingCallback browserClosingCallback, 
+            OnContextCreatedCallback contextCreatedCallback, JavaScriptRequestCallback queryCallback);
 
         void RunMessageLoop();
 
         void Shutdown();
+
         bool ExecuteJavaScript(int browserId, string code);
 
-        bool ShowDeveloperTools(int browserId);
-
-        void CreateJsGlobalFunction(int browserId, string name);
+        bool ShowDeveloperTools(int browserId);        
     }
 }

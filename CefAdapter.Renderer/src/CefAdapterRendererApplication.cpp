@@ -6,7 +6,6 @@
 #include "include/wrapper/cef_helpers.h"
 
 #include "CefAdapterRendererApplication.h"
-#include "CefAdapterExtensionHandler.h"
 
 namespace
 {
@@ -53,6 +52,30 @@ void CefAdapterRendererApplication::OnWebKitInitialized()
 	config.js_cancel_function = "cancelQuery";
 
     _messageRouter = CefMessageRouterRendererSide::Create(config);
+
+	std::string extensionCode =
+	"var ipcDotNet;"
+    "if (!ipcDotNet)"
+    "  ipcDotNet = {};"
+    "(function() {"
+	"  ipcDotNet.callbacks = new Map();"
+    "  ipcDotNet.send = function(channel, argument, onSuccess, onFailure) {"
+	"    let request = { channel: channel, argument: argument };"
+    "    window.executeQuery({"
+    "      request: JSON.stringify(request),"
+    "      onSuccess: onSuccess,"
+    "      onFailure: onFailure"
+    "    });"
+    "  };"
+	"  ipcDotNet.on = function(channel, callback) { this.callbacks.set(channel, callback); };"
+    "  ipcDotNet.receive = function(channel, argument) {"
+    "    let callback = this.callbacks.get(channel);"
+    "    if (callback) { callback(this, argument); }"
+    "  };"
+    "})();";
+
+  	// Register the extension.
+	CefRegisterExtension("v8/test", extensionCode, NULL);
 }
 
 bool CefAdapterRendererApplication::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId sourceProcess, CefRefPtr<CefProcessMessage> message)
@@ -64,34 +87,6 @@ bool CefAdapterRendererApplication::OnProcessMessageReceived(CefRefPtr<CefBrowse
 	stringStream << "OnProcessMessageReceived. Source Process Id = " << sourceProcess << "; Browser Id = " << browser->GetIdentifier() << "; Message Name = " << messageName;	
 
 	_logger->Debug("CefAdapterRendererApplication", stringStream.str().c_str());
-
-	if (messageName == "CreateJsGlobalFunction")
-	{
-		auto arguments = message->GetArgumentList();
-
-		auto functionName = arguments->GetString(0);
-
-		CefRefPtr<CefV8Context> context = browser->GetMainFrame()->GetV8Context();
-
-		if (context->Enter())
-		{
-			// Retrieve the context's window object.
-			CefRefPtr<CefV8Value> global = context->GetGlobal();
-
-			// Create an instance of my CefV8Handler object.
-			CefRefPtr<CefV8Handler> handler = new CefAdapterExtensionHandler(browser, _logger);
-
-			// Create the "myfunc" function.
-			CefRefPtr<CefV8Value> function = CefV8Value::CreateFunction(functionName, handler);
-
-			// Add the function to the "window" object.
-			global->SetValue(functionName, function.get(), V8_PROPERTY_ATTRIBUTE_NONE);
-
-			context->Exit();
-		}
-
-		return true;
-	}
 
 	return _messageRouter->OnProcessMessageReceived(browser, sourceProcess, message);;
 }

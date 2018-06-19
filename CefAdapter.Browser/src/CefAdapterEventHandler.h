@@ -9,8 +9,8 @@
 class CefAdapterEventHandler : public CefClient, public CefDisplayHandler, public CefLifeSpanHandler, public CefLoadHandler, public CefKeyboardHandler
 {
 public:
-	CefAdapterEventHandler(BrowserCreatedCallback browserCreatedCallback, ContextCreatedCallback contextCreatedCallback, 
-		ExecuteJsFunctionCallback executeJsFunctionCallback, QueryCallback queryCallback);
+	CefAdapterEventHandler(BrowserCreatedCallback browserCreatedCallback, BrowserClosingCallback browserClosingCallback, 
+		ContextCreatedCallback contextCreatedCallback, QueryCallback queryCallback);
 	
 	~CefAdapterEventHandler();
 
@@ -64,8 +64,6 @@ private:
 	// Platform-specific implementation.
 	void PlatformTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title);
 
-	void ConvertToJavaScriptValues(int numberOfArguments, CefRefPtr<CefListValue> args, JavaScriptValue* convertedValues);
-
 	// List of existing browser windows. Only accessed on the CEF UI thread.
 	typedef std::list<CefRefPtr<CefBrowser>> BrowserList;
 
@@ -74,8 +72,8 @@ private:
 	bool _isClosing;
 
 	BrowserCreatedCallback _browserCreatedCallback;
+	BrowserClosingCallback _browserClosingCallback;
 	ContextCreatedCallback _contextCreatedCallback;
-	ExecuteJsFunctionCallback _executeJsFunctionCallback;
 	CefAdapterMessageHandler* _messageHandler;
   	CefRefPtr<CefMessageRouterBrowserSide> _messageRouter;
 

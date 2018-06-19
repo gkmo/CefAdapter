@@ -4,15 +4,12 @@ using System.Text;
 
 namespace CefAdapter
 {
-    public class BrowserContextCreatedEventArgs : EventArgs
+    public class BrowserContextCreatedEventArgs : BrowserWindowEventArgs
     {
-        public BrowserContextCreatedEventArgs(BrowserWindow browserWindow, int frameId)
-        {
-            BrowserWindow = browserWindow;
+        public BrowserContextCreatedEventArgs(BrowserWindow browserWindow, int frameId) : base(browserWindow)
+        {            
             FrameId = frameId;
-        }
-
-        public BrowserWindow BrowserWindow { get; }
+        }        
 
         public int FrameId { get; }
     }

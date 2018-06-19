@@ -7,8 +7,7 @@
 #
 
 # CefAdapter.Renderer sources.
-set(CEFADAPTER_RENDERER_SRCS    
-    src/CefAdapterExtensionHandler.cpp
+set(CEFADAPTER_RENDERER_SRCS        
     src/CefAdapterRendererApplication.cpp
     src/Logger.cpp
 )
