@@ -64,6 +64,12 @@ private:
 	// Platform-specific implementation.
 	void PlatformTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title);
 
+	void RaiseBrowserClosingCallback(int browserId);
+
+	void RaiseBrowserCreatedCallback(int browserId);
+
+	void RaiseContextCreatedCallback(int browserId, int frameId);
+
 	// List of existing browser windows. Only accessed on the CEF UI thread.
 	typedef std::list<CefRefPtr<CefBrowser>> BrowserList;
 

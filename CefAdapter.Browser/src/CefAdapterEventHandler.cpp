@@ -140,11 +140,16 @@ bool CefAdapterEventHandler::DoClose(CefRefPtr<CefBrowser> browser)
 	return false;
 }
 
+void CefAdapterEventHandler::RaiseBrowserClosingCallback(int browserId)
+{
+	_browserClosingCallback(browserId);
+}
+
 void CefAdapterEventHandler::OnBeforeClose(CefRefPtr<CefBrowser> browser)
 {
 	CEF_REQUIRE_UI_THREAD();
 
-	_browserClosingCallback(browser->GetIdentifier());
+	CefPostTask(TID_FILE, base::Bind(&CefAdapterEventHandler::RaiseBrowserClosingCallback, this, browser->GetIdentifier()));	
 	
 	// Remove from the list of existing browsers.
 	BrowserList::iterator bit = _browserList.begin();
@@ -239,6 +244,13 @@ CefRefPtr<CefBrowser> CefAdapterEventHandler::GetBrowserById(int id)
 	return NULL;
 }
 
+void CefAdapterEventHandler::RaiseContextCreatedCallback(int browserId, int frameId)
+{
+	std::cout << "RaiseContextCallbackCreated -> Browser ID = " << browserId << "; Frame ID = " << frameId << std::endl;		
+
+	_contextCreatedCallback(browserId, frameId);
+}
+
 bool CefAdapterEventHandler::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId source_process, CefRefPtr<CefProcessMessage> message)
 {	
 	const std::string& messageName = message->GetName();
@@ -252,12 +264,15 @@ bool CefAdapterEventHandler::OnProcessMessageReceived(CefRefPtr<CefBrowser> brow
 		int browserId = browser->GetIdentifier();
 		int frameId = args->GetInt(0);
 
-		std::cout << "OnContextCreated -> Browser ID = " << browserId << "; Frame ID = " << frameId << std::endl;
+		std::cout << "OnContextCreated -> Browser ID = " << browserId << "; Frame ID = " << frameId << std::endl;		
 
-		_contextCreatedCallback(browserId, frameId);
+		CefPostTask(TID_FILE, base::Bind(&CefAdapterEventHandler::RaiseContextCreatedCallback, this, browserId, frameId));
 
 		return true;
 	}	
 
 	return _messageRouter->OnProcessMessageReceived(browser, source_process, message);
 }
+
+
+
