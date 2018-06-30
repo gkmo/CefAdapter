@@ -1,13 +1,14 @@
 #pragma once
 
+#include <functional>
 #include "include/cef_app.h"
 #include "CefAdapterDefinitions.h"
+#include "CefAdapterEventHandler.h"
 
 class CefAdapterBrowserApplication : public CefApp, public CefBrowserProcessHandler
 {
 public:
-	CefAdapterBrowserApplication(std::string url, BrowserCreatedCallback browserCreatedCallback, BrowserClosingCallback browserClosingCallback,
-		ContextCreatedCallback contextCreatedCallback, QueryCallback queryCallback);
+	CefAdapterBrowserApplication();
 
 	~CefAdapterBrowserApplication();
 
@@ -22,17 +23,17 @@ public:
 
 	// CefBrowserProcessHandler methods:
 	virtual void OnContextInitialized() OVERRIDE;	
+	
+	CefRefPtr<CefBrowser> GetMainBrowser();
 
-	CefRefPtr<CefBrowser> GetBrowser();
+	CefRefPtr<CefAdapterEventHandler> GetEventHandler();
+
+	bool ShowDeveloperTools(int browserId);
 
 private:
 	IMPLEMENT_REFCOUNTING(CefAdapterBrowserApplication);
-
-	std::string _url;
-	BrowserCreatedCallback _browserCreatedCallback;
-	BrowserClosingCallback _browserClosingCallback;	
-	ContextCreatedCallback _contextCreatedCallback;	
-	QueryCallback _queryCallback;
-	CefRefPtr<CefBrowser> _browser;
+	
+	CefRefPtr<CefAdapterEventHandler> _eventHandler;
+	CefRefPtr<CefBrowser> _mainBrowser;
 };
 

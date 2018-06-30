@@ -1,6 +1,7 @@
 #include <sstream>
 #include <string>
 #include <iostream>
+#include <functional>
 
 #include "include/base/cef_bind.h"
 #include "include/cef_app.h"
@@ -11,35 +12,16 @@
 
 #include "CefAdapterEventHandler.h"
 
-namespace
+CefAdapterEventHandler::CefAdapterEventHandler()
 {
-	CefAdapterEventHandler* g_instance = NULL;
-}
-
-CefAdapterEventHandler::CefAdapterEventHandler(BrowserCreatedCallback browserCreatedCallback, BrowserClosingCallback browserClosingCallback,
-	ContextCreatedCallback contextCreatedCallback, QueryCallback queryCallback)
-{
-	DCHECK(!g_instance);
-
-	_browserCreatedCallback = browserCreatedCallback;
-	_browserClosingCallback = browserClosingCallback;
-	_contextCreatedCallback = contextCreatedCallback;	
-	_messageHandler = new CefAdapterMessageHandler(queryCallback);
+	_messageHandler = new CefAdapterMessageHandler();
 	_isClosing = false;
-	g_instance = this;
 }
-
 
 CefAdapterEventHandler::~CefAdapterEventHandler()
 {
 	delete _messageHandler;
 	_messageHandler = NULL;
-	g_instance = NULL;
-}
-
-CefAdapterEventHandler * CefAdapterEventHandler::GetInstance()
-{
-	return g_instance;
 }
 
 void CefAdapterEventHandler::OnTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title)
@@ -119,12 +101,20 @@ void CefAdapterEventHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser)
 		_messageRouter->AddHandler(_messageHandler, false);
   	}
 
-	_browserCreatedCallback(browser->GetIdentifier());
+	if (_browserCreatedCallback != NULL)
+	{
+		_browserCreatedCallback(browser->GetIdentifier());
+	}
 }
 
 bool CefAdapterEventHandler::DoClose(CefRefPtr<CefBrowser> browser)
 {
 	CEF_REQUIRE_UI_THREAD();
+
+	if (_browserClosedCallback != NULL)
+	{
+		_browserClosedCallback(browser->GetIdentifier());
+	}
 
 	// Closing the main window requires special handling. See the DoClose()
 	// documentation in the CEF header for a detailed destription of this
@@ -140,16 +130,9 @@ bool CefAdapterEventHandler::DoClose(CefRefPtr<CefBrowser> browser)
 	return false;
 }
 
-void CefAdapterEventHandler::RaiseBrowserClosingCallback(int browserId)
-{
-	_browserClosingCallback(browserId);
-}
-
 void CefAdapterEventHandler::OnBeforeClose(CefRefPtr<CefBrowser> browser)
 {
 	CEF_REQUIRE_UI_THREAD();
-
-	CefPostTask(TID_FILE, base::Bind(&CefAdapterEventHandler::RaiseBrowserClosingCallback, this, browser->GetIdentifier()));	
 	
 	// Remove from the list of existing browsers.
 	BrowserList::iterator bit = _browserList.begin();
@@ -244,13 +227,6 @@ CefRefPtr<CefBrowser> CefAdapterEventHandler::GetBrowserById(int id)
 	return NULL;
 }
 
-void CefAdapterEventHandler::RaiseContextCreatedCallback(int browserId, int frameId)
-{
-	std::cout << "RaiseContextCallbackCreated -> Browser ID = " << browserId << "; Frame ID = " << frameId << std::endl;		
-
-	_contextCreatedCallback(browserId, frameId);
-}
-
 bool CefAdapterEventHandler::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId source_process, CefRefPtr<CefProcessMessage> message)
 {	
 	const std::string& messageName = message->GetName();
@@ -266,7 +242,10 @@ bool CefAdapterEventHandler::OnProcessMessageReceived(CefRefPtr<CefBrowser> brow
 
 		std::cout << "OnContextCreated -> Browser ID = " << browserId << "; Frame ID = " << frameId << std::endl;		
 
-		CefPostTask(TID_FILE, base::Bind(&CefAdapterEventHandler::RaiseContextCreatedCallback, this, browserId, frameId));
+		if (_contextCreatedCallback != NULL)
+		{
+			_contextCreatedCallback(browserId, frameId);
+		}
 
 		return true;
 	}	
@@ -274,5 +253,32 @@ bool CefAdapterEventHandler::OnProcessMessageReceived(CefRefPtr<CefBrowser> brow
 	return _messageRouter->OnProcessMessageReceived(browser, source_process, message);
 }
 
+void CefAdapterEventHandler::SetQueryCallback(std::function<bool(int, long, long, std::string)> callback)
+{
+	_messageHandler->SetQueryCallback(callback);
+}
 
+void CefAdapterEventHandler::SetBrowserCreatedCallback(std::function<void(int)> listener)
+{
+	_browserCreatedCallback = listener;
+}
 
+void CefAdapterEventHandler::SetBrowserClosedCallback(std::function<void(int)> listener)
+{
+	_browserClosedCallback = listener;
+}
+
+void CefAdapterEventHandler::SetContextCreatedCallback(std::function<void(int,int)> listener)
+{
+	_contextCreatedCallback = listener;
+}
+
+void CefAdapterEventHandler::OnQuerySuccess(long queryId, std::string result)
+{
+	_messageHandler->OnSuccess(queryId, result);
+}
+
+void CefAdapterEventHandler::OnQueryFailure(long queryId, int errorCode, std::string result)
+{
+	_messageHandler->OnFailure(queryId, errorCode, result);
+}

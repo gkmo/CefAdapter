@@ -9,12 +9,12 @@ namespace CefAdapter
     public class BrowserWindow
     {
         private readonly int _id;
-        private readonly ICefAdapterNativeInterface _nativeInterface;
+        private readonly InterProcessCommunicator _nativeInterface;
         private readonly Dictionary<string, Action<JavaScriptRequest>> _javaScriptQueryHandlers;
 
         private bool _isClosing;
 
-        internal BrowserWindow(int id, ICefAdapterNativeInterface nativeInterface)
+        internal BrowserWindow(int id, InterProcessCommunicator nativeInterface)
         {
             _id = id;
             _nativeInterface = nativeInterface;

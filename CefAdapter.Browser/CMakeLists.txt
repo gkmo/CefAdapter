@@ -11,7 +11,7 @@ set(CEFADAPTER_BROWSER_SRCS
     src/CefAdapterBrowserApplication.cpp
     src/CefAdapterEventHandler.cpp
     src/CefAdapterMessageHandler.cpp
-    src/CefAdapterExport.cpp
+    src/CefAdapterInterProcessCommunicator.cpp    
 )
 
 set(CEFADAPTER_BROWSER_SRCS_LINUX
@@ -23,8 +23,9 @@ set(CEFADAPTER_BROWSER_SRCS_MACOSX
 #   simple_handler_mac.mm
 )
 
-set(CEFADAPTER_BROWSER_SRCS_WINDOWS    
-    src/CefAdapterExportWindows.cpp
+set(CEFADAPTER_BROWSER_SRCS_WINDOWS
+    CefAdapter.Browser.exe.manifest 
+    src/MainWindows.cpp
 )
 
 APPEND_PLATFORM_SOURCES(CEFADAPTER_BROWSER_SRCS)
@@ -165,16 +166,28 @@ endif()
 
 if(OS_WINDOWS)
   include_directories("../Dependencies/cef_binary_windows64")
-
-  add_library(${CEF_TARGET} SHARED ${CEFADAPTER_BROWSER_SRCS})
-  add_dependencies(${CEF_TARGET} libcef_dll_wrapper)
+  include_directories("../Dependencies/zmq")
+  
+  # Executable target.
+  add_executable(${CEF_TARGET} WIN32 ${CEFADAPTER_BROWSER_SRCS})
+  add_dependencies(${CEF_TARGET} libcef_dll_wrapper)  
+  add_dependencies(${CEF_TARGET} CefAdapter.Renderer)
   target_link_libraries(${CEF_TARGET} libcef_lib libcef_dll_wrapper ${CEF_STANDARD_LIBS})
+  target_link_libraries(${CEF_TARGET} "C:/Users/goliveira/Source/Workspaces/CefDotNet/Dependencies/zmq/lib/libzmq-v120-mt-4_0_4.lib")
 
-  SET_LIBRARY_TARGET_PROPERTIES(${CEF_TARGET})
+  SET_EXECUTABLE_TARGET_PROPERTIES(${CEF_TARGET})
 
   if(USE_SANDBOX)
     # Logical target used to link the cef_sandbox library.
     ADD_LOGICAL_TARGET("cef_sandbox_lib" "${CEF_SANDBOX_LIB_DEBUG}" "${CEF_SANDBOX_LIB_RELEASE}")
     target_link_libraries(${CEF_TARGET} cef_sandbox_lib ${CEF_SANDBOX_STANDARD_LIBS})
   endif()
+
+  # Add the custom manifest files to the executable.
+  ADD_WINDOWS_MANIFEST("${CMAKE_CURRENT_SOURCE_DIR}" "${CEF_TARGET}" "exe")
+
+  COPY_FILES("${CEF_TARGET}" "${CEF_BINARY_FILES}" "${CEF_BINARY_DIR}" "${CEF_TARGET_OUT_DIR}")
+  COPY_FILES("${CEF_TARGET}" "${CEF_RESOURCE_FILES}" "${CEF_RESOURCE_DIR}" "${CEF_TARGET_OUT_DIR}")
+  COPY_FILES("${CEF_TARGET}" "CefAdapter.Renderer.exe" "${CEF_TARGET_OUT_DIR}/../../CefAdapter.Renderer/Debug/" "${CEF_TARGET_OUT_DIR}")
+
 endif()

@@ -11,6 +11,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "C:/Program Files (x86)/Windows Kits/10/Include/10.0.16299.0/shared",
+                "${workspaceFolder}/../Dependencies/zmq",
                 "${workspaceFolder}/../Dependencies/cef/cef_binary_windows64"
             ],
             "defines": [

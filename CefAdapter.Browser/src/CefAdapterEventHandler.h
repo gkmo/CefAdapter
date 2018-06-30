@@ -1,21 +1,18 @@
 #pragma once
 
 #include <list>
+
 #include "include/cef_client.h"
 #include "include/wrapper/cef_message_router.h"
-#include "CefAdapterBrowserApplication.h"
+
 #include "CefAdapterMessageHandler.h"
 
 class CefAdapterEventHandler : public CefClient, public CefDisplayHandler, public CefLifeSpanHandler, public CefLoadHandler, public CefKeyboardHandler
 {
 public:
-	CefAdapterEventHandler(BrowserCreatedCallback browserCreatedCallback, BrowserClosingCallback browserClosingCallback, 
-		ContextCreatedCallback contextCreatedCallback, QueryCallback queryCallback);
+	CefAdapterEventHandler();
 	
 	~CefAdapterEventHandler();
-
-	// Provide access to the single global instance of this object.
-	static CefAdapterEventHandler* GetInstance();
 
 	// CefClient methods:
 	virtual CefRefPtr<CefDisplayHandler> GetDisplayHandler() OVERRIDE 
@@ -60,15 +57,21 @@ public:
 	virtual bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefProcessId source_process, CefRefPtr<CefProcessMessage> message) OVERRIDE;
 
 	virtual bool OnPreKeyEvent(CefRefPtr<CefBrowser> browser, const CefKeyEvent& event, CefEventHandle os_event, bool* is_keyboard_shortcut) OVERRIDE;
+
+	void SetQueryCallback(std::function<bool(int, long, long, std::string)> queryCallback);
+
+	void OnQuerySuccess(long queryId, std::string result);
+
+	void OnQueryFailure(long queryId, int errorCode, std::string result);
+
+	void SetBrowserCreatedCallback(std::function<void(int)> callback);
+
+	void SetBrowserClosedCallback(std::function<void(int)> callback);
+
+	void SetContextCreatedCallback(std::function<void(int,int)> callback);
 private:
 	// Platform-specific implementation.
 	void PlatformTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title);
-
-	void RaiseBrowserClosingCallback(int browserId);
-
-	void RaiseBrowserCreatedCallback(int browserId);
-
-	void RaiseContextCreatedCallback(int browserId, int frameId);
 
 	// List of existing browser windows. Only accessed on the CEF UI thread.
 	typedef std::list<CefRefPtr<CefBrowser>> BrowserList;
@@ -77,9 +80,10 @@ private:
 
 	bool _isClosing;
 
-	BrowserCreatedCallback _browserCreatedCallback;
-	BrowserClosingCallback _browserClosingCallback;
-	ContextCreatedCallback _contextCreatedCallback;
+	std::function<void(int)> _browserCreatedCallback;
+	std::function<void(int)> _browserClosedCallback;
+	std::function<void(int,int)> _contextCreatedCallback;
+	
 	CefAdapterMessageHandler* _messageHandler;
   	CefRefPtr<CefMessageRouterBrowserSide> _messageRouter;
 

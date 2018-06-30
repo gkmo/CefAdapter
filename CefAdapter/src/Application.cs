@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using CefAdapter.Native;
 
 namespace CefAdapter
@@ -9,41 +11,69 @@ namespace CefAdapter
     public class Application
     {
         private readonly Dictionary<int, BrowserWindow> _browserWindows = new Dictionary<int, BrowserWindow>();
-        private readonly ICefAdapterNativeInterface _nativeInterface;
+        private readonly InterProcessCommunicator _interProcessCommunicator;
+        private readonly string _initialUrl;
 
         public Application(string initialPage)
         {
-            _nativeInterface = CefNativeInterfaceFactory.GetCefNativeInterface();
-            
+            _interProcessCommunicator = new InterProcessCommunicator();
+            _interProcessCommunicator.MessageReceived += OnMessageReceived;
+
             if (!initialPage.StartsWith("http://") && !initialPage.StartsWith("https://"))
             {
                 var rootDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
                 initialPage = string.Format("file:///{0}", Path.GetFullPath(Path.Combine(rootDirectory, initialPage)));
-            }            
-            
-            var initialized = _nativeInterface.CreateApplication(initialPage, 
-                OnBrowserCreated, OnBrowserClosing, OnContextCreated, JavaScriptRequestCallback);
-
-            if (!initialized)
-            {
-                throw new Exception("Unable to initialize Cef application");
             }
-        }
+
+            _initialUrl = initialPage;
+       }
 
         public event EventHandler<BrowserWindowEventArgs> BrowserWindowCreated;        
 
-        public BrowserWindow MainBrowserWindow { get; private set; }
+        public BrowserWindow MainBrowserWindow { get; private set; }        
 
         public void Run()
         {
-            _nativeInterface.RunMessageLoop();
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo("CefAdapter.Browser.exe", $"--url={_initialUrl}")
+            };
 
-            _nativeInterface.Shutdown();
+            if (process.Start())
+            {
+                Thread.Sleep(1000);
+
+                _interProcessCommunicator.Connect();                
+            }
+
+            process.WaitForExit();
+        }
+
+        private void OnMessageReceived(object sender, MessageEventArgs e)
+        {
+            switch (e.Name)
+            {
+                case "ON_BROWSER_CREATED":
+                    OnBrowserCreated(int.Parse(e.Arguments[0]));
+                    break;
+                case "ON_BROWSER_CLOSED":
+                    OnBrowserClosed(int.Parse(e.Arguments[0]));
+                    break;
+                case "ON_CONTEXT_CREATED":
+                    OnContextCreated(int.Parse(e.Arguments[0]), int.Parse(e.Arguments[1]));
+                    break;
+                case "ON_QUERY":
+                    {
+                        OnQuery(int.Parse(e.Arguments[0]), int.Parse(e.Arguments[1]), long.Parse(e.Arguments[2]), e.Arguments[3], 
+                            _interProcessCommunicator.OnQuerySuccess, _interProcessCommunicator.OnQueryFailure);
+                    }                    
+                    break;
+            }
         }
 
         private void OnBrowserCreated(int browserId)
         {
-            var browserWindow = new BrowserWindow(browserId, _nativeInterface);
+            var browserWindow = new BrowserWindow(browserId, _interProcessCommunicator);
 
             _browserWindows[browserId] = browserWindow;
 
@@ -55,7 +85,7 @@ namespace CefAdapter
             BrowserWindowCreated?.Invoke(this, new BrowserWindowEventArgs(browserWindow));
         }   
 
-        private void OnBrowserClosing(int browserId)
+        private void OnBrowserClosed(int browserId)
         {
             if (_browserWindows.TryGetValue(browserId, out var browserWindow))
             {                
@@ -78,10 +108,10 @@ namespace CefAdapter
             }
         }        
 
-        private bool JavaScriptRequestCallback(int browserId, int frameId, long queryId, string request, 
+        private bool OnQuery(int browserId, int frameId, long queryId, string request, 
             JavaScriptRequestSuccessCallback successCallback, JavaScriptRequestFailureCallback failureCallback)
         {            
-            Console.WriteLine($"JavaScriptRequestCallback {queryId} - {request}");
+            Console.WriteLine($"OnQuery {queryId} - {request}");
             
             if (_browserWindows.TryGetValue(browserId, out var browserWindow))
             {
