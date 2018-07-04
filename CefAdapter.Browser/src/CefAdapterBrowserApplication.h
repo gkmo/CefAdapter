@@ -30,6 +30,8 @@ public:
 
 	bool ShowDeveloperTools(int browserId);
 
+	bool ExecuteJavaScript(int browserId, std::string code);
+
 private:
 	IMPLEMENT_REFCOUNTING(CefAdapterBrowserApplication);
 	

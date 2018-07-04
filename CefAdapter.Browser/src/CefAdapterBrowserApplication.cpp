@@ -99,8 +99,24 @@ bool CefAdapterBrowserApplication::ShowDeveloperTools(int browserId)
 
 		browser->GetHost()->ShowDevTools(windowInfo, client.get(), browserSettings, point);
 
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
+}
+
+bool CefAdapterBrowserApplication::ExecuteJavaScript(int browserId, std::string code)
+{
+	CefRefPtr<CefBrowser> browser = _eventHandler->GetBrowserById(browserId);
+
+	if (browser)
+	{
+		CefRefPtr<CefFrame> mainFrame = browser->GetMainFrame();
+
+		mainFrame->ExecuteJavaScript(code, mainFrame->GetURL(), 0);
+
+		return true;
+	}
+
+	return false;
 }

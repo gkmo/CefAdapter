@@ -166,6 +166,7 @@ void CefAdapterInterProcessCommunicator::ListenRequests()
 		const std::string SHOW_DEVELOPER_TOOLS = "SHOW_DEVELOPER_TOOLS";
 		const std::string QUERY_SUCCESS = "QUERY_SUCCESS";
 		const std::string QUERY_FAILURE = "QUERY_FAILURE";
+		const std::string EXECUTE_JAVA_SCRIPT = "EXECUTE_JAVA_SCRIPT";
 
 		auto splittedMessage = SplitString(message, '|');
 
@@ -212,6 +213,23 @@ void CefAdapterInterProcessCommunicator::ListenRequests()
 			std::sscanf(splittedMessage[2].c_str(), "%d", &errorCode);
 
 			_application->GetEventHandler()->OnQueryFailure(queryId, errorCode, splittedMessage[3]);			
+		}
+		else if (requestName.compare(EXECUTE_JAVA_SCRIPT) == 0)
+		{
+			int browserId;
+
+			std::sscanf(splittedMessage[1].c_str(), "%d", &browserId);
+
+			bool result = _application->ExecuteJavaScript(browserId, splittedMessage[2]);
+
+			if (result)
+			{
+				SendMessage(_replySocket, "EXECUTE_JAVA_SCRIPT|SUCCESS");
+			}
+			else
+			{
+				SendMessage(_replySocket, "EXECUTE_JAVA_SCRIPT|FAILURE");
+			}
 		}
 		else
 		{

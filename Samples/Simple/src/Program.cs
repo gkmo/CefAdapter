@@ -16,9 +16,7 @@ namespace CefAdapter.Samples.Simple
 
             application.BrowserWindowCreated += OnBrowserWindowCreated;
 
-            application.Run();
-
-            Console.ReadLine();
+            application.Run();        
         }
 
         private static void OnBrowserWindowCreated(object sender, BrowserWindowEventArgs e)
@@ -39,9 +37,7 @@ namespace CefAdapter.Samples.Simple
             if (_timerThread != null)
             {
                 return;
-            }
-
-            e.BrowserWindow.ShowDeveloperTools();
+            }            
 
             _stopTimer = false;
             _timerThread = new Thread(Timer);
