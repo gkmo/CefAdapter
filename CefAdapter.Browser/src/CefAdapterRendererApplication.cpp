@@ -25,7 +25,7 @@ CefAdapterRendererApplication::~CefAdapterRendererApplication()
 
 void CefAdapterRendererApplication::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context)
 {
-	_logger->Debug("CefAdapterRendererApplication", "OnContextCreated");
+	_logger->Info("CefAdapterRendererApplication", "OnContextCreated");
 
 	CefRefPtr<CefProcessMessage> msg = CefProcessMessage::Create("OnContextCreated");
 
@@ -45,7 +45,7 @@ void CefAdapterRendererApplication::OnContextReleased(CefRefPtr<CefBrowser> brow
 
 void CefAdapterRendererApplication::OnWebKitInitialized()
 {
-	_logger->Debug("CefAdapterRendererApplication", "OnWebKitInitialized");
+	_logger->Info("CefAdapterRendererApplication", "OnWebKitInitialized");
 
 	CefMessageRouterConfig config;	 
 	config.js_query_function = "executeQuery";
@@ -86,7 +86,7 @@ bool CefAdapterRendererApplication::OnProcessMessageReceived(CefRefPtr<CefBrowse
 	
 	stringStream << "OnProcessMessageReceived. Source Process Id = " << sourceProcess << "; Browser Id = " << browser->GetIdentifier() << "; Message Name = " << messageName;	
 
-	_logger->Debug("CefAdapterRendererApplication", stringStream.str().c_str());
+	_logger->Info("CefAdapterRendererApplication", stringStream.str().c_str());
 
 	return _messageRouter->OnProcessMessageReceived(browser, sourceProcess, message);;
 }

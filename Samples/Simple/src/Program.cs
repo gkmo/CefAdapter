@@ -1,7 +1,6 @@
 ﻿using CefAdapter;
 using System;
 using System.Threading;
-using ZeroMQ;
 
 namespace CefAdapter.Samples.Simple
 {

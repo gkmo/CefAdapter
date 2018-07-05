@@ -1,30 +1,24 @@
-using ZeroMQ;
 using System.Threading;
 using System;
 using System.Threading.Tasks;
+
+using NetMQ;
+using NetMQ.Sockets;
 
 namespace CefAdapter
 {
     class InterProcessCommunicator
     {
-        private readonly ZContext _context;
-        private readonly ZSocket _requestSocket;
-        private readonly ZSocket _replySocket;
+        private readonly RequestSocket _requestSocket;
+        private readonly ResponseSocket _replySocket;
         private ManualResetEvent _connectedResetEvent;
         private Thread _thread;
         private bool _stop;        
 
         public InterProcessCommunicator()
         {
-            _context = new ZContext();
-            _requestSocket = new ZSocket(ZSocketType.REQ);            
-
-            _replySocket = new ZSocket(ZSocketType.REP);
-            _replySocket.Bind("tcp://*:5561");
-
-            _thread = new Thread(ListenRequests);
-            _thread.IsBackground = true;
-            _thread.Start();    
+            _requestSocket = new RequestSocket("tcp://localhost:5560");
+            _replySocket = new ResponseSocket("tcp://localhost:5561");            
         }
 
         public event EventHandler<MessageEventArgs> MessageReceived;
@@ -33,6 +27,12 @@ namespace CefAdapter
 
         public bool Connect()
         {
+            _stop = false;
+            
+            _thread = new Thread(ListenRequests);
+            _thread.IsBackground = true;
+            _thread.Start();    
+
             _connectedResetEvent = new ManualResetEvent(false);
 
             _requestSocket.Connect("tcp://localhost:5560");
@@ -57,6 +57,7 @@ namespace CefAdapter
         public void Disconnect()
         {
             IsConnected = false;
+            _stop = true;
         }
 
         private void ListenRequests(object obj)
@@ -98,18 +99,17 @@ namespace CefAdapter
             Invoke("QUERY_FAILURE", queryId, errorCode, message);
         }
 
-        private static string ReceiveMessage(ZSocket socket)
-        {
-            var frame = socket.ReceiveFrame();
-            var message = frame.ReadString();
+        private static string ReceiveMessage(IReceivingSocket socket)
+        {            
+            var message = socket.ReceiveFrameString();
             Console.WriteLine("Received: {0}", message);
             return message;
         }
 
-        private static void SendMessage(ZSocket socket, string eventName, params object[] arguments)
+        private static void SendMessage(IOutgoingSocket socket, string eventName, params object[] arguments)
         {
             var message = eventName + "|" + string.Join("|", arguments);            
-            socket.Send(new ZFrame(message));
+            socket.SendFrame(message);
             Console.WriteLine("Sent: {0}", message);
         }
     }

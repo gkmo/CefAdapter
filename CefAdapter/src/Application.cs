@@ -36,7 +36,7 @@ namespace CefAdapter
         {
             var process = new Process
             {
-                StartInfo = new ProcessStartInfo("CefAdapter.Browser.exe", $"--url={_initialUrl}")
+                StartInfo = new ProcessStartInfo("CefAdapter.Browser", $"--url={_initialUrl}")
             };
 
             if (process.Start())

@@ -4,11 +4,13 @@
 #include "include/cef_app.h"
 #include "CefAdapterDefinitions.h"
 #include "CefAdapterEventHandler.h"
+#include "CefAdapterInterProcessCommunicator.h"
+#include "Logger.h"
 
 class CefAdapterBrowserApplication : public CefApp, public CefBrowserProcessHandler
 {
 public:
-	CefAdapterBrowserApplication();
+	CefAdapterBrowserApplication(Logger* logger);
 
 	~CefAdapterBrowserApplication();
 
@@ -28,13 +30,13 @@ public:
 
 	CefRefPtr<CefAdapterEventHandler> GetEventHandler();
 
-	bool ShowDeveloperTools(int browserId);
-
-	bool ExecuteJavaScript(int browserId, std::string code);
-
 private:
 	IMPLEMENT_REFCOUNTING(CefAdapterBrowserApplication);
-	
+
+	bool ShowDeveloperTools(int browserId);
+	bool ExecuteJavaScript(int browserId, std::string code);
+
+	CefAdapterInterProcessCommunicator* _ipc;
 	CefRefPtr<CefAdapterEventHandler> _eventHandler;
 	CefRefPtr<CefBrowser> _mainBrowser;
 };

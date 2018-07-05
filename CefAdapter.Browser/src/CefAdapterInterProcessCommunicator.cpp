@@ -45,23 +45,12 @@ static bool SendMessage(zmq::socket_t* socket, const std::string & string)
 	return socket->send(message);
 }
 
-CefAdapterInterProcessCommunicator::CefAdapterInterProcessCommunicator(CefRefPtr<CefAdapterBrowserApplication> application)
-{
-	_application = application;
+CefAdapterInterProcessCommunicator::CefAdapterInterProcessCommunicator()
+{	
 	_context = new zmq::context_t();
 
 	_replySocket = new zmq::socket_t(*_context, ZMQ_REP);
-	_replySocket->bind("tcp://*:5560");	
-
-	auto browserCreatedCallback = std::bind<void>(&CefAdapterInterProcessCommunicator::OnBrowserCreated, this, std::placeholders::_1);
-	auto browserClosedCallback = std::bind<void>(&CefAdapterInterProcessCommunicator::OnBrowserClosed, this, std::placeholders::_1);
-	auto contextCreatedCallback = std::bind<void>(&CefAdapterInterProcessCommunicator::OnContextCreated, this, std::placeholders::_1, std::placeholders::_2);
-	auto queryCallback = std::bind<bool>(&CefAdapterInterProcessCommunicator::OnQuery, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
-
-	application->GetEventHandler()->SetBrowserCreatedCallback(browserCreatedCallback);
-	application->GetEventHandler()->SetBrowserClosedCallback(browserClosedCallback);
-	application->GetEventHandler()->SetContextCreatedCallback(contextCreatedCallback);
-	application->GetEventHandler()->SetQueryCallback(queryCallback);
+	_replySocket->bind("tcp://*:5560");
 }
 
 CefAdapterInterProcessCommunicator::~CefAdapterInterProcessCommunicator()
@@ -82,6 +71,26 @@ CefAdapterInterProcessCommunicator::~CefAdapterInterProcessCommunicator()
 	delete _context;
 }
 
+void CefAdapterInterProcessCommunicator::SetShowDeveloperToolsCallback(std::function<bool(int)> callback)
+{
+	_showDeveloperToolsCallback = callback;
+}
+
+void CefAdapterInterProcessCommunicator::SetQuerySuccessCallback(std::function<void(long,std::string)> callback)
+{
+	_querySuccessCallback = callback;
+}
+
+void CefAdapterInterProcessCommunicator::SetQueryFailureCallback(std::function<void(long,int,std::string)> callback)
+{
+	_queryFailureCallback = callback;
+}
+
+void CefAdapterInterProcessCommunicator::SetExecuteJavaScriptCallback(std::function<bool(int,std::string)> callback)
+{
+	_executeJavaScriptCallback = callback;
+}
+
 void CefAdapterInterProcessCommunicator::WaitConnection()
 {
 	std::string message = ReceiveMessage(_replySocket);
@@ -93,7 +102,9 @@ void CefAdapterInterProcessCommunicator::WaitConnection()
 
 		SendMessage(_replySocket, "CONNECT|SUCCESS");
 
-		std::thread(&CefAdapterInterProcessCommunicator::ListenRequests, this);
+		std::thread listenThread(&CefAdapterInterProcessCommunicator::ListenRequests, this);
+
+		listenThread.detach();
 	}
 	else 
 	{
@@ -178,7 +189,7 @@ void CefAdapterInterProcessCommunicator::ListenRequests()
 
 			if (std::sscanf(splittedMessage[1].c_str(), "%d", &browserId) == 1)
 			{
-				if (_application->ShowDeveloperTools(browserId))
+				if (_showDeveloperToolsCallback(browserId))
 				{
 					SendMessage(_replySocket, "SHOW_DEVELOPER_TOOLS|SUCCESS");
 				}
@@ -200,7 +211,7 @@ void CefAdapterInterProcessCommunicator::ListenRequests()
 
 			std::sscanf(splittedMessage[1].c_str(), "%ld", &queryId);
 
-			_application->GetEventHandler()->OnQuerySuccess(queryId, splittedMessage[2]);			
+			_querySuccessCallback(queryId, splittedMessage[2]);			
 		}
 		else if (requestName.compare(QUERY_FAILURE) == 0)
 		{
@@ -212,7 +223,7 @@ void CefAdapterInterProcessCommunicator::ListenRequests()
 			std::sscanf(splittedMessage[1].c_str(), "%ld", &queryId);
 			std::sscanf(splittedMessage[2].c_str(), "%d", &errorCode);
 
-			_application->GetEventHandler()->OnQueryFailure(queryId, errorCode, splittedMessage[3]);			
+			_queryFailureCallback(queryId, errorCode, splittedMessage[3]);			
 		}
 		else if (requestName.compare(EXECUTE_JAVA_SCRIPT) == 0)
 		{
@@ -220,7 +231,7 @@ void CefAdapterInterProcessCommunicator::ListenRequests()
 
 			std::sscanf(splittedMessage[1].c_str(), "%d", &browserId);
 
-			bool result = _application->ExecuteJavaScript(browserId, splittedMessage[2]);
+			bool result = _executeJavaScriptCallback(browserId, splittedMessage[2]);
 
 			if (result)
 			{

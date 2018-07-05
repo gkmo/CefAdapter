@@ -11,7 +11,9 @@ set(CEFADAPTER_BROWSER_SRCS
     src/CefAdapterBrowserApplication.cpp
     src/CefAdapterEventHandler.cpp
     src/CefAdapterMessageHandler.cpp
-    src/CefAdapterInterProcessCommunicator.cpp    
+    src/CefAdapterInterProcessCommunicator.cpp
+    src/CefAdapterRendererApplication
+    src/Logger.cpp 
 )
 
 set(CEFADAPTER_BROWSER_SRCS_LINUX
@@ -84,9 +86,9 @@ SET_CEF_TARGET_OUT_DIR()
 #
 
 if(OS_LINUX)
-  include_directories("../Dependencies/cef_binary_linux64")
+  include_directories("../Dependencies/cef_binary_linux64")  
 
-  find_library(ZEROMQ_LIBRARY libzmq-v120-mt-4_0_4 HINTS "../Dependencies/zmq/lib")
+  find_library(ZEROMQ_LIBRARY zmq)
   
   if(NOT ZEROMQ_LIBRARY)
     message(FATAL_ERROR "zmq library not found")
@@ -98,6 +100,8 @@ if(OS_LINUX)
   add_dependencies(${CEF_TARGET} libcef_dll_wrapper)
   target_link_libraries(${CEF_TARGET} libcef_lib libcef_dll_wrapper ${ZEROMQ_LIBRARY} ${CEF_STANDARD_LIBS})    
 
+  target_compile_options(${CEF_TARGET} PUBLIC -fexceptions)
+  
   # Set rpath so that libraries can be placed next to the executable.
   set_target_properties(${CEF_TARGET} PROPERTIES INSTALL_RPATH "$ORIGIN")
   set_target_properties(${CEF_TARGET} PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE)
@@ -179,7 +183,6 @@ endif()
 
 if(OS_WINDOWS)
   include_directories("../Dependencies/cef_binary_windows64")
-  include_directories("../Dependencies/zmq")
   
   find_library(ZEROMQ_LIBRARY libzmq-v120-mt-4_0_4 HINTS "../Dependencies/zmq/lib")
   
@@ -190,7 +193,6 @@ if(OS_WINDOWS)
   # Executable target.
   add_executable(${CEF_TARGET} WIN32 ${CEFADAPTER_BROWSER_SRCS})
   add_dependencies(${CEF_TARGET} libcef_dll_wrapper)  
-  add_dependencies(${CEF_TARGET} CefAdapter.Renderer)
   target_link_libraries(${CEF_TARGET} libcef_lib libcef_dll_wrapper ${ZEROMQ_LIBRARY} ${CEF_STANDARD_LIBS})
 
   SET_EXECUTABLE_TARGET_PROPERTIES(${CEF_TARGET})
@@ -205,7 +207,6 @@ if(OS_WINDOWS)
   ADD_WINDOWS_MANIFEST("${CMAKE_CURRENT_SOURCE_DIR}" "${CEF_TARGET}" "exe")
 
   COPY_FILES("${CEF_TARGET}" "${CEF_BINARY_FILES}" "${CEF_BINARY_DIR}" "${CEF_TARGET_OUT_DIR}")
-  COPY_FILES("${CEF_TARGET}" "${CEF_RESOURCE_FILES}" "${CEF_RESOURCE_DIR}" "${CEF_TARGET_OUT_DIR}")
-  COPY_FILES("${CEF_TARGET}" "CefAdapter.Renderer.exe" "${CEF_TARGET_OUT_DIR}/../../CefAdapter.Renderer/Debug/" "${CEF_TARGET_OUT_DIR}")
+  COPY_FILES("${CEF_TARGET}" "${CEF_RESOURCE_FILES}" "${CEF_RESOURCE_DIR}" "${CEF_TARGET_OUT_DIR}")  
 
 endif()

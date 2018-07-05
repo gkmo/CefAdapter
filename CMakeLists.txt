@@ -33,7 +33,6 @@ add_subdirectory(${CEF_LIBCEF_DLL_WRAPPER_PATH} libcef_dll_wrapper)
 # Include application targets.
 # Comes from the <target>/CMakeLists.txt file in the current directory.
 # TODO: Change these lines to match your project target when you copy this file.
-add_subdirectory(CefAdapter.Renderer)
 add_subdirectory(CefAdapter.Browser)
 
 # Display configuration settings.
