@@ -16,12 +16,10 @@
     <PackageReference Include="NetMQ" Version="4.0.0.1" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="cp ../../build/CefAdapter.Browser/$(ConfigurationName)/CefAdapter.Browser $(ProjectDir)$(OutDir)" />
-    <Exec Command="cp ../../build/CefAdapter.Renderer/$(ConfigurationName)/CefAdapter.Renderer $(ProjectDir)$(OutDir)" />
-  </Target>
-  <!-- <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="Exists('..\..\build\CefAdapter.Browser\$(ConfigurationName)\CefAdapter.Browser.exe')">
-    <Exec Command="XCOPY ..\..\build\CefAdapter.Browser\$(ConfigurationName) $(ProjectDir)$(OutDir) /Y /E" />
-    <Exec Command="XCOPY ..\..\build\CefAdapter.Renderer\$(ConfigurationName) $(ProjectDir)$(OutDir) /Y /E" />
+  <!-- <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="cp ../../build/CefAdapter.Browser/$(ConfigurationName)/CefAdapter.Browser $(ProjectDir)$(OutDir)" />    
   </Target> -->
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="Exists('..\..\build\CefAdapter.Browser\$(ConfigurationName)\CefAdapter.Browser.exe')">
+    <Exec Command="XCOPY ..\..\build\CefAdapter.Browser\$(ConfigurationName) $(ProjectDir)$(OutDir) /Y /E" />    
+  </Target>
 </Project>

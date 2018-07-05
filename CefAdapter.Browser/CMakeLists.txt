@@ -183,6 +183,7 @@ endif()
 
 if(OS_WINDOWS)
   include_directories("../Dependencies/cef_binary_windows64")
+  include_directories("../Dependencies/zmq/include")
   
   find_library(ZEROMQ_LIBRARY libzmq-v120-mt-4_0_4 HINTS "../Dependencies/zmq/lib")
   

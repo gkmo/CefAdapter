@@ -26,7 +26,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR lpCmdLin
 
     // Parse command-line arguments.
     auto commandLine = CefCommandLine::CreateCommandLine();
-    commandLine->InitFromArgv(hInstance);
+    commandLine->InitFromString(::GetCommandLineW());
 
     // Create a ClientApp of the correct type.
     CefRefPtr<CefApp> app;

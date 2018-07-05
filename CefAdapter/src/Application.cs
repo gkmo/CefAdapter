@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using System.Runtime.InteropServices;
 using CefAdapter.Native;
 
 namespace CefAdapter
@@ -34,15 +35,20 @@ namespace CefAdapter
 
         public void Run()
         {
+            var exeExtension = "";
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                exeExtension = ".exe";
+            }
+
             var process = new Process
             {
-                StartInfo = new ProcessStartInfo("CefAdapter.Browser", $"--url={_initialUrl}")
+                StartInfo = new ProcessStartInfo("CefAdapter.Browser" + exeExtension, $"--url={_initialUrl}")
             };
 
             if (process.Start())
             {
-                Thread.Sleep(1000);
-
                 _interProcessCommunicator.Connect();                
             }
 
