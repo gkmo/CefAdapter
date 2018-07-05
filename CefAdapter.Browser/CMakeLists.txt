@@ -11,11 +11,11 @@ set(CEFADAPTER_BROWSER_SRCS
     src/CefAdapterBrowserApplication.cpp
     src/CefAdapterEventHandler.cpp
     src/CefAdapterMessageHandler.cpp
-    src/CefAdapterExport.cpp
+    src/CefAdapterInterProcessCommunicator.cpp    
 )
 
 set(CEFADAPTER_BROWSER_SRCS_LINUX
-  src/CefAdapterExportLinux.cpp
+  src/MainLinux.cpp
 )
 
 set(CEFADAPTER_BROWSER_SRCS_MACOSX
@@ -23,8 +23,9 @@ set(CEFADAPTER_BROWSER_SRCS_MACOSX
 #   simple_handler_mac.mm
 )
 
-set(CEFADAPTER_BROWSER_SRCS_WINDOWS    
-    src/CefAdapterExportWindows.cpp
+set(CEFADAPTER_BROWSER_SRCS_WINDOWS
+    CefAdapter.Browser.exe.manifest 
+    src/MainWindows.cpp
 )
 
 APPEND_PLATFORM_SOURCES(CEFADAPTER_BROWSER_SRCS)
@@ -85,16 +86,29 @@ SET_CEF_TARGET_OUT_DIR()
 if(OS_LINUX)
   include_directories("../Dependencies/cef_binary_linux64")
 
+  find_library(ZEROMQ_LIBRARY libzmq-v120-mt-4_0_4 HINTS "../Dependencies/zmq/lib")
+  
+  if(NOT ZEROMQ_LIBRARY)
+    message(FATAL_ERROR "zmq library not found")
+  endif()
+
   # Executable target.
-  add_library(${CEF_TARGET} SHARED ${CEFADAPTER_BROWSER_SRCS} ${CEFADAPTER_BROWSER_SRCS_LINUX})
-  SET_LIBRARY_TARGET_PROPERTIES(${CEF_TARGET})
-
+  add_executable(${CEF_TARGET} ${CEFADAPTER_BROWSER_SRCS} ${CEFADAPTER_BROWSER_SRCS_LINUX})
+  SET_EXECUTABLE_TARGET_PROPERTIES(${CEF_TARGET})
   add_dependencies(${CEF_TARGET} libcef_dll_wrapper)
+  target_link_libraries(${CEF_TARGET} libcef_lib libcef_dll_wrapper ${ZEROMQ_LIBRARY} ${CEF_STANDARD_LIBS})    
 
-  target_link_libraries(${CEF_TARGET} libcef_lib libcef_dll_wrapper ${CEF_STANDARD_LIBS})
+  # Set rpath so that libraries can be placed next to the executable.
+  set_target_properties(${CEF_TARGET} PROPERTIES INSTALL_RPATH "$ORIGIN")
+  set_target_properties(${CEF_TARGET} PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE)
+  set_target_properties(${CEF_TARGET} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CEF_TARGET_OUT_DIR})
 
-  # Remove the default "lib" prefix from the resulting library.
-  set_target_properties(${CEF_TARGET} PROPERTIES PREFIX "")
+  # Copy binary and resource files to the target output directory.
+  COPY_FILES("${CEF_TARGET}" "${CEF_BINARY_FILES}" "${CEF_BINARY_DIR}" "${CEF_TARGET_OUT_DIR}")
+  COPY_FILES("${CEF_TARGET}" "${CEF_RESOURCE_FILES}" "${CEF_RESOURCE_DIR}" "${CEF_TARGET_OUT_DIR}")
+
+  # Set SUID permissions on the chrome-sandbox target.
+  SET_LINUX_SUID_PERMISSIONS("${CEF_TARGET}" "${CEF_TARGET_OUT_DIR}/chrome-sandbox")  
 endif()
 
 
@@ -165,16 +179,33 @@ endif()
 
 if(OS_WINDOWS)
   include_directories("../Dependencies/cef_binary_windows64")
+  include_directories("../Dependencies/zmq")
+  
+  find_library(ZEROMQ_LIBRARY libzmq-v120-mt-4_0_4 HINTS "../Dependencies/zmq/lib")
+  
+  if(NOT ZEROMQ_LIBRARY)
+    message(FATAL_ERROR "zmq library not found")
+  endif()
 
-  add_library(${CEF_TARGET} SHARED ${CEFADAPTER_BROWSER_SRCS})
-  add_dependencies(${CEF_TARGET} libcef_dll_wrapper)
-  target_link_libraries(${CEF_TARGET} libcef_lib libcef_dll_wrapper ${CEF_STANDARD_LIBS})
+  # Executable target.
+  add_executable(${CEF_TARGET} WIN32 ${CEFADAPTER_BROWSER_SRCS})
+  add_dependencies(${CEF_TARGET} libcef_dll_wrapper)  
+  add_dependencies(${CEF_TARGET} CefAdapter.Renderer)
+  target_link_libraries(${CEF_TARGET} libcef_lib libcef_dll_wrapper ${ZEROMQ_LIBRARY} ${CEF_STANDARD_LIBS})
 
-  SET_LIBRARY_TARGET_PROPERTIES(${CEF_TARGET})
+  SET_EXECUTABLE_TARGET_PROPERTIES(${CEF_TARGET})
 
   if(USE_SANDBOX)
     # Logical target used to link the cef_sandbox library.
     ADD_LOGICAL_TARGET("cef_sandbox_lib" "${CEF_SANDBOX_LIB_DEBUG}" "${CEF_SANDBOX_LIB_RELEASE}")
     target_link_libraries(${CEF_TARGET} cef_sandbox_lib ${CEF_SANDBOX_STANDARD_LIBS})
   endif()
+
+  # Add the custom manifest files to the executable.
+  ADD_WINDOWS_MANIFEST("${CMAKE_CURRENT_SOURCE_DIR}" "${CEF_TARGET}" "exe")
+
+  COPY_FILES("${CEF_TARGET}" "${CEF_BINARY_FILES}" "${CEF_BINARY_DIR}" "${CEF_TARGET_OUT_DIR}")
+  COPY_FILES("${CEF_TARGET}" "${CEF_RESOURCE_FILES}" "${CEF_RESOURCE_DIR}" "${CEF_TARGET_OUT_DIR}")
+  COPY_FILES("${CEF_TARGET}" "CefAdapter.Renderer.exe" "${CEF_TARGET_OUT_DIR}/../../CefAdapter.Renderer/Debug/" "${CEF_TARGET_OUT_DIR}")
+
 endif()

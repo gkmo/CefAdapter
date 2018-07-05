@@ -7,36 +7,41 @@ namespace
     std::map<int64, CefRefPtr<CefMessageRouterBrowserSide::Callback>> _queries;
 }
 
-CefAdapterMessageHandler::CefAdapterMessageHandler(QueryCallback queryCallback)
+CefAdapterMessageHandler::CefAdapterMessageHandler()
 {
-    _queryCallback = queryCallback;    
+	_callback = NULL;
 }
 
 CefAdapterMessageHandler::~CefAdapterMessageHandler()
 {
-    _queryCallback = NULL;
+    _callback = NULL;
 }
 
-void OnSuccess(long queryId, const char* message)
+void CefAdapterMessageHandler::SetQueryCallback(std::function<bool(int, long, long, std::string)> queryCallback)
+{
+	_callback = queryCallback;
+}
+
+void CefAdapterMessageHandler::OnSuccess(long queryId, std::string message)
 {
     std::cout << "CefAdapterMessageHandler::OnSuccess = " << message << "; Query Id = " << queryId << std::endl;    
 
-    auto callback = _queries[queryId];
-
-    _queries.erase(queryId);
+    auto callback = _queries[queryId];    
 
     callback->Success(message);
+
+	_queries.erase(queryId);
 }
 
-void OnFailure(long queryId, int errorCode, const char* message)
+void CefAdapterMessageHandler::OnFailure(long queryId, int errorCode, std::string message)
 {
     std::cout << "CefAdapterMessageHandler::OnFailure = " << errorCode << " - " << message << "; Query Id = " << queryId << std::endl;    
 
-    auto callback = _queries[queryId];
-
-    _queries.erase(queryId);
+    auto callback = _queries[queryId];    
 
     callback->Failure(errorCode, message);
+
+	_queries.erase(queryId);
 }
 
 bool CefAdapterMessageHandler::OnQuery(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int64 queryId,
@@ -44,14 +49,19 @@ bool CefAdapterMessageHandler::OnQuery(CefRefPtr<CefBrowser> browser, CefRefPtr<
 {
     std::cout << "CefAdapterMessageHandler::OnQuery = " << request.ToString() << "; Query Id = " << queryId << std::endl;    
     
+	if (_callback == NULL)
+	{
+		return false;
+	}
+
     _queries[queryId] = callback;
 
-    if(_queryCallback(browser->GetIdentifier(), frame->GetIdentifier(), queryId, request.ToString().c_str(), &OnSuccess, &OnFailure))
+    if(_callback(browser->GetIdentifier(), frame->GetIdentifier(), queryId, request.ToString()))
     {
         return true;
     }
 
-    _queries.erase(queryId);    
+    _queries.erase(queryId);
 
     return false;
 }

@@ -12,11 +12,15 @@
     <ProjectReference Include="..\..\CefAdapter\CefAdapter.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="ZeroMQ" Version="4.1.0.26" />
+  </ItemGroup>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="Exists('../../build/CefAdapter.Browser/$(ConfigurationName)/CefAdapter.Browser.so')">
     <Exec Command="cp ../../build/CefAdapter.Browser/$(ConfigurationName)/CefAdapter.Browser.so $(ProjectDir)$(OutDir)" />
     <Exec Command="cp ../../build/CefAdapter.Renderer/$(ConfigurationName)/CefAdapter.Renderer $(ProjectDir)$(OutDir)" />
   </Target>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="Exists('..\..\build\CefAdapter.Browser\$(ConfigurationName)\CefAdapter.Browser.dll')">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="Exists('..\..\build\CefAdapter.Browser\$(ConfigurationName)\CefAdapter.Browser.exe')">
     <Exec Command="XCOPY ..\..\build\CefAdapter.Browser\$(ConfigurationName) $(ProjectDir)$(OutDir) /Y /E" />
     <Exec Command="XCOPY ..\..\build\CefAdapter.Renderer\$(ConfigurationName) $(ProjectDir)$(OutDir) /Y /E" />
   </Target>

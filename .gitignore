@@ -16,6 +16,7 @@ GPUCache/
 CMakeFiles/
 libcef_dll_wrapper/
 build/
+.vs/
 CMakeCache.txt
 Makefile
 # Prerequisites

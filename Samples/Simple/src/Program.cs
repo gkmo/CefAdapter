@@ -1,6 +1,7 @@
 ﻿using CefAdapter;
 using System;
 using System.Threading;
+using ZeroMQ;
 
 namespace CefAdapter.Samples.Simple
 {
@@ -15,15 +16,15 @@ namespace CefAdapter.Samples.Simple
 
             application.BrowserWindowCreated += OnBrowserWindowCreated;
 
-            application.Run();
+            application.Run();        
         }
 
         private static void OnBrowserWindowCreated(object sender, BrowserWindowEventArgs e)
         {
             e.BrowserWindow.ContextCreated += StartTimer;
             e.BrowserWindow.Closing += StopTimer;            
-            e.BrowserWindow.On("showDeveloperTools", ProcessOpenDeveloperToolsRequest);
-        }            
+            e.BrowserWindow.On("showDeveloperTools", ProcessOpenDeveloperToolsRequest);                    
+        }
 
         private static void ProcessOpenDeveloperToolsRequest(JavaScriptRequest request)
         {
@@ -36,7 +37,7 @@ namespace CefAdapter.Samples.Simple
             if (_timerThread != null)
             {
                 return;
-            }
+            }            
 
             _stopTimer = false;
             _timerThread = new Thread(Timer);
