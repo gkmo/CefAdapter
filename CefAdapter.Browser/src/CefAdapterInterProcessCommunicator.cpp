@@ -55,20 +55,17 @@ CefAdapterInterProcessCommunicator::CefAdapterInterProcessCommunicator()
 
 CefAdapterInterProcessCommunicator::~CefAdapterInterProcessCommunicator()
 {
-	_replySocket->unbind("tcp://*:5560");
-	_replySocket->close();
+	_stopListening = true;
+
+	_context->close();	
 
 	if (_requestSocket != NULL)
 	{
-		_requestSocket->disconnect("tcp://*:5561");
-		_requestSocket->close();
 		delete _requestSocket;
-	}
-
-	_context->close();
+	}	
 
 	delete _replySocket;	
-	delete _context;
+	delete _context;	
 }
 
 void CefAdapterInterProcessCommunicator::SetShowDeveloperToolsCallback(std::function<bool(int)> callback)
@@ -170,83 +167,93 @@ bool CefAdapterInterProcessCommunicator::OnQuery(int browserId, long frameId, lo
 
 void CefAdapterInterProcessCommunicator::ListenRequests()
 {
-	while (_replySocket->connected())
+	while (!_stopListening)
 	{
-		std::string message = ReceiveMessage(_replySocket);
+		try 
+		{		
+			std::string message = ReceiveMessage(_replySocket);
 
-		const std::string SHOW_DEVELOPER_TOOLS = "SHOW_DEVELOPER_TOOLS";
-		const std::string QUERY_SUCCESS = "QUERY_SUCCESS";
-		const std::string QUERY_FAILURE = "QUERY_FAILURE";
-		const std::string EXECUTE_JAVA_SCRIPT = "EXECUTE_JAVA_SCRIPT";
+			const std::string SHOW_DEVELOPER_TOOLS = "SHOW_DEVELOPER_TOOLS";
+			const std::string QUERY_SUCCESS = "QUERY_SUCCESS";
+			const std::string QUERY_FAILURE = "QUERY_FAILURE";
+			const std::string EXECUTE_JAVA_SCRIPT = "EXECUTE_JAVA_SCRIPT";
 
-		auto splittedMessage = SplitString(message, '|');
+			auto splittedMessage = SplitString(message, '|');
 
-		auto requestName = splittedMessage[0];
+			auto requestName = splittedMessage[0];
 
-		if (requestName.compare(SHOW_DEVELOPER_TOOLS) == 0)
-		{
-			int browserId;
-
-			if (std::sscanf(splittedMessage[1].c_str(), "%d", &browserId) == 1)
+			if (requestName.compare(SHOW_DEVELOPER_TOOLS) == 0)
 			{
-				if (_showDeveloperToolsCallback(browserId))
+				int browserId;
+
+				if (std::sscanf(splittedMessage[1].c_str(), "%d", &browserId) == 1)
 				{
-					SendMessage(_replySocket, "SHOW_DEVELOPER_TOOLS|SUCCESS");
+					if (_showDeveloperToolsCallback(browserId))
+					{
+						SendMessage(_replySocket, "SHOW_DEVELOPER_TOOLS|SUCCESS");
+					}
+					else
+					{
+						SendMessage(_replySocket, "SHOW_DEVELOPER_TOOLS|FAILURE");
+					}
 				}
 				else
 				{
-					SendMessage(_replySocket, "SHOW_DEVELOPER_TOOLS|FAILURE");
+					SendMessage(_replySocket, "SHOW_DEVELOPER_TOOLS|INVALID_ARGUMENTS");
+				}
+			}
+			else if (requestName.compare(QUERY_SUCCESS) == 0)
+			{
+				SendMessage(_replySocket, "QUERY_SUCCESS|SUCCESS");
+
+				long queryId;
+
+				std::sscanf(splittedMessage[1].c_str(), "%ld", &queryId);
+
+				_querySuccessCallback(queryId, splittedMessage[2]);			
+			}
+			else if (requestName.compare(QUERY_FAILURE) == 0)
+			{
+				SendMessage(_replySocket, "QUERY_FAILURE|SUCCESS");
+
+				long queryId;
+				int errorCode;
+
+				std::sscanf(splittedMessage[1].c_str(), "%ld", &queryId);
+				std::sscanf(splittedMessage[2].c_str(), "%d", &errorCode);
+
+				_queryFailureCallback(queryId, errorCode, splittedMessage[3]);			
+			}
+			else if (requestName.compare(EXECUTE_JAVA_SCRIPT) == 0)
+			{
+				int browserId;
+
+				std::sscanf(splittedMessage[1].c_str(), "%d", &browserId);
+
+				bool result = _executeJavaScriptCallback(browserId, splittedMessage[2]);
+
+				if (result)
+				{
+					SendMessage(_replySocket, "EXECUTE_JAVA_SCRIPT|SUCCESS");
+				}
+				else
+				{
+					SendMessage(_replySocket, "EXECUTE_JAVA_SCRIPT|FAILURE");
 				}
 			}
 			else
 			{
-				SendMessage(_replySocket, "SHOW_DEVELOPER_TOOLS|INVALID_ARGUMENTS");
+				SendMessage(_replySocket, "INVALID_REQUEST");
 			}
 		}
-		else if (requestName.compare(QUERY_SUCCESS) == 0)
+		catch(const zmq::error_t& ex)
 		{
-			SendMessage(_replySocket, "QUERY_SUCCESS|SUCCESS");
-
-			long queryId;
-
-			std::sscanf(splittedMessage[1].c_str(), "%ld", &queryId);
-
-			_querySuccessCallback(queryId, splittedMessage[2]);			
-		}
-		else if (requestName.compare(QUERY_FAILURE) == 0)
-		{
-			SendMessage(_replySocket, "QUERY_FAILURE|SUCCESS");
-
-			long queryId;
-			int errorCode;
-
-			std::sscanf(splittedMessage[1].c_str(), "%ld", &queryId);
-			std::sscanf(splittedMessage[2].c_str(), "%d", &errorCode);
-
-			_queryFailureCallback(queryId, errorCode, splittedMessage[3]);			
-		}
-		else if (requestName.compare(EXECUTE_JAVA_SCRIPT) == 0)
-		{
-			int browserId;
-
-			std::sscanf(splittedMessage[1].c_str(), "%d", &browserId);
-
-			bool result = _executeJavaScriptCallback(browserId, splittedMessage[2]);
-
-			if (result)
-			{
-				SendMessage(_replySocket, "EXECUTE_JAVA_SCRIPT|SUCCESS");
-			}
-			else
-			{
-				SendMessage(_replySocket, "EXECUTE_JAVA_SCRIPT|FAILURE");
-			}
-		}
-		else
-		{
-			SendMessage(_replySocket, "INVALID_REQUEST");
+			std::cout << "Exception ocurred while listening ZMQ requests: " << ex.what() << std::endl;
 		}
 	}
+	
+	_replySocket->close();
+	_requestSocket->close();
 }
 
 std::string CefAdapterInterProcessCommunicator::Invoke(std::string request)

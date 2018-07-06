@@ -1,5 +1,7 @@
 #pragma once
 
+#include <thread>
+
 #include "include/cef_app.h"
 
 #include "zmq.hpp"
@@ -7,6 +9,7 @@
 class CefAdapterInterProcessCommunicator
 {
 private:
+	bool _stopListening = false;	
 	zmq::context_t* _context;
 	zmq::socket_t* _replySocket;
 	zmq::socket_t* _requestSocket;	

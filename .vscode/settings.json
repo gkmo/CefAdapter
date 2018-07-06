@@ -14,7 +14,10 @@
         "vector": "cpp",
         "xhash": "cpp",
         "xtree": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "fstream": "cpp",
+        "xlocmes": "cpp",
+        "thread": "cpp"
     },
     "C_Cpp.intelliSenseEngineFallback": "Disabled"
 }
