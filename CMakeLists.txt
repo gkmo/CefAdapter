@@ -49,7 +49,7 @@ find_package(CEF REQUIRED)
 # Include application targets.
 # Comes from the <target>/CMakeLists.txt file in the current directory.
 # TODO: Change these lines to match your project target when you copy this file.
-add_subdirectory(CefAdapter.Browser)
+add_subdirectory(CefAdapter)
 
 # Display configuration settings.
 PRINT_CEF_CONFIG()
