@@ -7,9 +7,6 @@
     <IsPackable>false</IsPackable>
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
-
-    <!-- Set this to true if you enable server-side prerendering -->
-    <BuildServerSideRenderer>false</BuildServerSideRenderer>
   </PropertyGroup>
 
   <ItemGroup>
@@ -41,13 +38,11 @@
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
 
     <!-- Include the newly-built files in the publish output -->
     <ItemGroup>
-      <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
-      <DistFiles Include="$(SpaRoot)node_modules\**" Condition="'$(BuildServerSideRenderer)' == 'true'" />
+      <DistFiles Include="$(SpaRoot)build\**; $(SpaRoot)build-ssr\**" />
       <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
         <RelativePath>%(DistFiles.Identity)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -55,8 +50,8 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="BuildAngularApp" AfterTargets="PreBuildEvent">
-    <Message Text="Building Angular App..." Importance="high" />
+  <Target Name="BuildReactApp" AfterTargets="PreBuildEvent">
+    <Message Text="Building React App..." Importance="high" />
     <Exec WorkingDirectory="$(ProjectDir)ClientApp" Command="npm run-script build" />    
   </Target>
 
@@ -64,12 +59,13 @@
     <Message Text="Copying Linux dependencies..." Importance="high" />
     <Exec Command="rsync -r ../../build/CefAdapter.Browser/$(ConfigurationName)/ $(ProjectDir)$(OutDir)" />            
     <Message Text="Copying ClientApp..." Importance="high" />
-    <Exec Command="rsync -r  $(ProjectDir)ClientApp/dist $(ProjectDir)$(OutDir)ClientApp/dist/" /> 
+    <Exec Command="rsync -r $(ProjectDir)ClientApp/build $(ProjectDir)$(OutDir)ClientApp/build/" />    
   </Target>
   <Target Name="PostBuildWindows" Condition="'$(OS)' == 'Windows_NT' " AfterTargets="PostBuildEvent">
     <Message Text="Copying Windows dependencies..." Importance="high" />
     <Exec Command="XCOPY ..\..\build\CefAdapter.Browser\$(ConfigurationName) $(ProjectDir)$(OutDir) /Y /E" />
     <Message Text="Copying ClientApp..." Importance="high" />
-    <Exec Command="XCOPY $(ProjectDir)ClientApp\dist $(ProjectDir)$(OutDir)ClientApp\dist\ /Y /E" />    
+    <Exec Command="XCOPY $(ProjectDir)ClientApp\build $(ProjectDir)$(OutDir)ClientApp\build\ /Y /E" />    
   </Target>
+
 </Project>

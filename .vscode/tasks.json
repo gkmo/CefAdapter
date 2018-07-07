@@ -24,7 +24,7 @@
                 "-r win10-x64"
             ],
             "problemMatcher": "$msCompile"
-        }
+        },
         {
             "label": "buildAngular",
             "command": "dotnet",
@@ -39,5 +39,19 @@
                 "isDefault": true
             }
         },
+        {
+            "label": "buildReact",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Samples/React/React.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
     ]
 }
