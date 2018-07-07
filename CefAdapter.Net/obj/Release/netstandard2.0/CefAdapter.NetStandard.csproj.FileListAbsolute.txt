@@ -1,9 +1,0 @@
-C:\Users\goliveira\Source\Workspaces\CefDotNet\CefAdapter.NetStandard\bin\Release\netstandard2.0\CefAdapter.NetStandard.deps.json
-C:\Users\goliveira\Source\Workspaces\CefDotNet\CefAdapter.NetStandard\bin\Release\netstandard2.0\CefAdapter.NetStandard.dll
-C:\Users\goliveira\Source\Workspaces\CefDotNet\CefAdapter.NetStandard\bin\Release\netstandard2.0\CefAdapter.NetStandard.pdb
-C:\Users\goliveira\Source\Workspaces\CefDotNet\CefAdapter.NetStandard\obj\Release\netstandard2.0\CefAdapter.NetStandard.csprojResolveAssemblyReference.cache
-C:\Users\goliveira\Source\Workspaces\CefDotNet\CefAdapter.NetStandard\obj\Release\netstandard2.0\CefAdapter.NetStandard.csproj.CoreCompileInputs.cache
-C:\Users\goliveira\Source\Workspaces\CefDotNet\CefAdapter.NetStandard\obj\Release\netstandard2.0\CefAdapter.NetStandard.AssemblyInfoInputs.cache
-C:\Users\goliveira\Source\Workspaces\CefDotNet\CefAdapter.NetStandard\obj\Release\netstandard2.0\CefAdapter.NetStandard.AssemblyInfo.cs
-C:\Users\goliveira\Source\Workspaces\CefDotNet\CefAdapter.NetStandard\obj\Release\netstandard2.0\CefAdapter.NetStandard.dll
-C:\Users\goliveira\Source\Workspaces\CefDotNet\CefAdapter.NetStandard\obj\Release\netstandard2.0\CefAdapter.NetStandard.pdb
