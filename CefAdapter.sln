@@ -1,31 +1,40 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27703.2035
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CefAdapter", "CefAdapter\CefAdapter.csproj", "{594D2688-4B8B-4B54-A3E9-5E053E33166A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ALL_BUILD", "ALL_BUILD.vcxproj", "{CB24C7B1-41FC-39BB-9446-5BF7B367C176}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8636EE57-DF6A-3517-9881-D7B842639A14} = {8636EE57-DF6A-3517-9881-D7B842639A14}
+		{026E92C5-DFBB-328E-ADCF-ED180E3B467F} = {026E92C5-DFBB-328E-ADCF-ED180E3B467F}
+	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple", "Samples\Simple\Simple.csproj", "{67E6441D-3D74-4FEF-ABB7-6DFE256952B7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CefAdapter.Browser", "CefAdapter.Browser\CefAdapter.Browser.vcxproj", "{8636EE57-DF6A-3517-9881-D7B842639A14}"
+	ProjectSection(ProjectDependencies) = postProject
+		{026E92C5-DFBB-328E-ADCF-ED180E3B467F} = {026E92C5-DFBB-328E-ADCF-ED180E3B467F}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZERO_CHECK", "ZERO_CHECK.vcxproj", "{026E92C5-DFBB-328E-ADCF-ED180E3B467F}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{594D2688-4B8B-4B54-A3E9-5E053E33166A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{594D2688-4B8B-4B54-A3E9-5E053E33166A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{594D2688-4B8B-4B54-A3E9-5E053E33166A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{594D2688-4B8B-4B54-A3E9-5E053E33166A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{67E6441D-3D74-4FEF-ABB7-6DFE256952B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67E6441D-3D74-4FEF-ABB7-6DFE256952B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67E6441D-3D74-4FEF-ABB7-6DFE256952B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67E6441D-3D74-4FEF-ABB7-6DFE256952B7}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
+		{CB24C7B1-41FC-39BB-9446-5BF7B367C176}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CB24C7B1-41FC-39BB-9446-5BF7B367C176}.Release|Win32.ActiveCfg = Release|Win32
+		{8636EE57-DF6A-3517-9881-D7B842639A14}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8636EE57-DF6A-3517-9881-D7B842639A14}.Debug|Win32.Build.0 = Debug|Win32
+		{8636EE57-DF6A-3517-9881-D7B842639A14}.Release|Win32.ActiveCfg = Release|Win32
+		{8636EE57-DF6A-3517-9881-D7B842639A14}.Release|Win32.Build.0 = Release|Win32
+		{026E92C5-DFBB-328E-ADCF-ED180E3B467F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{026E92C5-DFBB-328E-ADCF-ED180E3B467F}.Debug|Win32.Build.0 = Debug|Win32
+		{026E92C5-DFBB-328E-ADCF-ED180E3B467F}.Release|Win32.ActiveCfg = Release|Win32
+		{026E92C5-DFBB-328E-ADCF-ED180E3B467F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {B82765F6-22D8-4387-97D5-1617210F169E}
+		SolutionGuid = {35125F89-1138-308B-A0A7-28CF7C5E7408}
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
 	EndGlobalSection
 EndGlobal

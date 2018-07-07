@@ -182,19 +182,20 @@ endif()
 #
 
 if(OS_WINDOWS)
-  include_directories("../Dependencies/cef_binary_windows64")
-  include_directories("../Dependencies/zmq/include")
+  include_directories(${CEF_ROOT})  
+  include_directories("${ZMQ_DIR}/include")
   
-  find_library(ZEROMQ_LIBRARY libzmq-v120-mt-4_0_4 HINTS "../Dependencies/zmq/lib")
+  find_library(ZMQ_LIBRARY libzmq-v120-mt-4_0_4 HINTS "${ZMQ_DIR}/lib")
+  find_library(CEFWRAPPER_LIBRARY libcef_dll_wrapper HINTS "${CEF_ROOT}/libcef_dll_wrapper/Debug")
   
-  if(NOT ZEROMQ_LIBRARY)
+  if(NOT ZMQ_LIBRARY)
     message(FATAL_ERROR "zmq library not found")
   endif()
 
   # Executable target.
   add_executable(${CEF_TARGET} WIN32 ${CEFADAPTER_BROWSER_SRCS})
-  add_dependencies(${CEF_TARGET} libcef_dll_wrapper)  
-  target_link_libraries(${CEF_TARGET} libcef_lib libcef_dll_wrapper ${ZEROMQ_LIBRARY} ${CEF_STANDARD_LIBS})
+  #add_dependencies(${CEF_TARGET} libcef_dll_wrapper)  
+  target_link_libraries(${CEF_TARGET} libcef_lib ${CEFWRAPPER_LIBRARY} ${ZMQ_LIBRARY} ${CEF_STANDARD_LIBS})
 
   SET_EXECUTABLE_TARGET_PROPERTIES(${CEF_TARGET})
 

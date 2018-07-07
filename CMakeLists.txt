@@ -12,12 +12,28 @@ project(CefAdapter)
 
 set_property(GLOBAL PROPERTY OS_FOLDERS ON)
 
+if (${CMAKE_SIZEOF_VOID_P} EQUAL "8")
+    set (PROJECTNAME_ARCHITECTURE "x64")
+else ()
+    set (PROJECTNAME_ARCHITECTURE "x86")
+endif ()
+
 if (UNIX)
-set(CEF_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/cef_binary_linux64")
+    if (${PROJECTNAME_ARCHITECTURE} EQUAL "x64")
+        set(CEF_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/cef_binary_linux64")
+    else ()    
+        set(CEF_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/cef_binary_linux32")
+    endif ()
 endif (UNIX)
 
 if (WIN32)
-set(CEF_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/cef_binary_windows64")
+    if (${PROJECTNAME_ARCHITECTURE} EQUAL "x64")
+        set(CEF_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/cef_binary_windows64")
+        set(ZMQ_DIR "C:/Program Files/ZeroMQ 4.0.4")
+    else ()    
+        set(CEF_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/cef_binary_windows32")
+        set(ZMQ_DIR "C:/Program Files (x86)/ZeroMQ 4.0.4")
+    endif ()
 endif (WIN32)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CEF_ROOT}/cmake")
@@ -28,7 +44,7 @@ find_package(CEF REQUIRED)
 # Include the libcef_dll_wrapper target.
 # Comes from the libcef_dll/CMakeLists.txt file in the binary distribution
 # directory.
-add_subdirectory(${CEF_LIBCEF_DLL_WRAPPER_PATH} libcef_dll_wrapper)
+#add_subdirectory(${CEF_LIBCEF_DLL_WRAPPER_PATH} libcef_dll_wrapper)
 
 # Include application targets.
 # Comes from the <target>/CMakeLists.txt file in the current directory.
