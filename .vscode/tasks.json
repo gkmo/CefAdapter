@@ -25,5 +25,19 @@
             ],
             "problemMatcher": "$msCompile"
         }
+        {
+            "label": "buildAngular",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Samples/Angular/Angular.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
     ]
 }
