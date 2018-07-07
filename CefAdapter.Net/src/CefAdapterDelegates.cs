@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace CefAdapter.Native
+namespace CefAdapter
 {
     internal delegate void OnBrowserCreatedCallback(int browserId);
 
@@ -15,17 +15,17 @@ namespace CefAdapter.Native
 
     internal delegate bool JavaScriptRequestCallback(int browserId, int frameId, long queryId, string request, JavaScriptRequestSuccessCallback successCallback, JavaScriptRequestFailureCallback failureCallback);
 
-    internal interface ICefAdapterNativeInterface
-    {
-        bool CreateApplication(string url, OnBrowserCreatedCallback browserCreatedCallback, OnBrowserClosingCallback browserClosingCallback, 
-            OnContextCreatedCallback contextCreatedCallback, JavaScriptRequestCallback queryCallback);
+    // internal interface ICefAdapterNativeInterface
+    // {
+    //     bool CreateApplication(string url, OnBrowserCreatedCallback browserCreatedCallback, OnBrowserClosingCallback browserClosingCallback, 
+    //         OnContextCreatedCallback contextCreatedCallback, JavaScriptRequestCallback queryCallback);
 
-        void RunMessageLoop();
+    //     void RunMessageLoop();
 
-        void Shutdown();
+    //     void Shutdown();
 
-        bool ExecuteJavaScript(int browserId, string code);
+    //     bool ExecuteJavaScript(int browserId, string code);
 
-        bool ShowDeveloperTools(int browserId);        
-    }
+    //     bool ShowDeveloperTools(int browserId);        
+    // }
 }

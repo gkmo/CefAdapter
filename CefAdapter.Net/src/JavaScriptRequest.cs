@@ -14,9 +14,9 @@ namespace CefAdapter
 
         internal long QueryId { get; set; }
 
-        internal CefAdapter.Native.JavaScriptRequestSuccessCallback SuccessCallback { get; set; }
+        internal JavaScriptRequestSuccessCallback SuccessCallback { get; set; }
 
-        internal CefAdapter.Native.JavaScriptRequestFailureCallback FailureCallback { get; set; }
+        internal JavaScriptRequestFailureCallback FailureCallback { get; set; }
 
         public void Success(string message)
         {

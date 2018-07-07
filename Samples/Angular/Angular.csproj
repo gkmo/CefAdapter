@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CefAdapter\CefAdapter.csproj" />
+    <ProjectReference Include="..\..\CefAdapter.Net\CefAdapter.Net.csproj" />
   </ItemGroup>
 
   <ItemGroup>

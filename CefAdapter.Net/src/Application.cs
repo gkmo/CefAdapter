@@ -5,7 +5,6 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Runtime.InteropServices;
-using CefAdapter.Native;
 
 namespace CefAdapter
 {
