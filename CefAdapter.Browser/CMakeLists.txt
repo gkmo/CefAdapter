@@ -7,7 +7,7 @@
 #
 
 # CefAdapter.Browser sources.
-set(CEFADAPTER_SRC
+set(CEFADAPTER_BROWSER_SRCS
     src/CefAdapterBrowserApplication.cpp
     src/CefAdapterEventHandler.cpp
     src/CefAdapterMessageHandler.cpp
@@ -16,22 +16,22 @@ set(CEFADAPTER_SRC
     src/Logger.cpp 
 )
 
-set(CEFADAPTER_SRC_LINUX
+set(CEFADAPTER_BROWSER_SRCS_LINUX
   src/MainLinux.cpp
 )
 
-set(CEFADAPTER_SRC_MACOSX
+set(CEFADAPTER_BROWSER_SRCS_MACOSX
 #   cefsimple_mac.mm
 #   simple_handler_mac.mm
 )
 
-set(CEFADAPTER_SRC_WINDOWS
-    CefAdapter.exe.manifest 
+set(CEFADAPTER_BROWSER_SRCS_WINDOWS
+    CefAdapter.Browser.exe.manifest 
     src/MainWindows.cpp
 )
 
-APPEND_PLATFORM_SOURCES(CEFADAPTER_SRC)
-source_group(CefAdapter FILES ${CEFADAPTER_SRC})
+APPEND_PLATFORM_SOURCES(CEFADAPTER_BROWSER_SRCS)
+source_group(CefAdapter.Browser FILES ${CEFADAPTER_BROWSER_SRCS})
 
 # CefAdapter.Browser helper sources.
 set(CEFADAPTER_BROWSER_HELPER_SRCS_MACOSX
@@ -39,16 +39,16 @@ set(CEFADAPTER_BROWSER_HELPER_SRCS_MACOSX
 )
 
 APPEND_PLATFORM_SOURCES(CEFADAPTER_BROWSER_HELPER_SRCS)
-source_group(CefAdapter FILES ${CEFADAPTER_BROWSER_HELPER_SRCS})
+source_group(CefAdapter.Browser FILES ${CEFADAPTER_BROWSER_HELPER_SRCS})
 
 # CefAdapter.Browser resources.
 set(CEFADAPTER_BROWSER_RESOURCES_MAC_SRCS_MACOSX
   mac/Info.plist
-  mac/CefAdapter.icns
+  mac/CefAdapter.Browser.icns
 )
 
 APPEND_PLATFORM_SOURCES(CEFADAPTER_BROWSER_RESOURCES_MAC_SRCS)
-source_group(CefAdapter\\\\mac FILES ${CEFADAPTER_BROWSER_RESOURCES_MAC_SRCS})
+source_group(CefAdapter.Browser\\\\mac FILES ${CEFADAPTER_BROWSER_RESOURCES_MAC_SRCS})
 
 set(CEFADAPTER_BROWSER_RESOURCES_MAC_ENGLISH_LPROJ_SRCS_MACOSX
   mac/English.lproj/InfoPlist.strings
@@ -68,7 +68,7 @@ set(CEFADAPTER_BROWSER_RESOURCES_SRCS
 #
 
 # Target executable names.
-set(CEF_TARGET "CefAdapter")
+set(CEF_TARGET "CefAdapter.Browser")
 if(OS_MACOSX)
   set(CEF_HELPER_TARGET "CefAdapter.Browser_Helper")
   set(CEF_HELPER_OUTPUT_NAME "CefAdapter.Browser Helper")
@@ -95,7 +95,7 @@ if(OS_LINUX)
   endif()
 
   # Executable target.
-  add_executable(${CEF_TARGET} ${CEFADAPTER_SRC} ${CEFADAPTER_SRC_LINUX})
+  add_executable(${CEF_TARGET} ${CEFADAPTER_BROWSER_SRCS} ${CEFADAPTER_BROWSER_SRCS_LINUX})
   SET_EXECUTABLE_TARGET_PROPERTIES(${CEF_TARGET})
   add_dependencies(${CEF_TARGET} libcef_dll_wrapper)
   target_link_libraries(${CEF_TARGET} libcef_lib libcef_dll_wrapper ${ZEROMQ_LIBRARY} ${CEF_STANDARD_LIBS})    
@@ -142,7 +142,7 @@ if(OS_MACOSX)
   FIX_MACOSX_HELPER_FRAMEWORK_RPATH(${CEF_HELPER_TARGET})
 
   # Main executable target.
-  add_executable(${CEF_TARGET} MACOSX_BUNDLE ${CEFADAPTER_BROWSER_RESOURCES_SRCS} ${CEFADAPTER_SRC})
+  add_executable(${CEF_TARGET} MACOSX_BUNDLE ${CEFADAPTER_BROWSER_RESOURCES_SRCS} ${CEFADAPTER_BROWSER_SRCS})
   SET_EXECUTABLE_TARGET_PROPERTIES(${CEF_TARGET})
   add_dependencies(${CEF_TARGET} libcef_dll_wrapper "${CEF_HELPER_TARGET}")
   target_link_libraries(${CEF_TARGET} libcef_lib libcef_dll_wrapper ${CEF_STANDARD_LIBS})
@@ -193,7 +193,7 @@ if(OS_WINDOWS)
   endif()
 
   # Executable target.
-  add_executable(${CEF_TARGET} WIN32 ${CEFADAPTER_SRC})
+  add_executable(${CEF_TARGET} WIN32 ${CEFADAPTER_BROWSER_SRCS})
   #add_dependencies(${CEF_TARGET} libcef_dll_wrapper)  
   target_link_libraries(${CEF_TARGET} libcef_lib ${CEFWRAPPER_LIBRARY} ${ZMQ_LIBRARY} ${CEF_STANDARD_LIBS})
 
