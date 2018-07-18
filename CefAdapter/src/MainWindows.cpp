@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <iostream>
 #include <fstream>
+#include <google/protobuf/stubs/common.h>
 
 #include "include/cef_app.h"
 #include "include/cef_browser_process_handler.h"
@@ -12,11 +13,14 @@
 #include "CefAdapterBrowserApplication.h"
 #include "CefAdapterRendererApplication.h"
 #include "Logger.h"
+#include "IpcMessages.pb.h"
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR lpCmdLine, int nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
+
+    GOOGLE_PROTOBUF_VERIFY_VERSION;    
 
 	CefEnableHighDPISupport();
 
@@ -75,5 +79,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR lpCmdLin
 
     CefShutdown();
     
+    google::protobuf::ShutdownProtobufLibrary();
+
     return 0;
 }

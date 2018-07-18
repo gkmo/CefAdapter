@@ -1,0 +1,129 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+
+package CefAdapter;
+
+enum ReplyType {
+    Void = 0;
+    Boolean = 1;
+    Integer = 2;
+    Double = 3;
+    String = 4;
+    Exception = 5;
+}
+
+enum ToCefAdapterRequestType {
+    Initialize = 0;
+    CreateBrowserWindow = 1;
+    SetBrowserWindowSize = 2;
+    SetBrowserWindowTitle = 3;
+    SetBrowserWindowIcon = 4;
+    ShowDeveloperTools = 5;
+    ExecuteJavaScript = 6;
+    QuerySuccess = 7;
+    QueryFailure = 8;
+}  
+
+message CreateBrowserWindowRequest {
+  string url = 1;
+  string title = 2;
+  int32 width = 3;
+  int32 height = 4;
+}
+
+message SetBrowserWindowTitleRequest {
+    int32 browser_id = 1;
+    string title = 2;
+}
+
+message SetBrowserWindowSizeRequest {
+    int32 browser_id = 1;
+    int32 width = 3;
+    int32 height = 4;
+}
+
+message ShowDeveloperToolsRequest {
+    int32 browser_id = 1;
+    int32 width = 2;
+    int32 height = 3;
+}
+
+message ExecuteJavaScriptRequest {
+    int32 browser_id = 1;
+    string code = 2;    
+}
+
+message QuerySuccessRequest {
+    int64 query_id = 1;    
+    string json_object = 2;
+}
+
+message QueryFailureRequest {
+    int64 query_id = 1;
+    int32 error_code = 2;    
+    string error_message = 3;    
+}
+
+message ToCefAdapterRequest {  
+    ToCefAdapterRequestType request_type = 1;
+    CreateBrowserWindowRequest create_browser_window = 2;
+    SetBrowserWindowTitleRequest set_browser_window_title = 3;
+    SetBrowserWindowSizeRequest set_browser_window_size = 4;
+    ShowDeveloperToolsRequest show_developer_tools = 5;
+    ExecuteJavaScriptRequest execute_javascript = 6;
+    QuerySuccessRequest query_success = 7;
+    QueryFailureRequest query_failure = 8;
+}
+
+
+enum FromCefAdapterRequestType {
+    FailedToInitialize = 0;
+    Shutdown = 1;  
+    OnBrowserCreated = 2;
+    OnBrowserClosed = 3;
+    OnContextCreated = 4;
+    OnQuery = 5;
+}
+
+message OnBrowserCreatedRequest {
+    int32 browser_id = 1;
+}
+
+message OnBrowserClosedRequest {
+    int32 browser_id = 1;
+}
+
+message OnContextCreatedRequest {
+    int32 browser_id = 1;
+    int64 frame_id = 2;
+}
+
+message OnQueryRequest {
+    int32 browser_id = 1;
+    int64 frame_id = 2;
+    int64 query_id = 3;
+    string query = 4;
+}
+
+message FromCefAdapterRequest {  
+    FromCefAdapterRequestType request_type = 1;    
+    OnBrowserCreatedRequest on_browser_created = 2;
+    OnBrowserClosedRequest on_browser_closed = 3;
+    OnContextCreatedRequest on_context_created = 4;
+    OnQueryRequest on_query = 5;
+}
+
+message CefAdapterException {
+    int32 error_code = 1;
+    string error_message = 2;
+}
+
+message CefAdapterReply {
+    ReplyType reply_type = 1;
+    google.protobuf.BoolValue boolean_value = 2;
+    google.protobuf.Int32Value integer_value = 3;
+    google.protobuf.DoubleValue double_value = 4;
+    google.protobuf.StringValue string_value = 5;
+    CefAdapterException exception = 6;
+}

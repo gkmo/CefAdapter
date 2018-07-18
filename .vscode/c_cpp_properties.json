@@ -11,7 +11,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/Dependencies/cef/cef_binary_windows64",
-                "${workspaceFolder}/Dependencies/zmq",
+                "C:/Users/goliveira/Source/Repos/vcpkg/packages/zeromq_x86-windows/include",
                 "C:/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise/VC/Tools/MSVC/14.13.26128/include"
             ],
             "defines": [

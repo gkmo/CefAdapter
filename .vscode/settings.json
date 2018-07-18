@@ -19,5 +19,6 @@
         "xlocmes": "cpp",
         "thread": "cpp"
     },
-    "C_Cpp.intelliSenseEngineFallback": "Disabled"
+    "C_Cpp.intelliSenseEngineFallback": "Disabled",
+    "cmake.configureArgs": ["-DCMAKE_TOOLCHAIN_FILE=C:/Users/goliveira/Source/Repos/vcpkg/scripts/buildsystems/vcpkg.cmake"]
 }
