@@ -3,8 +3,8 @@
 #include <thread>
 
 #include "include/cef_app.h"
-
 #include "zmq.hpp"
+#include "IpcMessages.pb.h"
 
 class CefAdapterInterProcessCommunicator
 {
@@ -17,10 +17,14 @@ private:
 	std::function<void(long,std::string)> _querySuccessCallback;
 	std::function<void(long,int,std::string)> _queryFailureCallback;
 	std::function<bool(int,std::string)> _executeJavaScriptCallback;
+	std::function<bool(int,std::string)> _setWindowIconCallback;
+	std::function<bool(int,std::string)> _setWindowTitleCallback;
 
 	void ListenRequests();
 	
-	std::string Invoke(std::string request);
+	void Invoke(CefAdapter::FromCefAdapterRequestType requestType);
+	void Invoke(CefAdapter::FromCefAdapterRequest* request);
+	void Invoke(CefAdapter::FromCefAdapterRequest* request, CefAdapter::CefAdapterReply* reply);
 
 public:
 	CefAdapterInterProcessCommunicator();
@@ -35,6 +39,8 @@ public:
 	void SetQuerySuccessCallback(std::function<void(long,std::string)> callback);
 	void SetQueryFailureCallback(std::function<void(long,int,std::string)> callback);
 	void SetExecuteJavaScriptCallback(std::function<bool(int,std::string)> callback);
+	void SetWindowIconCallback(std::function<bool(int,std::string)> callback);
+	void SetWindowTitleCallback(std::function<bool(int,std::string)> callback);
 
 	void WaitConnection();
 	void FailedToInitializeApplication();

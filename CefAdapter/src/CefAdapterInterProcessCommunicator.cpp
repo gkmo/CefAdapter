@@ -7,41 +7,48 @@
 
 #include "CefAdapterInterProcessCommunicator.h"
 #include "CefAdapterEventHandler.h"
+#include "IpcMessages.pb.h"
 
-template<typename Out>
-void SplitString(const std::string &s, char delim, Out result)
-{
-	std::stringstream ss(s);
-	std::string item;
-	while (std::getline(ss, item, delim)) {
-		*(result++) = item;
-	}
-}
-
-std::vector<std::string> SplitString(const std::string &s, char delim)
-{
-	std::vector<std::string> elems;
-	SplitString(s, delim, std::back_inserter(elems));
-	return elems;
-}
-
-static std::string ReceiveMessage(zmq::socket_t* socket)
-{
+static void Receive(zmq::socket_t* socket, CefAdapter::ToCefAdapterRequest* request)
+{	
 	zmq::message_t message;
 	socket->recv(&message);
-	auto result = std::string(static_cast<char*>(message.data()), message.size());
 
-	std::cout << "CefAdapterInterProcessCommunicator::Receive: " << result << std::endl;
+	request->ParseFromArray(message.data(), message.size());
 
-	return result;
+	std::cout << "CefAdapterInterProcessCommunicator::Receive: " << request->DebugString() << std::endl;	
 }
 
-static bool SendMessage(zmq::socket_t* socket, const std::string & string)
-{
-	std::cout << "CefAdapterInterProcessCommunicator::Send: " << string << std::endl;
+static void Receive(zmq::socket_t* socket, CefAdapter::CefAdapterReply* reply)
+{	
+	zmq::message_t message;
+	socket->recv(&message);
 
-	zmq::message_t message(string.size());
-	memcpy(message.data(), string.data(), string.size());
+	reply->ParseFromArray(message.data(), message.size());
+
+	std::cout << "CefAdapterInterProcessCommunicator::Receive: " << reply->DebugString() << std::endl;	
+}
+
+static bool Send(zmq::socket_t* socket, CefAdapter::FromCefAdapterRequest* request)
+{
+	std::cout << "CefAdapterInterProcessCommunicator::Send: " << request->DebugString() << std::endl;
+	
+	zmq::message_t message(request->ByteSize());
+	
+	request->SerializeToArray(message.data(), request->ByteSize());
+	
+	return socket->send(message);
+}
+
+
+static bool Send(zmq::socket_t* socket, CefAdapter::CefAdapterReply* reply)
+{
+	std::cout << "CefAdapterInterProcessCommunicator::Send: " << reply->DebugString() << std::endl;
+	
+	zmq::message_t message(reply->ByteSize());
+	
+	reply->SerializeToArray(message.data(), reply->ByteSize());
+	
 	return socket->send(message);
 }
 
@@ -88,81 +95,122 @@ void CefAdapterInterProcessCommunicator::SetExecuteJavaScriptCallback(std::funct
 	_executeJavaScriptCallback = callback;
 }
 
+void CefAdapterInterProcessCommunicator::SetWindowIconCallback(std::function<bool(int, std::string)> callback)
+{
+	_setWindowIconCallback = callback;
+}
+
+void CefAdapterInterProcessCommunicator::SetWindowTitleCallback(std::function<bool(int, std::string)> callback)
+{
+	_setWindowTitleCallback = callback;
+}
+
 void CefAdapterInterProcessCommunicator::WaitConnection()
 {
-	std::string message = ReceiveMessage(_replySocket);
+	CefAdapter::ToCefAdapterRequest request;
+	CefAdapter::CefAdapterReply reply;
 
-	if (message.compare("CONNECT|") == 0)
+	Receive(_replySocket, &request);
+
+	if (request.request_type() == CefAdapter::ToCefAdapterRequestType::Initialize)
 	{
 		_requestSocket = new zmq::socket_t(*_context, ZMQ_REQ);
-		_requestSocket->connect("tcp://localhost:5561");
+		_requestSocket->connect("tcp://localhost:5561");		
 
-		SendMessage(_replySocket, "CONNECT|SUCCESS");
+		reply.set_reply_type(CefAdapter::ReplyType::Void);
+
+		Send(_replySocket, &reply);
 
 		std::thread listenThread(&CefAdapterInterProcessCommunicator::ListenRequests, this);
-
 		listenThread.detach();
 	}
 	else 
 	{
-		SendMessage(_replySocket, "INVALID_STATE");
+		CefAdapter::CefAdapterException exception;
+		exception.set_error_code(1);
+		exception.set_error_message("Invalid state.");
+
+		reply.set_reply_type(CefAdapter::ReplyType::Exception);
+		reply.set_allocated_exception(&exception);
+
+		Send(_replySocket, &reply);
 	}
 }
 
 void CefAdapterInterProcessCommunicator::FailedToInitializeApplication()
 {
-	Invoke("FAILED_TO_INITIALIZE_APPLICATION");	
+	Invoke(CefAdapter::FromCefAdapterRequestType::FailedToInitialize);
 }
 
 void CefAdapterInterProcessCommunicator::Shutdown()
-{
-	Invoke("SHUTDOWN");	
+{	
+	Invoke(CefAdapter::FromCefAdapterRequestType::Shutdown);
 }
 
 void CefAdapterInterProcessCommunicator::OnBrowserCreated(int browserId)
 {
 	std::cout << "CefAdapterInterProcessCommunicator::OnBrowserCreated(" << browserId << ")" << std::endl;
 
-	std::ostringstream message;
+	CefAdapter::FromCefAdapterRequest request;
+	CefAdapter::OnBrowserCreatedRequest onBrowserCreatedRequest;
+		
+	onBrowserCreatedRequest.set_browser_id(browserId);
 
-	message << "ON_BROWSER_CREATED|" << browserId;
+	request.set_request_type(CefAdapter::FromCefAdapterRequestType::OnBrowserCreated);
+	request.set_allocated_on_browser_created(&onBrowserCreatedRequest);	
 
-	Invoke(message.str());
+	Invoke(&request);
 }
 
 void CefAdapterInterProcessCommunicator::OnBrowserClosed(int browserId)
 {
 	std::cout << "CefAdapterInterProcessCommunicator::OnBrowserClosed(" << browserId << ")" << std::endl;
 
-	std::ostringstream message;
+	CefAdapter::FromCefAdapterRequest request;
+	CefAdapter::OnBrowserClosedRequest onBrowserClosedRequest;
+		
+	onBrowserClosedRequest.set_browser_id(browserId);
 
-	message << "ON_BROWSER_CLOSED|" << browserId;
+	request.set_request_type(CefAdapter::FromCefAdapterRequestType::OnBrowserClosed);
+	request.set_allocated_on_browser_closed(&onBrowserClosedRequest);	
 
-	Invoke(message.str());
+	Invoke(&request);
 }
 
 void CefAdapterInterProcessCommunicator::OnContextCreated(int browserId, long frameId)
 {
 	std::cout << "CefAdapterInterProcessCommunicator::OnContextCreated(" << browserId << ", " << frameId << ")" << std::endl;
 
-	std::ostringstream message;
+	CefAdapter::FromCefAdapterRequest request;
+	CefAdapter::OnContextCreatedRequest onContextCreatedRequest;
+		
+	onContextCreatedRequest.set_browser_id(browserId);
+	onContextCreatedRequest.set_frame_id(frameId);
 
-	message << "ON_CONTEXT_CREATED|" << browserId << "|" << frameId;
+	request.set_request_type(CefAdapter::FromCefAdapterRequestType::OnContextCreated);
+	request.set_allocated_on_context_created(&onContextCreatedRequest);	
 
-	Invoke(message.str());
+	Invoke(&request);
 }
 
 bool CefAdapterInterProcessCommunicator::OnQuery(int browserId, long frameId, long queryId, std::string query)
 {
 	std::cout << "CefAdapterInterProcessCommunicator::OnQuery(" << browserId << ", " << frameId << ", " << queryId << ", " << query << ")" << std::endl;
 
-	std::ostringstream message;
+	CefAdapter::FromCefAdapterRequest request;
+	CefAdapter::CefAdapterReply reply;
 
-	message << "ON_QUERY|" << browserId << "|" << frameId << "|" << queryId << "|" << query;
+	CefAdapter::OnQueryRequest onQueryRequest;
+		
+	onQueryRequest.set_browser_id(browserId);
+	onQueryRequest.set_frame_id(frameId);
 
-	auto result = Invoke(message.str());
+	request.set_request_type(CefAdapter::FromCefAdapterRequestType::OnQuery);
+	request.set_allocated_on_query(&onQueryRequest);	
 
-	return result.compare("ON_QUERY|SUCCESS|") == 0;
+	Invoke(&request, &reply);
+
+	return reply.boolean_value().value();
 }
 
 void CefAdapterInterProcessCommunicator::ListenRequests()
@@ -171,80 +219,57 @@ void CefAdapterInterProcessCommunicator::ListenRequests()
 	{
 		try 
 		{		
-			std::string message = ReceiveMessage(_replySocket);
+			CefAdapter::ToCefAdapterRequest request;
+			CefAdapter::CefAdapterReply reply;
 
-			const std::string SHOW_DEVELOPER_TOOLS = "SHOW_DEVELOPER_TOOLS";
-			const std::string QUERY_SUCCESS = "QUERY_SUCCESS";
-			const std::string QUERY_FAILURE = "QUERY_FAILURE";
-			const std::string EXECUTE_JAVA_SCRIPT = "EXECUTE_JAVA_SCRIPT";
+			Receive(_replySocket, &request);
 
-			auto splittedMessage = SplitString(message, '|');
+			auto requestType = request.request_type();
+			google::protobuf::BoolValue result;
+			reply.set_reply_type(CefAdapter::ReplyType::Boolean);
 
-			auto requestName = splittedMessage[0];
-
-			if (requestName.compare(SHOW_DEVELOPER_TOOLS) == 0)
+			switch (requestType)
 			{
-				int browserId;
-
-				if (std::sscanf(splittedMessage[1].c_str(), "%d", &browserId) == 1)
-				{
-					if (_showDeveloperToolsCallback(browserId))
+				case CefAdapter::ToCefAdapterRequestType::ShowDeveloperTools:
 					{
-						SendMessage(_replySocket, "SHOW_DEVELOPER_TOOLS|SUCCESS");
+						int browserId = request.show_developer_tools().browser_id();
+						result.set_value(_showDeveloperToolsCallback(browserId));						
 					}
-					else
+					break;
+				case CefAdapter::ToCefAdapterRequestType::ExecuteJavaScript:
 					{
-						SendMessage(_replySocket, "SHOW_DEVELOPER_TOOLS|FAILURE");
+						auto executeJavaScriptRequest = request.execute_javascript();
+						int browserId = executeJavaScriptRequest.browser_id();
+						std::string code = executeJavaScriptRequest.code();						
+						result.set_value(_executeJavaScriptCallback(browserId, code));				
 					}
-				}
-				else
-				{
-					SendMessage(_replySocket, "SHOW_DEVELOPER_TOOLS|INVALID_ARGUMENTS");
-				}
-			}
-			else if (requestName.compare(QUERY_SUCCESS) == 0)
-			{
-				SendMessage(_replySocket, "QUERY_SUCCESS|SUCCESS");
+					break;
+				case CefAdapter::ToCefAdapterRequestType::QuerySuccess:
+					{
+						auto queryResult = request.query_success();
+						long queryId = queryResult.query_id();
+						std::string jsonObject = queryResult.json_object();
+						_querySuccessCallback(queryId, jsonObject);
+						result.set_value(true);
+					}
+					break;
+				case CefAdapter::ToCefAdapterRequestType::QueryFailure:
+					{
+						auto queryResult = request.query_failure();
+						long queryId = queryResult.query_id();
+						int errorCode = queryResult.error_code();
+						std::string errorMessage = queryResult.error_message();
+						_queryFailureCallback(queryId, errorCode, errorMessage);
+						result.set_value(true);
+					}
+					break;
+				default:
+					break;
+			}					
 
-				long queryId;
+			reply.set_allocated_boolean_value(&result);
 
-				std::sscanf(splittedMessage[1].c_str(), "%ld", &queryId);
-
-				_querySuccessCallback(queryId, splittedMessage[2]);			
-			}
-			else if (requestName.compare(QUERY_FAILURE) == 0)
-			{
-				SendMessage(_replySocket, "QUERY_FAILURE|SUCCESS");
-
-				long queryId;
-				int errorCode;
-
-				std::sscanf(splittedMessage[1].c_str(), "%ld", &queryId);
-				std::sscanf(splittedMessage[2].c_str(), "%d", &errorCode);
-
-				_queryFailureCallback(queryId, errorCode, splittedMessage[3]);			
-			}
-			else if (requestName.compare(EXECUTE_JAVA_SCRIPT) == 0)
-			{
-				int browserId;
-
-				std::sscanf(splittedMessage[1].c_str(), "%d", &browserId);
-
-				bool result = _executeJavaScriptCallback(browserId, splittedMessage[2]);
-
-				if (result)
-				{
-					SendMessage(_replySocket, "EXECUTE_JAVA_SCRIPT|SUCCESS");
-				}
-				else
-				{
-					SendMessage(_replySocket, "EXECUTE_JAVA_SCRIPT|FAILURE");
-				}
-			}
-			else
-			{
-				SendMessage(_replySocket, "INVALID_REQUEST");
-			}
+			Send(_replySocket, &reply);
 		}
 		catch(const zmq::error_t& ex)
 		{
@@ -256,8 +281,25 @@ void CefAdapterInterProcessCommunicator::ListenRequests()
 	_requestSocket->close();
 }
 
-std::string CefAdapterInterProcessCommunicator::Invoke(std::string request)
+void CefAdapterInterProcessCommunicator::Invoke(CefAdapter::FromCefAdapterRequestType requestType)
 {
-	SendMessage(_requestSocket, request);
-	return ReceiveMessage(_requestSocket);
+	CefAdapter::FromCefAdapterRequest request;
+	CefAdapter::CefAdapterReply reply;
+
+	request.set_request_type(requestType);
+
+	Send(_requestSocket, &request);
+	Receive(_requestSocket, &reply);
+}
+
+void CefAdapterInterProcessCommunicator::Invoke(CefAdapter::FromCefAdapterRequest* request)
+{
+	CefAdapter::CefAdapterReply ignoredReply;
+	Invoke(request, &ignoredReply);
+}
+
+void CefAdapterInterProcessCommunicator::Invoke(CefAdapter::FromCefAdapterRequest* request, CefAdapter::CefAdapterReply* reply)
+{
+	Send(_requestSocket, request);
+	Receive(_requestSocket, reply);
 }
