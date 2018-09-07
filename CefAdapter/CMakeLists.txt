@@ -183,7 +183,7 @@ endif()
 #
 
 if(OS_WINDOWS)  
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4251 /wd4541 /wd4125")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4251 /wd4541 /wd4125 /EHsc")
 
   include_directories(${CEF_ROOT})  
   include_directories(${Protobuf_INCLUDE_DIRS})  
