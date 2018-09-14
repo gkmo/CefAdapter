@@ -33,7 +33,7 @@ public:
 private:
 	IMPLEMENT_REFCOUNTING(CefAdapterBrowserApplication);
 
-	bool ShowDeveloperTools(int browserId);
+	void ShowDeveloperTools(int browserId);
 	bool ExecuteJavaScript(int browserId, std::string code);
 	bool SetWindowIcon(int browserId, std::string iconPath);
 	bool SetWindowTitle(int browserId, std::string title);

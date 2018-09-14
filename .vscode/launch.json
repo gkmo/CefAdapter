@@ -5,6 +5,17 @@
    "version": "0.2.0",
    "configurations": [       
        {
+           "name": "(Windows) Launch",
+           "type": "cppvsdbg",
+           "request": "launch",
+           "program": "${workspaceFolder}/build/CefAdapter/Debug/CefAdapter.exe",
+           "args": ["--url=http://www.google.com"],
+           "stopAtEntry": false,
+           "cwd": "${workspaceFolder}/build",
+           "environment": [],
+           "externalConsole": true
+       },
+       {
            "name": "(Windows) Attach",
            "type": "cppvsdbg",
            "request": "attach",
