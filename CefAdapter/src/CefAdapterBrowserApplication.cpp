@@ -225,3 +225,47 @@ bool CefAdapterBrowserApplication::SetWindowTitle(int browserId, std::string tit
 
 	return false;
 }
+
+bool CefAdapterBrowserApplication::SetWindowIcon(int browserId, std::string iconPath)
+{
+	CefRefPtr<CefBrowser> browser = _eventHandler->GetBrowserById(browserId);
+
+	if (browser)
+	{	
+#if defined(OS_WIN)	
+		CefWindowHandle hwnd = browser->GetHost()->GetWindowHandle();
+
+		std::wstring stricon = std::wstring(iconPath.begin(), iconPath.end());
+			
+		auto hWindowIcon =(HICON)LoadImage(NULL, stricon.c_str(), IMAGE_ICON, 16, 16, LR_LOADFROMFILE);
+		auto hWindowIconBig =(HICON)LoadImage(NULL, stricon.c_str(), IMAGE_ICON, 48, 48, LR_LOADFROMFILE);
+
+		SendMessage(hwnd, WM_SETICON, ICON_BIG, (LPARAM)hWindowIconBig);
+		SendMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)hWindowIcon);
+
+		return true;
+#endif
+	}
+
+	return false;
+}
+
+bool CefAdapterBrowserApplication::SetWindowTitle(int browserId, std::string title)
+{
+	CefRefPtr<CefBrowser> browser = _eventHandler->GetBrowserById(browserId);
+
+	if (browser)
+	{
+#if defined(OS_WIN)	
+		CefWindowHandle hwnd = browser->GetHost()->GetWindowHandle();
+
+		std::wstring wtitle(title.begin(), title.end());
+
+		SetWindowText(hwnd, wtitle.c_str());
+
+		return true;
+#endif
+	}
+
+	return false;
+}

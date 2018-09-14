@@ -53,4 +53,3 @@ private:
 	bool Send(zmq::socket_t* socket, CefAdapter::FromCefAdapterRequest* request);
 	bool Send(zmq::socket_t* socket, CefAdapter::CefAdapterReply* reply);
 };
-

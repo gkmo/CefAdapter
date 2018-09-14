@@ -359,4 +359,3 @@ bool CefAdapterInterProcessCommunicator::Send(zmq::socket_t* socket, CefAdapter:
 	
 	return socket->send(message);
 }
-
