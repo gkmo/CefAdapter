@@ -14,6 +14,7 @@ set(CEFADAPTER_SRC
     src/CefAdapterInterProcessCommunicator.cpp
     src/CefAdapterRendererApplication
     src/Logger.cpp 
+    src/IpcMessages.pb.cc
 )
 
 set(CEFADAPTER_SRC_LINUX
@@ -181,21 +182,24 @@ endif()
 # Windows configuration.
 #
 
-if(OS_WINDOWS)
+if(OS_WINDOWS)  
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4251 /wd4541 /wd4125 /EHsc")
+
   include_directories(${CEF_ROOT})  
-  include_directories("${ZMQ_DIR}/include")
+  include_directories(${Protobuf_INCLUDE_DIRS})  
+  include_directories(${ZeroMQ_INCLUDE_DIRS})  
   
-  find_library(ZMQ_LIBRARY libzmq-v120-mt-4_0_4 HINTS "${ZMQ_DIR}/lib")
+  #find_library(ZMQ_LIBRARY libzmq-v120-mt-4_0_4 HINTS "${ZMQ_DIR}/lib")
   find_library(CEFWRAPPER_LIBRARY libcef_dll_wrapper HINTS "${CEF_ROOT}/libcef_dll_wrapper/Debug")
   
-  if(NOT ZMQ_LIBRARY)
-    message(FATAL_ERROR "zmq library not found")
-  endif()
+  # if(NOT ZMQ_LIBRARY)
+  #   message(FATAL_ERROR "zmq library not found")
+  # endif()
 
   # Executable target.
-  add_executable(${CEF_TARGET} WIN32 ${CEFADAPTER_SRC})
+  add_executable(${CEF_TARGET} WIN32 ${CEFADAPTER_SRC} ${PROTO_SRCS} ${PROTO_HDRS})
   #add_dependencies(${CEF_TARGET} libcef_dll_wrapper)  
-  target_link_libraries(${CEF_TARGET} libcef_lib ${CEFWRAPPER_LIBRARY} ${ZMQ_LIBRARY} ${CEF_STANDARD_LIBS})
+  target_link_libraries(${CEF_TARGET} libcef_lib ${CEFWRAPPER_LIBRARY} ${CEF_STANDARD_LIBS} ${Protobuf_LIBRARIES} libzmq libzmq-static)  
 
   SET_EXECUTABLE_TARGET_PROPERTIES(${CEF_TARGET})
 

@@ -35,10 +35,23 @@ void CefAdapterEventHandler::OnTitleChange(CefRefPtr<CefBrowser> browser, const 
 void CefAdapterEventHandler::PlatformTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title)
 {
 #if defined(OS_WIN)
-	// CefWindowHandle hwnd = browser->GetHost()->GetWindowHandle();
-	// SetWindowText(hwnd, std::wstring(title).c_str());
+	CefWindowHandle hwnd = browser->GetHost()->GetWindowHandle();
+	SetWindowText(hwnd, std::wstring(title).c_str());	
 #endif
 }
+
+void CefAdapterEventHandler::OnFaviconURLChange(CefRefPtr<CefBrowser> browser, const std::vector<CefString>& icon_urls)
+{
+	std::cout << "OnFaviconURLChange" << std::endl;
+
+	for each (auto url in icon_urls)
+	{
+		std::cout << url.ToString() << std::endl;
+
+		
+	}
+}
+
 
 bool CefAdapterEventHandler::OnPreKeyEvent(CefRefPtr<CefBrowser> browser, const CefKeyEvent& event, CefEventHandle os_event, bool* is_keyboard_shortcut) 
 {
