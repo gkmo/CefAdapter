@@ -28,9 +28,12 @@ void CefAdapterMessageHandler::OnSuccess(long queryId, std::string message)
 
     auto callback = _queries[queryId];    
 
-    callback->Success(message);
+    if (callback != NULL)
+    {
+        callback->Success(message);
 
-	_queries.erase(queryId);
+	    _queries.erase(queryId);
+    }
 }
 
 void CefAdapterMessageHandler::OnFailure(long queryId, int errorCode, std::string message)
@@ -39,9 +42,12 @@ void CefAdapterMessageHandler::OnFailure(long queryId, int errorCode, std::strin
 
     auto callback = _queries[queryId];    
 
-    callback->Failure(errorCode, message);
+    if (callback != NULL)
+    {
+        callback->Failure(errorCode, message);    
 
-	_queries.erase(queryId);
+	    _queries.erase(queryId);
+    }
 }
 
 bool CefAdapterMessageHandler::OnQuery(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, int64 queryId,
