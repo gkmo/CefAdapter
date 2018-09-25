@@ -16,6 +16,11 @@ steps:
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
+    script: 'New-Item -ItemType directory -Path Dependencies/cef_binary_windows32'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
     script: 'Invoke-WebRequest -Uri $(cef_url) -OutFile ./Dependencies/cef_binary_windows32_minimal.tar.bz2' # Required when targetType == Inline
 
 - task: ExtractFiles@1
