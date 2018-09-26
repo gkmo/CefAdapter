@@ -29,6 +29,11 @@ steps:
     destinationFolder: 'Dependencies\cef_binary_windows32'
     cleanDestinationFolder: true 
 
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: 'dir ./Dependencies/cef_binary_windows32'
+
 - task: CMake@1
   inputs:
     cmakeArgs: -G "Visual Studio 15 2017" ..
